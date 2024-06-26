@@ -17,11 +17,15 @@ export class Size {
    * @param width The horizontal size.
    * @param height The vertical size.
    */
-  constructor(width: number, height: number) {
+  constructor(width = 0, height = 0) {
     this.width = width;
     this.height = height;
   }
 
+  set(width: number, height: number) {
+    this.width = width;
+    this.height = height;
+  }
   /**
    *
    * @returns A string representation of this size.

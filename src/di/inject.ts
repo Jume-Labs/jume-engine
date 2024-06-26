@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { getService } from './services';
 
 /**
@@ -6,11 +7,11 @@ import { getService } from './services';
  * @param context
  * @returns The service getter.
  */
-export function inject(_value: undefined, context: ClassMemberDecoratorContext) {
+export function inject(_value: undefined, context: ClassMemberDecoratorContext): (() => any) | undefined {
   const { kind, name } = context;
 
   if (kind === 'field') {
-    return () => {
+    return (): any => {
       return getService(name as string);
     };
   }
@@ -24,11 +25,11 @@ export function inject(_value: undefined, context: ClassMemberDecoratorContext) 
  * @returns The service getter.
  */
 export function injectWithName(name: string) {
-  return (_value: undefined, context: ClassMemberDecoratorContext) => {
+  return (_value: undefined, context: ClassMemberDecoratorContext): (() => any) | undefined => {
     const { kind } = context;
 
     if (kind === 'field') {
-      return () => {
+      return (): any => {
         return getService(name);
       };
     }

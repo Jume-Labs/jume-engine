@@ -7,6 +7,7 @@ export class Vec2 {
   static readonly UP = new Vec2(0, -1);
   static readonly DOWN = new Vec2(0, 1);
   static readonly ZERO = new Vec2(0, 0);
+
   /**
    * The x axis position.
    */
@@ -72,7 +73,7 @@ export class Vec2 {
    * @param x The x axis position.
    * @param y The y axis position.
    */
-  set(x: number, y: number) {
+  set(x: number, y: number): void {
     this.x = x;
     this.y = y;
   }
@@ -96,7 +97,7 @@ export class Vec2 {
    * Copy the values from another vector.
    * @param vec The vector to copy from.
    */
-  copyFrom(vec: Vec2) {
+  copyFrom(vec: Vec2): void {
     this.set(vec.x, vec.y);
   }
 
@@ -109,22 +110,22 @@ export class Vec2 {
     return this.x === vec.x && this.y === vec.y;
   }
 
-  add(vec: Vec2) {
+  add(vec: Vec2): void {
     this.x += vec.x;
     this.y += vec.y;
   }
 
-  sub(vec: Vec2) {
+  sub(vec: Vec2): void {
     this.x -= vec.x;
     this.y -= vec.y;
   }
 
-  mul(vec: Vec2) {
+  mul(vec: Vec2): void {
     this.x *= vec.x;
     this.y *= vec.y;
   }
 
-  div(vec: Vec2) {
+  div(vec: Vec2): void {
     this.x /= vec.x;
     this.y /= vec.y;
   }
@@ -133,7 +134,7 @@ export class Vec2 {
     return this.x * vec.x + this.y * vec.y;
   }
 
-  normalize() {
+  normalize(): void {
     const l = this.length;
     if (l > 0) {
       this.x /= l;
@@ -141,7 +142,7 @@ export class Vec2 {
     }
   }
 
-  rotateAround(centerX: number, centerY: number, angle: number) {
+  rotateAround(centerX: number, centerY: number, angle: number): void {
     const rad = angle * (Math.PI / 180.0);
     const c = Math.cos(rad);
     const s = Math.sin(rad);
@@ -157,7 +158,7 @@ export class Vec2 {
     return `{ x: ${this.x}, y: ${this.y} }`;
   }
 
-  put() {
+  put(): void {
     Vec2.POOL.push(this);
   }
 }

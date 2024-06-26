@@ -72,11 +72,7 @@ export function distance(x1: number, y1: number, x2: number, y2: number): number
  * @param epsilon The precision to compare.
  * @returns True if the values are almost equal.
  */
-export function fuzzyEqual(a: number, b: number, epsilon?: number): boolean {
-  if (epsilon == null) {
-    epsilon = 0.0001;
-  }
-
+export function fuzzyEqual(a: number, b: number, epsilon = 0.0001): boolean {
   return Math.abs(a - b) < epsilon;
 }
 

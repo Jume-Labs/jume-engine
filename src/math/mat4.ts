@@ -53,9 +53,7 @@ export class Mat4 {
   }
 
   static fromTranslation(x: number, y: number, z: number, out?: Mat4): Mat4 {
-    if (!out) {
-      out = Mat4.get();
-    }
+    out ??= Mat4.get();
 
     out.value[0] = 1;
     out.value[1] = 0;
@@ -78,9 +76,7 @@ export class Mat4 {
   }
 
   static fromZRotation(rotation: number, out?: Mat4): Mat4 {
-    if (!out) {
-      out = Mat4.get();
-    }
+    out ??= Mat4.get();
 
     const sin = Math.sin(rotation);
     const cos = Math.cos(rotation);
@@ -106,9 +102,7 @@ export class Mat4 {
   }
 
   static fromScale(x: number, y: number, z: number, out?: Mat4): Mat4 {
-    if (!out) {
-      out = Mat4.get();
-    }
+    out ??= Mat4.get();
 
     out.value[0] = x;
     out.value[1] = 0;
@@ -138,9 +132,7 @@ export class Mat4 {
     scaleY: number,
     out?: Mat4
   ): Mat4 {
-    if (!out) {
-      out = Mat4.get();
-    }
+    out ??= Mat4.get();
 
     const z = Math.sin(rotation * 0.5);
     const w = Math.cos(rotation * 0.5);
@@ -165,6 +157,67 @@ export class Mat4 {
     out.value[13] = y;
     out.value[14] = 0;
     out.value[15] = 1;
+
+    return out;
+  }
+
+  static multiply(a: Mat4, b: Mat4, out?: Mat4): Mat4 {
+    if (out == null) {
+      out = Mat4.get();
+    }
+
+    const a00 = a.value[0];
+    const a01 = a.value[1];
+    const a02 = a.value[2];
+    const a03 = a.value[3];
+    const a10 = a.value[4];
+    const a11 = a.value[5];
+    const a12 = a.value[6];
+    const a13 = a.value[7];
+    const a20 = a.value[8];
+    const a21 = a.value[9];
+    const a22 = a.value[10];
+    const a23 = a.value[11];
+    const a30 = a.value[12];
+    const a31 = a.value[13];
+    const a32 = a.value[14];
+    const a33 = a.value[15];
+
+    let b0 = b.value[0];
+    let b1 = b.value[1];
+    let b2 = b.value[2];
+    let b3 = b.value[3];
+    out.value[0] = b0 * a00 + b1 * a10 + b2 * a20 + b3 * a30;
+    out.value[1] = b0 * a01 + b1 * a11 + b2 * a21 + b3 * a31;
+    out.value[2] = b0 * a02 + b1 * a12 + b2 * a22 + b3 * a32;
+    out.value[3] = b0 * a03 + b1 * a13 + b2 * a23 + b3 * a33;
+
+    b0 = b.value[4];
+    b1 = b.value[5];
+    b2 = b.value[6];
+    b3 = b.value[7];
+    out.value[4] = b0 * a00 + b1 * a10 + b2 * a20 + b3 * a30;
+    out.value[5] = b0 * a01 + b1 * a11 + b2 * a21 + b3 * a31;
+    out.value[6] = b0 * a02 + b1 * a12 + b2 * a22 + b3 * a32;
+    out.value[7] = b0 * a03 + b1 * a13 + b2 * a23 + b3 * a33;
+
+    b0 = b.value[8];
+    b1 = b.value[9];
+    b2 = b.value[10];
+    b3 = b.value[11];
+    out.value[8] = b0 * a00 + b1 * a10 + b2 * a20 + b3 * a30;
+    out.value[9] = b0 * a01 + b1 * a11 + b2 * a21 + b3 * a31;
+    out.value[10] = b0 * a02 + b1 * a12 + b2 * a22 + b3 * a32;
+    out.value[11] = b0 * a03 + b1 * a13 + b2 * a23 + b3 * a33;
+
+    b0 = b.value[12];
+    b1 = b.value[13];
+    b2 = b.value[14];
+    b3 = b.value[15];
+    out.value[12] = b0 * a00 + b1 * a10 + b2 * a20 + b3 * a30;
+    out.value[13] = b0 * a01 + b1 * a11 + b2 * a21 + b3 * a31;
+    out.value[14] = b0 * a02 + b1 * a12 + b2 * a22 + b3 * a32;
+    out.value[15] = b0 * a03 + b1 * a13 + b2 * a23 + b3 * a33;
 
     return out;
   }
@@ -194,7 +247,7 @@ export class Mat4 {
     }
   }
 
-  identity() {
+  identity(): void {
     this.value[0] = 1;
     this.value[1] = 0;
     this.value[2] = 0;
@@ -234,7 +287,7 @@ export class Mat4 {
     );
   }
 
-  copyFrom({ value }: Mat4) {
+  copyFrom({ value }: Mat4): void {
     this.value[0] = value[0];
     this.value[1] = value[1];
     this.value[2] = value[2];
@@ -253,7 +306,7 @@ export class Mat4 {
     this.value[15] = value[15];
   }
 
-  ortho(left: number, right: number, bottom: number, top: number, near: number, far: number) {
+  ortho(left: number, right: number, bottom: number, top: number, near: number, far: number): void {
     const lr = 1 / (left - right);
     const bt = 1 / (bottom - top);
     const nf = 1 / (near - far);
@@ -276,7 +329,7 @@ export class Mat4 {
     this.value[15] = 1;
   }
 
-  invert(out: Mat4) {
+  invert(out: Mat4): Mat4 | null {
     const a00 = this.value[0];
     const a01 = this.value[1];
     const a02 = this.value[2];
@@ -310,7 +363,7 @@ export class Mat4 {
     // Calculate the determinant
     let det = b00 * b11 - b01 * b10 + b02 * b09 + b03 * b08 - b04 * b07 + b05 * b06;
 
-    if (det == 0) {
+    if (det === 0) {
       return null;
     }
     det = 1.0 / det;
@@ -335,7 +388,7 @@ export class Mat4 {
     return out;
   }
 
-  put() {
+  put(): void {
     Mat4.POOL.push(this);
   }
 

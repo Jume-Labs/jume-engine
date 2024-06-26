@@ -13,7 +13,9 @@
   },
   "plugins": ["@typescript-eslint", "simple-import-sort", "import"],
   "root": true,
-  "ignorePatterns": [],
+  "ignorePatterns": [
+    "node_modules"
+  ],
   "rules": {
     "no-fallthrough": "off",
     "simple-import-sort/imports": "error",

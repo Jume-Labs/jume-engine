@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /**
  * The container that holds all services.
  */
@@ -8,7 +10,7 @@ const CONTAINER: Record<string, any> = {};
  * @param name The name of the service.
  * @returns The service.
  */
-export function getService(name: string) {
+export function getService(name: string): any {
   const service = CONTAINER[name];
 
   if (!service) {
@@ -23,7 +25,7 @@ export function getService(name: string) {
  * @param name The name of the service.
  * @param service The service to add.
  */
-export function addService(name: string, service: any) {
+export function addService(name: string, service: any): void {
   CONTAINER[name] = service;
 }
 
@@ -31,14 +33,14 @@ export function addService(name: string, service: any) {
  * Remove a service by name.
  * @param name The service name.
  */
-export function removeService(name: string) {
+export function removeService(name: string): void {
   CONTAINER[name] = undefined;
 }
 
 /**
  * Clear all added services.
  */
-export function clearService() {
+export function clearService(): void {
   for (const key in CONTAINER) {
     CONTAINER[key] = undefined;
   }

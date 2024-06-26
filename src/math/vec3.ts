@@ -28,7 +28,7 @@ export class Vec3 {
     return this.x === vec.x && this.y === vec.y && this.z === vec.z;
   }
 
-  set(x: number, y: number, z: number) {
+  set(x: number, y: number, z: number): void {
     this.x = x;
     this.y = y;
     this.z = z;
@@ -43,18 +43,19 @@ export class Vec3 {
     return new Vec3(this.x, this.y, this.z);
   }
 
-  copyFrom(vec: Vec3) {
+  copyFrom(vec: Vec3): void {
     this.x = vec.x;
     this.y = vec.y;
     this.z = vec.z;
   }
 
-  transformMat4({ value }: Mat4, vec?: { x: number; y: number; z: number }) {
-    const { x, y, z } = vec ?? {
-      x: this.x,
-      y: this.y,
-      z: this.z,
-    };
+  transformMat4({ value }: Mat4, x?: number, y?: number, z?: number): void {
+    if (!x || !y || !z) {
+      x = this.x;
+      y = this.y;
+      z = this.z;
+    }
+
     let w = value[3] * x + value[7] * y + value[11] * z + value[15];
     if (w === 0) {
       w = 1;
@@ -69,7 +70,7 @@ export class Vec3 {
     return `{ x: ${this.x}, y: ${this.y}, z: ${this.z} }`;
   }
 
-  put() {
+  put(): void {
     Vec3.POOL.push(this);
   }
 }

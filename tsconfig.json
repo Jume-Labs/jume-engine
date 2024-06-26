@@ -11,6 +11,12 @@
     "isolatedModules": true,
     "outDir": "dist",
     "declaration": true,
+    "baseUrl": "./",
+    "paths": {
+      "src/*": [
+        "./src/*"
+      ],
+    },
 
     /* Linting */
     "noImplicitAny": true,
