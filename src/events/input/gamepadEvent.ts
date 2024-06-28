@@ -1,0 +1,37 @@
+import { Event, EventType } from '../event';
+
+export class GamepadEvent extends Event {
+  static readonly GAMEPAD_CONNECTED = new EventType(GamepadEvent, 'jume_gamepad_connected_event');
+
+  static readonly GAMEPAD_DISCONNECTED = new EventType(GamepadEvent, 'jume_gamepad_disconnected_event');
+
+  static readonly GAMEPAD_AXIS = new EventType(GamepadEvent, 'jume_gamepad_axis_event');
+
+  static readonly GAMEPAD_BUTTON = new EventType(GamepadEvent, 'jume_gamepad_button_event');
+
+  id = -1;
+
+  axis = -1;
+
+  button = -1;
+
+  value = 0;
+
+  static readonly POOL: GamepadEvent[] = [];
+
+  static get(type: EventType<GamepadEvent>, id: number, axis = -1, button = -1, value = 0): GamepadEvent {
+    const event = this.POOL.length > 0 ? this.POOL.pop()! : new GamepadEvent();
+    event._name = type.name;
+    event.id = id;
+    event.axis = axis;
+    event.button = button;
+    event.value = value;
+
+    return event;
+  }
+
+  put(): void {
+    super.put();
+    GamepadEvent.POOL.push(this);
+  }
+}
