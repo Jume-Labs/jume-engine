@@ -8,7 +8,7 @@ export class Image {
 
   readonly height: number;
 
-  readonly data: Uint8Array;
+  readonly data: Uint8ClampedArray;
 
   get texture(): WebGLTexture {
     return this._texture;
@@ -43,7 +43,7 @@ export class Image {
   @inject
   private context!: Context;
 
-  constructor(width: number, height: number, data: Uint8Array) {
+  constructor(width: number, height: number, data: Uint8ClampedArray) {
     this.width = width;
     this.height = height;
     this.data = data;

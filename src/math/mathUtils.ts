@@ -25,7 +25,7 @@ export function lerp(start: number, end: number, position: number): number {
  */
 export function clamp(value: number, min: number, max: number): number {
   if (min > max) {
-    var temp = max;
+    const temp = max;
     max = min;
     min = temp;
   }
@@ -85,7 +85,11 @@ export function fuzzyEqual(a: number, b: number, epsilon = 0.0001): boolean {
  * @param angle The angle in degrees.
  * @returns The x and y of the rotated position.
  */
-export function rotateAround(x: number, y: number, centerX: number, centerY: number, angle: number): [number, number] {
+export function rotateAround(x: number, y: number, centerX: number, centerY: number, angle: number, out?: Vec2): Vec2 {
+  if (!out) {
+    out = Vec2.get();
+  }
+
   const rad = toRad(-angle);
   const c = Math.cos(rad);
   const s = Math.sin(rad);
@@ -93,7 +97,9 @@ export function rotateAround(x: number, y: number, centerX: number, centerY: num
   const tx = x - centerX;
   const ty = y - centerY;
 
-  return [c * tx + s * ty + centerX, c * ty - s * tx + centerY];
+  out.set(c * tx + s * ty + centerX, c * ty - s * tx + centerY);
+
+  return out;
 }
 
 export function linesIntersect(

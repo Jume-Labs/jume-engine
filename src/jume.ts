@@ -1,4 +1,13 @@
+import { AudioManager } from './audio/audioManager';
 import { addService } from './di/services';
+import { EventManager } from './events/eventManager';
+import { ApplicationEvent } from './events/input/applicationEvent';
+import { Context } from './graphics/context';
+import { Graphics } from './graphics/graphics';
+import { RenderTarget } from './graphics/renderTarget';
+import { Input } from './input/input';
+import { Mat4 } from './math/mat4';
+import { Random } from './math/random';
 import { isMobile } from './utils/browserInfo';
 import { TimeStep } from './utils/timeStep';
 import { View } from './view/view';
@@ -15,6 +24,16 @@ export class Jume {
   private timeStep: TimeStep;
 
   private view: View;
+
+  private context: Context;
+
+  private graphics: Graphics;
+
+  private input: Input;
+
+  private events: EventManager;
+
+  private target: RenderTarget;
 
   constructor(options?: JumeOptions) {
     options ??= {};
@@ -35,8 +54,6 @@ export class Jume {
       targetFps,
     } = options;
 
-    console.log(forceGL1);
-
     const isFullScreen = isMobile() && fullScreen!;
     const width = isFullScreen ? window.innerWidth : canvasWidth!;
     const height = isFullScreen ? window.innerHeight : canvasHeight!;
@@ -48,12 +65,6 @@ export class Jume {
       throw new Error('Canvas element not found');
     }
 
-    this.view = new View(designWidth!, designHeight!, pixelFilter!, pixelRatio, isFullScreen, canvas, targetFps!);
-    addService('view', this.view);
-
-    this.timeStep = new TimeStep();
-    addService('timeStep', this.timeStep);
-
     canvas.width = width * pixelRatio;
     canvas.height = height * pixelRatio;
     canvas.style.width = `${width}px`;
@@ -61,35 +72,79 @@ export class Jume {
 
     this.pauseInBackground = pauseInBackground!;
 
+    this.context = new Context(canvas, forceGL1!);
+    addService('context', this.context);
+
+    this.view = new View(designWidth!, designHeight!, pixelFilter!, pixelRatio, isFullScreen, canvas, targetFps!);
+    addService('view', this.view);
+
+    this.timeStep = new TimeStep();
+    addService('timeStep', this.timeStep);
+
+    addService('audio', new AudioManager());
+
+    this.events = new EventManager();
+    addService('events', this.events);
+    addService('random', new Random());
+
+    this.graphics = new Graphics(this.context, this.view);
+    addService('graphics', this.graphics);
+
+    this.input = new Input(canvas);
+    addService('input', this.input);
+
+    this.target = new RenderTarget(this.view.viewWidth, this.view.viewHeight);
+
     canvas.focus();
     canvas.addEventListener('blur', () => this.toBackground());
     canvas.addEventListener('focus', () => this.toForeground());
     window.addEventListener('resize', () => this.resize(window.innerWidth, window.innerHeight));
   }
 
-  launch() {
+  launch(): void {
     requestAnimationFrame((_time) => {
       this.prevTime = Date.now();
       this.loop(0.016);
     });
   }
 
-  toBackground() {
+  toBackground(): void {
     this.inBackground = true;
+    const event = ApplicationEvent.get(ApplicationEvent.BACKGROUND);
+    this.events.send(event);
   }
 
-  toForeground() {
+  toForeground(): void {
     this.inBackground = false;
+    const event = ApplicationEvent.get(ApplicationEvent.FOREGROUND);
+    this.events.send(event);
   }
 
-  private resize(_width: number, _height: number) {}
+  private resize(width: number, height: number): void {
+    const ratio = this.view.pixelRatio;
+    if (this.view.isFullScreen) {
+      const canvas = this.view.canvas;
+      canvas.width = width * ratio;
+      canvas.style.width = `${width}px`;
+      canvas.height = height * ratio;
+      canvas.style.height = `${height}px`;
+      this.view.scaleToFit();
 
-  private loop(_time: number) {
+      this.target = new RenderTarget(this.view.viewWidth, this.view.viewHeight);
+    }
+
+    const event = ApplicationEvent.get(ApplicationEvent.RESIZE, width * ratio, height * ratio);
+    this.events.send(event);
+
+    // TODO: Resize the scene.
+  }
+
+  private loop = (_time: number): void => {
     requestAnimationFrame(this.loop);
 
     const now = Date.now();
     const passed = now - this.prevTime;
-    if (this.view.targetFps != -1) {
+    if (this.view.targetFps !== -1) {
       const interval = 1.0 / this.view.targetFps;
       if (passed < interval) {
         return;
@@ -102,9 +157,9 @@ export class Jume {
       this.update(passed);
       this.prevTime = now;
     }
-  }
+  };
 
-  private update(dt: number) {
+  private update(dt: number): void {
     if (!this.inBackground || !this.pauseInBackground) {
       // Make sure time doesn't skip too much.
       if (dt > MAX_DT) {
@@ -116,7 +171,24 @@ export class Jume {
     }
   }
 
-  private render() {}
+  private render(): void {
+    this.graphics.transform.identity();
+    this.graphics.pushTarget(this.target);
+
+    // TODO: render the scene.
+
+    this.graphics.popTarget();
+
+    // TODO: Draw fps and memory here.
+    this.graphics.transform.identity();
+    this.graphics.color.set(1, 1, 1, 1);
+
+    Mat4.fromScale(this.view.viewScaleX, this.view.viewScaleY, 1, this.graphics.transform);
+
+    this.graphics.start();
+    this.graphics.drawRenderTarget(0, 0, this.target);
+    this.graphics.present();
+  }
 }
 
 interface JumeOptions {
@@ -134,7 +206,7 @@ interface JumeOptions {
   targetFps?: number;
 }
 
-function setDefaultOptions(options: JumeOptions) {
+function setDefaultOptions(options: JumeOptions): void {
   options.name ??= 'Jume Game';
   options.designWidth ??= 800;
   options.designHeight ??= 600;

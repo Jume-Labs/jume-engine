@@ -1,7 +1,7 @@
 import { AudioChannel } from './audioChannel';
 import { Sound } from './sound';
 
-export class Audio {
+export class AudioManager {
   readonly context: AudioContext;
 
   private readonly mainGain: GainNode;

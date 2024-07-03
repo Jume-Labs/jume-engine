@@ -7,6 +7,8 @@ export class MouseEvent extends Event {
 
   static readonly MOUSE_MOVE = new EventType(MouseEvent, 'jume_mouse_move_event');
 
+  static readonly MOUSE_WHEEL = new EventType(MouseEvent, 'jume_mouse_wheel_event');
+
   static readonly MOUSE_ENTER = new EventType(MouseEvent, 'jume_mouse_enter_event');
 
   static readonly MOUSE_LEAVE = new EventType(MouseEvent, 'jume_mouse_leave_event');
