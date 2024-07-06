@@ -66,8 +66,8 @@ export class System {
 
   destroy(): void {}
 
-  protected getSystem<T extends System>(systemType: SystemType<T>): T | undefined {
-    return this.systems.get(systemType) as T | undefined;
+  protected getSystem<T extends System>(systemType: SystemType<T>): T {
+    return this.systems.get(systemType) as T;
   }
 
   protected hasSystem(systemType: SystemType<System>): boolean {

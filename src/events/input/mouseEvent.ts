@@ -26,7 +26,7 @@ export class MouseEvent extends Event {
   private static POOL: MouseEvent[] = [];
 
   static get(type: EventType<MouseEvent>, button = -1, x = 0, y = 0, deltaX = 0, deltaY = 0): MouseEvent {
-    const event = this.POOL.length > 0 ? this.POOL.pop()! : new MouseEvent();
+    const event = MouseEvent.POOL.length > 0 ? MouseEvent.POOL.pop()! : new MouseEvent();
     event._name = type.name;
     event.button = button;
     event.x = x;

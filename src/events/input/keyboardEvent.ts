@@ -20,7 +20,7 @@ export class KeyboardEvent extends Event {
   private static readonly POOL: KeyboardEvent[] = [];
 
   static get(type: EventType<KeyboardEvent>, keyCode: KeyCode, code: string, key: string, text = ''): KeyboardEvent {
-    const event = this.POOL.length > 0 ? this.POOL.pop()! : new KeyboardEvent();
+    const event = KeyboardEvent.POOL.length > 0 ? KeyboardEvent.POOL.pop()! : new KeyboardEvent();
     event._name = type.name;
     event.keyCode = keyCode;
     event.code = code;

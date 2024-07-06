@@ -8,7 +8,7 @@ import { Image } from 'src/graphics/image';
 import { Shader } from 'src/graphics/shader';
 import { ShaderType } from 'src/graphics/types';
 
-export class Assets {
+export class AssetManager {
   private images: Record<string, Image> = {};
 
   private texts: Record<string, string> = {};

@@ -32,8 +32,8 @@ export class Component {
 
   destroy(): void {}
 
-  protected getComponent<T extends Component>(componentType: ComponentType<T>): T | undefined {
-    return this.components.get(componentType) as T | undefined;
+  protected getComponent<T extends Component>(componentType: ComponentType<T>): T {
+    return this.components.get(componentType) as T;
   }
 
   protected hasComponent(componentType: typeof Component): boolean {

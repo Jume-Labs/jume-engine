@@ -48,8 +48,8 @@ export class Entity {
     return removed;
   }
 
-  getComponent<T extends Component>(componentType: ComponentType<T>): T | undefined {
-    return this.components.get(componentType) as T | undefined;
+  getComponent<T extends Component>(componentType: ComponentType<T>): T {
+    return this.components.get(componentType) as T;
   }
 
   hasComponent(componentType: typeof Component): boolean {

@@ -14,7 +14,7 @@ export class ApplicationEvent extends Event {
   private static readonly POOL: ApplicationEvent[] = [];
 
   static get(type: EventType<ApplicationEvent>, width = 0, height = 0): ApplicationEvent {
-    const event = this.POOL.length > 0 ? this.POOL.pop()! : new ApplicationEvent();
+    const event = ApplicationEvent.POOL.length > 0 ? ApplicationEvent.POOL.pop()! : new ApplicationEvent();
     event._name = type.name;
     event.width = width;
     event.height = height;

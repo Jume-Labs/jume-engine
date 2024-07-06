@@ -18,7 +18,7 @@ export class TouchEvent extends Event {
   static readonly POOL: TouchEvent[] = [];
 
   static get(type: EventType<TouchEvent>, id: number, x: number, y: number, touchCount: number): TouchEvent {
-    const event = this.POOL.length > 0 ? this.POOL.pop()! : new TouchEvent();
+    const event = TouchEvent.POOL.length > 0 ? TouchEvent.POOL.pop()! : new TouchEvent();
     event._name = type.name;
     event.id = id;
     event.x = x;

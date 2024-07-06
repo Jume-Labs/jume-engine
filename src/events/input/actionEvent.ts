@@ -40,7 +40,7 @@ export class ActionEvent extends Event {
     pressed = false,
     released = false
   ): ActionEvent {
-    const event = this.POOL.length > 0 ? this.POOL.pop()! : new ActionEvent();
+    const event = ActionEvent.POOL.length > 0 ? ActionEvent.POOL.pop()! : new ActionEvent();
     event.reset(actionType);
     event.keyCode = keyCode;
     event.code = code;
@@ -62,7 +62,7 @@ export class ActionEvent extends Event {
     pressed = false,
     released = false
   ): ActionEvent {
-    const event = this.POOL.length > 0 ? this.POOL.pop()! : new ActionEvent();
+    const event = ActionEvent.POOL.length > 0 ? ActionEvent.POOL.pop()! : new ActionEvent();
     event.reset(actionType);
     event.index = index;
     event.x = x;
@@ -84,7 +84,7 @@ export class ActionEvent extends Event {
     pressed = false,
     released = false
   ): ActionEvent {
-    const event = this.POOL.length > 0 ? this.POOL.pop()! : new ActionEvent();
+    const event = ActionEvent.POOL.length > 0 ? ActionEvent.POOL.pop()! : new ActionEvent();
     event.reset(actionType);
     event.index = index;
     event.x = x;
@@ -97,7 +97,7 @@ export class ActionEvent extends Event {
   }
 
   static getGamepadEvent(actionType: InputActionType, index: number, id = -1, value = 0): ActionEvent {
-    const event = this.POOL.length > 0 ? this.POOL.pop()! : new ActionEvent();
+    const event = ActionEvent.POOL.length > 0 ? ActionEvent.POOL.pop()! : new ActionEvent();
     event.reset(actionType);
     event.index = index;
     event.id = id;

@@ -1,3 +1,4 @@
+import { AssetManager } from './assets/assetsManager';
 import { AudioManager } from './audio/audioManager';
 import { addService } from './di/services';
 import { EventManager } from './events/eventManager';
@@ -8,6 +9,8 @@ import { RenderTarget } from './graphics/renderTarget';
 import { Input } from './input/input';
 import { Mat4 } from './math/mat4';
 import { Random } from './math/random';
+import { Scene } from './scenes/scene';
+import { SceneManager } from './scenes/sceneManager';
 import { isMobile } from './utils/browserInfo';
 import { TimeStep } from './utils/timeStep';
 import { View } from './view/view';
@@ -21,17 +24,19 @@ export class Jume {
 
   private pauseInBackground = true;
 
-  private timeStep: TimeStep;
-
-  private view: View;
-
   private context: Context;
+
+  private events: EventManager;
 
   private graphics: Graphics;
 
   private input: Input;
 
-  private events: EventManager;
+  private sceneManager: SceneManager;
+
+  private timeStep: TimeStep;
+
+  private view: View;
 
   private target: RenderTarget;
 
@@ -83,6 +88,8 @@ export class Jume {
 
     addService('audio', new AudioManager());
 
+    addService('assets', new AssetManager());
+
     this.events = new EventManager();
     addService('events', this.events);
     addService('random', new Random());
@@ -93,6 +100,9 @@ export class Jume {
     this.input = new Input(canvas);
     addService('input', this.input);
 
+    this.sceneManager = new SceneManager();
+    addService('scenes', this.sceneManager);
+
     this.target = new RenderTarget(this.view.viewWidth, this.view.viewHeight);
 
     canvas.focus();
@@ -101,7 +111,9 @@ export class Jume {
     window.addEventListener('resize', () => this.resize(window.innerWidth, window.innerHeight));
   }
 
-  launch(): void {
+  launch(scene: Scene): void {
+    this.sceneManager.push(scene);
+
     requestAnimationFrame((_time) => {
       this.prevTime = Date.now();
       this.loop(0.016);
@@ -112,12 +124,14 @@ export class Jume {
     this.inBackground = true;
     const event = ApplicationEvent.get(ApplicationEvent.BACKGROUND);
     this.events.send(event);
+    this.sceneManager.current.toBackground();
   }
 
   toForeground(): void {
     this.inBackground = false;
     const event = ApplicationEvent.get(ApplicationEvent.FOREGROUND);
     this.events.send(event);
+    this.sceneManager.current.toForeground();
   }
 
   private resize(width: number, height: number): void {
@@ -135,8 +149,7 @@ export class Jume {
 
     const event = ApplicationEvent.get(ApplicationEvent.RESIZE, width * ratio, height * ratio);
     this.events.send(event);
-
-    // TODO: Resize the scene.
+    this.sceneManager.current.resize(width * ratio, height * ratio);
   }
 
   private loop = (_time: number): void => {
@@ -166,6 +179,7 @@ export class Jume {
         dt = MAX_DT;
       }
       this.timeStep.update(dt);
+      this.sceneManager.update(this.timeStep.dt);
 
       this.render();
     }
@@ -175,7 +189,7 @@ export class Jume {
     this.graphics.transform.identity();
     this.graphics.pushTarget(this.target);
 
-    // TODO: render the scene.
+    this.sceneManager.render(this.graphics);
 
     this.graphics.popTarget();
 

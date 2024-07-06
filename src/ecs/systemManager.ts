@@ -51,8 +51,8 @@ export class SystemManager {
     return removed;
   }
 
-  getSystem<T extends System>(systemType: SystemType<T>): T | undefined {
-    return this.systems.get(systemType) as T | undefined;
+  getSystem<T extends System>(systemType: SystemType<T>): T {
+    return this.systems.get(systemType) as T;
   }
 
   update(dt: number): void {

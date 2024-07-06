@@ -2,7 +2,7 @@ import { inject } from 'src/di/inject';
 import { Color } from 'src/graphics/color';
 import { RenderTarget } from 'src/graphics/renderTarget';
 import { Mat4 } from 'src/math/mat4';
-import { clamp, rotateAround } from 'src/math/mathUtils';
+import { clamp, rotateAround, toRad } from 'src/math/mathUtils';
 import { Rectangle } from 'src/math/rectangle';
 import { Vec2 } from 'src/math/vec2';
 
@@ -55,7 +55,18 @@ export class Camera {
     this.updateBounds();
   }
 
-  updateTransform(): void {}
+  updateTransform(): void {
+    this.updateBounds();
+    Mat4.fromTranslation(this.screenBounds.width * 0.5, this.screenBounds.height * 0.5, 0, this.transform);
+    Mat4.fromZRotation(toRad(this.rotation), this.tempMatrix);
+    Mat4.multiply(this.transform, this.tempMatrix, this.transform);
+
+    Mat4.fromScale(this.zoom, this.zoom, 1, this.tempMatrix);
+    Mat4.multiply(this.transform, this.tempMatrix, this.transform);
+
+    Mat4.fromTranslation(-this.position.x, -this.position.y, 0, this.tempMatrix);
+    Mat4.multiply(this.transform, this.tempMatrix, this.transform);
+  }
 
   updateView(x: number, y: number, width: number, height: number): void {
     x = clamp(x, 0, 1);
@@ -94,9 +105,9 @@ export class Camera {
     const tempY =
       this.position.y -
       (this.screenBounds.height * 0.5) / this.zoom +
-      (x / (this.view.canvasHeight / this.view.pixelRatio)) * (this.screenBounds.height / this.zoom);
+      (y / (this.view.canvasHeight / this.view.pixelRatio)) * (this.screenBounds.height / this.zoom);
 
-    return rotateAround(tempX, tempY, this.position.x, this.position.y, -this.rotation);
+    return rotateAround(tempX, tempY, this.position.x, this.position.y, -this.rotation, out);
   }
 
   screenToView(x: number, y: number, out?: Vec2): Vec2 {

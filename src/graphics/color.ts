@@ -70,7 +70,7 @@ export class Color {
     this.alpha = alpha;
   }
 
-  set(red: number, green: number, blue: number, alpha: number) {
+  set(red: number, green: number, blue: number, alpha: number): void {
     this.red = red;
     this.green = green;
     this.blue = blue;
@@ -84,7 +84,7 @@ export class Color {
     return out;
   }
 
-  copyFrom(color: Color) {
+  copyFrom(color: Color): void {
     this.set(color.red, color.green, color.blue, color.alpha);
   }
 
