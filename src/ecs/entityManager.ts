@@ -1,3 +1,5 @@
+import { removeByValue } from 'src/utils/arrayUtils';
+
 import { Entity } from './entity';
 import { SystemManager } from './systemManager';
 
@@ -18,10 +20,7 @@ export class EntityManager {
       this.systemManager.updateSystemEntities(entity, true);
 
       entity.destroy();
-      const index = this.entities.indexOf(entity);
-      if (index !== -1) {
-        this.entities.splice(index, 1);
-      }
+      removeByValue(this.entities, entity);
     }
 
     for (const entity of this.entities) {

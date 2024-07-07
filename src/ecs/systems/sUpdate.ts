@@ -12,7 +12,7 @@ export class SUpdate extends System {
     return this;
   }
 
-  update(dt: number): void {
+  override update(dt: number): void {
     if (!this.active) {
       return;
     }

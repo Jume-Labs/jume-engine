@@ -1,4 +1,5 @@
 import { Color } from 'src/graphics/color';
+
 import { clamp } from './mathUtils';
 
 const MULTIPLIER = 48271.0;
@@ -30,7 +31,7 @@ export class Random {
     this.resetSeed();
   }
 
-  resetSeed() {
+  resetSeed(): void {
     this.startSeed = this.rangeBound(Math.floor(Math.random() * MODULUS));
   }
 
@@ -50,7 +51,7 @@ export class Random {
     }
   }
 
-  float(min = 0, max = 1) {
+  float(min = 0, max = 1): number {
     if (min === 0 && max === 1) {
       return this.generate() / MODULUS;
     } else if (min === max) {
@@ -74,7 +75,7 @@ export class Random {
     return new Color(this.float(min, max), this.float(min, max), this.float(min, max), alpha);
   }
 
-  private generate() {
+  private generate(): number {
     return (this.internalSeed = (this.internalSeed * MULTIPLIER) % MODULUS);
   }
 

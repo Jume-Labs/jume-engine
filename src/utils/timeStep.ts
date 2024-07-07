@@ -31,7 +31,7 @@ export class TimeStep {
     this.deltas = [];
   }
 
-  update(dt: number) {
+  update(dt: number): void {
     this._unscaledDt = dt;
     this._totalElapsed += dt;
     this._dt = dt * this.timeScale;

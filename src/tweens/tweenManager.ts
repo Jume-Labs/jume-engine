@@ -1,3 +1,5 @@
+import { removeByValue } from 'src/utils/arrayUtils';
+
 import { Tween } from './tween';
 import { TweenSequence } from './tweenSequence';
 
@@ -61,10 +63,7 @@ export class TweenManager {
             }
             sequence.timesCompleted++;
           } else {
-            const index = this.sequences.indexOf(sequence);
-            if (index !== -1) {
-              this.sequences.splice(index, 1);
-            }
+            removeByValue(this.sequences, sequence);
           }
         }
       }
@@ -92,17 +91,11 @@ export class TweenManager {
   }
 
   removeTween(tween: Tween): void {
-    const index = this.current.indexOf(tween);
-    if (index !== -1) {
-      this.current.splice(index, 1);
-    }
+    removeByValue(this.current, tween);
   }
 
   removeSequence(sequence: TweenSequence): void {
-    const index = this.sequences.indexOf(sequence);
-    if (index !== -1) {
-      this.sequences.splice(index, 1);
-    }
+    removeByValue(this.sequences, sequence);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -115,10 +108,7 @@ export class TweenManager {
     }
 
     for (const tween of tweensToRemove) {
-      const index = this.current.indexOf(tween);
-      if (index !== -1) {
-        this.current.splice(index);
-      }
+      removeByValue(this.current, tween);
     }
   }
 }

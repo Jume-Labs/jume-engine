@@ -1,4 +1,4 @@
-import { Event, EventType } from '../event';
+import { Event, EventType } from './event';
 
 export class ApplicationEvent extends Event {
   static readonly BACKGROUND = new EventType(ApplicationEvent, 'jume_background_event');
@@ -22,7 +22,7 @@ export class ApplicationEvent extends Event {
     return event;
   }
 
-  put(): void {
+  override put(): void {
     super.put();
     ApplicationEvent.POOL.push(this);
   }

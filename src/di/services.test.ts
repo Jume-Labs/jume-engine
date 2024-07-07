@@ -1,4 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { afterEach, beforeAll, describe, expect, it } from 'vitest';
+
 import { addService, clearService, getService, removeService } from './services';
 
 describe('di/services', () => {

@@ -22,7 +22,7 @@ export class Size {
     this.height = height;
   }
 
-  set(width: number, height: number) {
+  set(width: number, height: number): void {
     this.width = width;
     this.height = height;
   }

@@ -1,4 +1,5 @@
 import { inject } from 'src/di/inject';
+
 import { Context } from './context';
 import { ShaderType } from './types';
 
@@ -24,7 +25,7 @@ export class Shader {
     }
   }
 
-  destroy() {
+  destroy(): void {
     this.context.gl.deleteShader(this.glShader);
   }
 }

@@ -1,4 +1,5 @@
 import { inject } from 'src/di/inject';
+
 import { Context } from './context';
 import { Shader } from './shader';
 import { BlendMode, BlendOperation } from './types';
@@ -64,7 +65,7 @@ export class Pipeline {
     this.alphaBlendOperation = 'add';
   }
 
-  use() {
+  use(): void {
     this.context.gl.useProgram(this.program);
   }
 
@@ -80,9 +81,9 @@ export class Pipeline {
       gl.attachShader(program, this.fragmentShader.glShader);
       gl.linkProgram(program);
 
-      const success: boolean = gl.getProgramParameter(program, gl.LINK_STATUS);
+      const success = gl.getProgramParameter(program, gl.LINK_STATUS) as boolean;
       if (!success) {
-        let error = gl.getProgramInfoLog(program);
+        const error = gl.getProgramInfoLog(program);
         throw new Error(`Error while linking shader program: ${error}`);
       }
 

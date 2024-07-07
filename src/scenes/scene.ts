@@ -1,3 +1,4 @@
+import { inject } from 'src/di/inject';
 import { Entity } from 'src/ecs/entity';
 import { EntityManager } from 'src/ecs/entityManager';
 import { System, SystemType } from 'src/ecs/system';
@@ -5,6 +6,7 @@ import { SystemManager } from 'src/ecs/systemManager';
 import { Graphics } from 'src/graphics/graphics';
 import { TweenManager } from 'src/tweens/tweenManager';
 import { Camera } from 'src/view/camera';
+import { View } from 'src/view/view';
 
 export class Scene {
   isOverlay = false;
@@ -19,9 +21,12 @@ export class Scene {
 
   private readonly tweenManager: TweenManager;
 
+  @inject
+  private view!: View;
+
   constructor() {
     this.cameras = [new Camera()];
-    this.systemManager = new SystemManager(this.cameras);
+    this.systemManager = new SystemManager(this.view, this.cameras);
     this.entityManager = new EntityManager(this.systemManager);
     this.tweenManager = new TweenManager();
   }

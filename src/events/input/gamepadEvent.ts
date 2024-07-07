@@ -17,7 +17,7 @@ export class GamepadEvent extends Event {
 
   value = 0;
 
-  static readonly POOL: GamepadEvent[] = [];
+  private static readonly POOL: GamepadEvent[] = [];
 
   static get(type: EventType<GamepadEvent>, id: number, axis = -1, button = -1, value = 0): GamepadEvent {
     const event = GamepadEvent.POOL.length > 0 ? GamepadEvent.POOL.pop()! : new GamepadEvent();
@@ -30,7 +30,7 @@ export class GamepadEvent extends Event {
     return event;
   }
 
-  put(): void {
+  override put(): void {
     super.put();
     GamepadEvent.POOL.push(this);
   }

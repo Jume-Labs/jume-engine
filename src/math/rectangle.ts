@@ -10,6 +10,14 @@ export class Rectangle {
 
   height: number;
 
+  get centerX(): number {
+    return this.x + this.width * 0.5;
+  }
+
+  get centerY(): number {
+    return this.y + this.height * 0.5;
+  }
+
   private tempOut = new Vec2();
 
   constructor(x = 0, y = 0, width = 0, height = 0) {
@@ -32,7 +40,7 @@ export class Rectangle {
     );
   }
 
-  set(x: number, y: number, width: number, height: number) {
+  set(x: number, y: number, width: number, height: number): void {
     this.x = x;
     this.y = y;
     this.width = width;

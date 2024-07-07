@@ -20,14 +20,16 @@ export * from 'src/ecs/components/cSprite';
 export * from 'src/ecs/components/cTransform';
 export * from 'src/ecs/components/cUpdate';
 
+export * from 'src/ecs/systems/sBasicPhysics';
 export * from 'src/ecs/systems/sRender';
 export * from 'src/ecs/systems/sUpdate';
 
+export * from 'src/events/applicationEvent';
+export * from 'src/events/basicPhysicsEvent';
 export * from 'src/events/event';
 export * from 'src/events/eventManager';
 
 export * from 'src/events/input/actionEvent';
-export * from 'src/events/input/applicationEvent';
 export * from 'src/events/input/gamepadEvent';
 export * from 'src/events/input/keyboardEvent';
 export * from 'src/events/input/mouseEvent';
@@ -57,6 +59,10 @@ export * from 'src/math/size';
 export * from 'src/math/vec2';
 export * from 'src/math/vec3';
 
+export * from 'src/physics/basic/interactionTypes';
+export * from 'src/physics/basic/quadTree';
+export * from 'src/physics/basic/rayHit';
+
 export * from 'src/scenes/scene';
 export * from 'src/scenes/sceneManager';
 
@@ -65,6 +71,7 @@ export * from 'src/tweens/tween';
 export * from 'src/tweens/tweenManager';
 export * from 'src/tweens/tweenSequence';
 
+export * from 'src/utils/arrayUtils';
 export * from 'src/utils/bitset';
 export * from 'src/utils/browserInfo';
 export * from 'src/utils/timeStep';

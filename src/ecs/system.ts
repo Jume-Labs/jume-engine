@@ -1,4 +1,5 @@
 import { Graphics } from 'src/graphics/graphics';
+import { removeByValue } from 'src/utils/arrayUtils';
 import { Camera } from 'src/view/camera';
 
 import { Component, ComponentType } from './component';
@@ -17,6 +18,8 @@ export class System {
   readonly order: number;
 
   active = false;
+
+  debug = false;
 
   private readonly lists: EntityList[] = [];
 
@@ -37,9 +40,7 @@ export class System {
     for (const list of this.lists) {
       if (removed) {
         if (list.entities.includes(entity)) {
-          const index = list.entities.indexOf(entity);
-          if (index !== -1) {
-            list.entities.splice(index, 1);
+          if (removeByValue(list.entities, entity)) {
             if (list.removeCallback) {
               list.removeCallback(entity);
             }
@@ -52,9 +53,7 @@ export class System {
             list.addCallback(entity);
           }
         } else if (list.entities.includes(entity) && !entity.hasComponents(list.components)) {
-          const index = list.entities.indexOf(entity);
-          if (index !== -1) {
-            list.entities.splice(index, 1);
+          if (removeByValue(list.entities, entity)) {
             if (list.removeCallback) {
               list.removeCallback(entity);
             }

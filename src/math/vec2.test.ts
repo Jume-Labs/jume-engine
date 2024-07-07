@@ -1,3 +1,3 @@
 import { describe } from 'vitest';
 
-describe('math/vec2', () => {});
+describe.skip('math/vec2', () => {});

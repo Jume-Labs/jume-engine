@@ -1,3 +1,5 @@
+import { removeByValue } from 'src/utils/arrayUtils';
+
 import { Event, EventType } from './event';
 
 export class EventListener {
@@ -51,10 +53,7 @@ export class EventManager {
   off(listener: EventListener): void {
     const list = this.listeners[listener.eventType];
     if (list) {
-      const index = list.indexOf(listener);
-      if (index !== -1) {
-        list.splice(index, 1);
-      }
+      removeByValue(list, listener);
     }
   }
 

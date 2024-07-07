@@ -8,11 +8,11 @@ export class Bitset {
     this.value = value;
   }
 
-  add(mask: number) {
+  add(mask: number): void {
     this.value |= mask;
   }
 
-  remove(mask: number) {
+  remove(mask: number): void {
     this.value &= ~mask;
   }
 
@@ -30,7 +30,7 @@ export class Bitset {
     return true;
   }
 
-  clear() {
+  clear(): void {
     this.value = 0;
   }
 }

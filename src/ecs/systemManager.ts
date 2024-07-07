@@ -1,5 +1,7 @@
 import { Graphics } from 'src/graphics/graphics';
+import { removeByValue } from 'src/utils/arrayUtils';
 import { Camera } from 'src/view/camera';
+import { View } from 'src/view/view';
 
 import { Entity } from './entity';
 import { System, SystemType } from './system';
@@ -11,7 +13,10 @@ export class SystemManager {
 
   private cameras: Camera[];
 
-  constructor(cameras: Camera[]) {
+  private view: View;
+
+  constructor(view: View, cameras: Camera[]) {
+    this.view = view;
     this.cameras = cameras;
   }
 
@@ -41,10 +46,7 @@ export class SystemManager {
 
       this.systems.delete(systemType);
 
-      const index = this.systemList.indexOf(system);
-      if (index !== -1) {
-        this.systemList.splice(index, 1);
-      }
+      removeByValue(this.systemList, system);
       removed = true;
     }
 
@@ -70,8 +72,12 @@ export class SystemManager {
       }
     }
 
+    if (!this.view.debugRender) {
+      return;
+    }
+
     for (const system of this.systemList) {
-      if (system.active) {
+      if (system.active && system.debug) {
         system.debugRender(graphics, this.cameras);
       }
     }

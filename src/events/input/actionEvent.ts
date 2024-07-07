@@ -29,7 +29,7 @@ export class ActionEvent extends Event {
   deltaY = 0;
   touchCount = 0;
 
-  private static POOL: ActionEvent[] = [];
+  private static readonly POOL: ActionEvent[] = [];
 
   static getKeyEvent(
     actionType: InputActionType,
@@ -106,7 +106,7 @@ export class ActionEvent extends Event {
     return event;
   }
 
-  put(): void {
+  override put(): void {
     super.put();
     if (!ActionEvent.POOL.includes(this)) {
       ActionEvent.POOL.push(this);

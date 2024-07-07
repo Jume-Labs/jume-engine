@@ -15,7 +15,7 @@ export class TouchEvent extends Event {
 
   touchCount = 0;
 
-  static readonly POOL: TouchEvent[] = [];
+  private static readonly POOL: TouchEvent[] = [];
 
   static get(type: EventType<TouchEvent>, id: number, x: number, y: number, touchCount: number): TouchEvent {
     const event = TouchEvent.POOL.length > 0 ? TouchEvent.POOL.pop()! : new TouchEvent();
@@ -28,7 +28,7 @@ export class TouchEvent extends Event {
     return event;
   }
 
-  put(): void {
+  override put(): void {
     super.put();
     TouchEvent.POOL.push(this);
   }

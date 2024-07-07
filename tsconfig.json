@@ -19,6 +19,7 @@
     },
 
     /* Linting */
+    "noImplicitOverride": true,
     "noImplicitAny": true,
     "strict": true,
     "noUnusedLocals": true,

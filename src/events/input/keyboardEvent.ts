@@ -30,7 +30,7 @@ export class KeyboardEvent extends Event {
     return event;
   }
 
-  put(): void {
+  override put(): void {
     super.put();
     KeyboardEvent.POOL.push(this);
   }

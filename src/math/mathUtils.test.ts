@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+
 import { clamp, distance, fuzzyEqual, lerp, rotateAround, toDeg, toRad } from './mathUtils';
 
 describe('math/mathUtils', () => {
@@ -52,12 +53,12 @@ describe('math/mathUtils', () => {
   });
 
   it('should rotate a point around another point', () => {
-    let [x, y] = rotateAround(0, 100, 100, 100, 90);
-    expect(x).toBeCloseTo(100);
-    expect(y).toBeCloseTo(0);
+    let vec = rotateAround(0, 100, 100, 100, 90);
+    expect(vec.x).toBeCloseTo(100);
+    expect(vec.y).toBeCloseTo(0);
 
-    [x, y] = rotateAround(0, 100, 100, 100, 270);
-    expect(x).toBeCloseTo(100);
-    expect(y).toBeCloseTo(200);
+    vec = rotateAround(0, 100, 100, 100, 270);
+    expect(vec.x).toBeCloseTo(100);
+    expect(vec.y).toBeCloseTo(200);
   });
 });

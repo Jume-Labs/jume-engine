@@ -23,7 +23,7 @@ export class MouseEvent extends Event {
 
   deltaY = 0;
 
-  private static POOL: MouseEvent[] = [];
+  private static readonly POOL: MouseEvent[] = [];
 
   static get(type: EventType<MouseEvent>, button = -1, x = 0, y = 0, deltaX = 0, deltaY = 0): MouseEvent {
     const event = MouseEvent.POOL.length > 0 ? MouseEvent.POOL.pop()! : new MouseEvent();
@@ -37,7 +37,7 @@ export class MouseEvent extends Event {
     return event;
   }
 
-  put(): void {
+  override put(): void {
     super.put();
     MouseEvent.POOL.push(this);
   }

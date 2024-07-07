@@ -1,8 +1,8 @@
 import { AssetManager } from './assets/assetsManager';
 import { AudioManager } from './audio/audioManager';
 import { addService } from './di/services';
+import { ApplicationEvent } from './events/applicationEvent';
 import { EventManager } from './events/eventManager';
-import { ApplicationEvent } from './events/input/applicationEvent';
 import { Context } from './graphics/context';
 import { Graphics } from './graphics/graphics';
 import { RenderTarget } from './graphics/renderTarget';
@@ -26,7 +26,7 @@ export class Jume {
 
   private context: Context;
 
-  private events: EventManager;
+  private eventManager: EventManager;
 
   private graphics: Graphics;
 
@@ -86,12 +86,12 @@ export class Jume {
     this.timeStep = new TimeStep();
     addService('timeStep', this.timeStep);
 
-    addService('audio', new AudioManager());
+    addService('audioManager', new AudioManager());
 
     addService('assets', new AssetManager());
 
-    this.events = new EventManager();
-    addService('events', this.events);
+    this.eventManager = new EventManager();
+    addService('eventManager', this.eventManager);
     addService('random', new Random());
 
     this.graphics = new Graphics(this.context, this.view);
@@ -101,7 +101,7 @@ export class Jume {
     addService('input', this.input);
 
     this.sceneManager = new SceneManager();
-    addService('scenes', this.sceneManager);
+    addService('sceneManager', this.sceneManager);
 
     this.target = new RenderTarget(this.view.viewWidth, this.view.viewHeight);
 
@@ -123,14 +123,14 @@ export class Jume {
   toBackground(): void {
     this.inBackground = true;
     const event = ApplicationEvent.get(ApplicationEvent.BACKGROUND);
-    this.events.send(event);
+    this.eventManager.send(event);
     this.sceneManager.current.toBackground();
   }
 
   toForeground(): void {
     this.inBackground = false;
     const event = ApplicationEvent.get(ApplicationEvent.FOREGROUND);
-    this.events.send(event);
+    this.eventManager.send(event);
     this.sceneManager.current.toForeground();
   }
 
@@ -148,7 +148,7 @@ export class Jume {
     }
 
     const event = ApplicationEvent.get(ApplicationEvent.RESIZE, width * ratio, height * ratio);
-    this.events.send(event);
+    this.eventManager.send(event);
     this.sceneManager.current.resize(width * ratio, height * ratio);
   }
 

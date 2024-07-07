@@ -1,5 +1,6 @@
 import { Size } from 'src/math/size';
 import { Vec2 } from 'src/math/vec2';
+
 import { ScaleMode, scaleModeFitView } from './scaleModes';
 
 export class View {
@@ -14,6 +15,8 @@ export class View {
   targetFps: number;
 
   isFullScreen: boolean;
+
+  debugRender = false;
 
   get designWidth(): number {
     return this.designSize.width;
@@ -109,7 +112,7 @@ export class View {
     this._scaleMode = scaleModeFitView;
   }
 
-  scaleToFit() {
+  scaleToFit(): void {
     const { viewWidth, viewHeight, scaleFactorX, scaleFactorY, offsetX, offsetY } = this.scaleMode(
       this.designWidth,
       this.designHeight,

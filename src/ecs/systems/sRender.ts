@@ -1,3 +1,5 @@
+import { removeByValue } from 'src/utils/arrayUtils';
+
 import { CRender } from '../components/cRender';
 import { CTransform } from '../components/cTransform';
 import { Entity } from '../entity';
@@ -28,10 +30,7 @@ export class SRender extends System {
 
   entityRemoved = (entity: Entity): void => {
     const layer = entity.getComponent(CRender).layer;
-    const index = this.layers[layer].indexOf(entity);
-    if (index !== -1) {
-      this.layers[layer].splice(index, 1);
-    }
+    removeByValue(this.layers[layer], entity);
     this.layerTracking.delete(entity);
   };
 
@@ -43,10 +42,7 @@ export class SRender extends System {
       const currentLayer = this.layerTracking.get(entity);
 
       if (currentLayer && currentLayer !== layer) {
-        const index = this.layers[currentLayer].indexOf(entity);
-        if (index !== -1) {
-          this.layers[currentLayer].splice(index, 1);
-        }
+        removeByValue(this.layers[currentLayer], entity);
         this.layerTracking.set(entity, layer);
         this.layers[layer].push(entity);
       }
