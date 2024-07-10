@@ -14,18 +14,15 @@ export * from './ecs/entityManager';
 export * from './ecs/system';
 export * from './ecs/systemManager';
 
-export * from './ecs/components/cBasicBody';
 export * from './ecs/components/cRender';
 export * from './ecs/components/cSprite';
 export * from './ecs/components/cTransform';
 export * from './ecs/components/cUpdate';
 
-export * from './ecs/systems/sBasicPhysics';
 export * from './ecs/systems/sRender';
 export * from './ecs/systems/sUpdate';
 
 export * from './events/applicationEvent';
-export * from './events/basicPhysicsEvent';
 export * from './events/event';
 export * from './events/eventManager';
 
@@ -58,10 +55,6 @@ export * from './math/rectangle';
 export * from './math/size';
 export * from './math/vec2';
 export * from './math/vec3';
-
-export * from './physics/basic/interactionTypes';
-export * from './physics/basic/quadTree';
-export * from './physics/basic/rayHit';
 
 export * from './scenes/scene';
 export * from './scenes/sceneManager';
