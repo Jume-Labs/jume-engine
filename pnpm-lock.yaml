@@ -5,6 +5,12 @@ settings:
   excludeLinksFromLockfile: false
 
 devDependencies:
+  '@jume-labs/eslint-config':
+    specifier: ^1.0.0
+    version: 1.0.0(@typescript-eslint/eslint-plugin@7.15.0)(@typescript-eslint/parser@7.15.0)(eslint-plugin-import@2.29.1)(eslint-plugin-simple-import-sort@12.1.1)(eslint@8.56.0)(typescript@5.5.3)
+  '@jume-labs/prettier-config':
+    specifier: ^1.0.1
+    version: 1.0.1(prettier@3.3.2)
   '@typescript-eslint/eslint-plugin':
     specifier: ^7.15.0
     version: 7.15.0(@typescript-eslint/parser@7.15.0)(eslint@8.56.0)(typescript@5.5.3)
@@ -14,9 +20,6 @@ devDependencies:
   eslint:
     specifier: ^8.56.0
     version: 8.56.0
-  eslint-config-prettier:
-    specifier: ^9.1.0
-    version: 9.1.0(eslint@8.56.0)
   eslint-plugin-import:
     specifier: ^2.29.1
     version: 2.29.1(@typescript-eslint/parser@7.15.0)(eslint@8.56.0)
@@ -310,6 +313,33 @@ packages:
 
   /@jridgewell/sourcemap-codec@1.4.15:
     resolution: {integrity: sha512-eF2rxCRulEKXHTRiDrDy6erMYWqNw4LPdQ8UQA4huuxaQsVeRPFl2oM8oDGxMFhJUWZf9McpLtJasDDZb/Bpeg==}
+    dev: true
+
+  /@jume-labs/eslint-config@1.0.0(@typescript-eslint/eslint-plugin@7.15.0)(@typescript-eslint/parser@7.15.0)(eslint-plugin-import@2.29.1)(eslint-plugin-simple-import-sort@12.1.1)(eslint@8.56.0)(typescript@5.5.3):
+    resolution: {integrity: sha512-/rB0r2TAKSxDnzinX608v8ciTbFp9B1PWn3T9FWQ4OPa/XcSyC6sxpN/j7H4uPKDMa3T+v+3ygcSgZKS0ihSJw==}
+    peerDependencies:
+      '@typescript-eslint/eslint-plugin': ^7.15.0
+      '@typescript-eslint/parser': ^7.15.0
+      eslint: '>= 8'
+      eslint-plugin-import: ^2.29.1
+      eslint-plugin-simple-import-sort: ^12.1.1
+      typescript: '>= 5'
+    dependencies:
+      '@typescript-eslint/eslint-plugin': 7.15.0(@typescript-eslint/parser@7.15.0)(eslint@8.56.0)(typescript@5.5.3)
+      '@typescript-eslint/parser': 7.15.0(eslint@8.56.0)(typescript@5.5.3)
+      eslint: 8.56.0
+      eslint-config-prettier: 9.1.0(eslint@8.56.0)
+      eslint-plugin-import: 2.29.1(@typescript-eslint/parser@7.15.0)(eslint@8.56.0)
+      eslint-plugin-simple-import-sort: 12.1.1(eslint@8.56.0)
+      typescript: 5.5.3
+    dev: true
+
+  /@jume-labs/prettier-config@1.0.1(prettier@3.3.2):
+    resolution: {integrity: sha512-Yg+aNWsGzYJc/N+6pcyfceJ/iGMtT7hGnHT3OKhSczVAa5gqVhhWEGcctm8X69vrlwfoEkURt/ciGYkFGg7tOg==}
+    peerDependencies:
+      prettier: 3.x
+    dependencies:
+      prettier: 3.3.2
     dev: true
 
   /@nodelib/fs.scandir@2.1.5:

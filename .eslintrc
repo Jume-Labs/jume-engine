@@ -1,51 +1,9 @@
 {
   "extends": [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/recommended-requiring-type-checking",
-    "plugin:import/typescript",
-    "prettier"
+    "@jume-labs/eslint-config"
   ],
-  "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "sourceType": "module",
     "project": "./tsconfig.json"
   },
-  "plugins": ["@typescript-eslint", "simple-import-sort", "import"],
-  "root": true,
-  "ignorePatterns": [
-    "node_modules"
-  ],
-  "rules": {
-    "no-fallthrough": "off",
-    "no-var": "error",
-    "simple-import-sort/imports": "error",
-    "simple-import-sort/exports": "error",
-    "import/first": "error",
-    "import/newline-after-import": "error",
-    "import/no-duplicates": "error",
-    "@typescript-eslint/unbound-method": [
-      "error",
-      {
-        "ignoreStatic": true
-      }
-    ],
-    "@typescript-eslint/no-explicit-any": ["warn", { "ignoreRestArgs": true }],
-    "@typescript-eslint/ban-types": "off",
-    "eqeqeq": ["error", "smart"],
-    "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": [
-      "warn",
-      { 
-        "argsIgnorePattern": "^_",
-        "varsIgnorePattern": "^_",
-        "caughtErrorsIgnorePattern": "^_"
-      }
-    ],
-    "@typescript-eslint/explicit-function-return-type": "error"
-  },
-  "env": {
-    "browser": true,
-    "es2020": true
-  }
+  "root": true
 }

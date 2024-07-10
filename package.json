@@ -6,17 +6,18 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "test": "vitest run",
-    "lint": "eslint ./src/**/*.ts",
+    "lint": "eslint src",
     "postinstall": "tsc"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@jume-labs/eslint-config": "^1.0.0",
+    "@jume-labs/prettier-config": "^1.0.1",
     "@typescript-eslint/eslint-plugin": "^7.15.0",
     "@typescript-eslint/parser": "^7.15.0",
     "eslint": "^8.56.0",
-    "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "prettier": "^3.3.2",
