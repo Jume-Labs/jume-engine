@@ -1,5 +1,4 @@
-import { removeByValue } from 'src/utils/arrayUtils';
-
+import { removeByValue } from '../utils/arrayUtils';
 import { Entity } from './entity';
 import { SystemManager } from './systemManager';
 

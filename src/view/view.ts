@@ -1,6 +1,5 @@
-import { Size } from 'src/math/size';
-import { Vec2 } from 'src/math/vec2';
-
+import { Size } from '../math/size';
+import { Vec2 } from '../math/vec2';
 import { ScaleMode, scaleModeFitView } from './scaleModes';
 
 export class View {

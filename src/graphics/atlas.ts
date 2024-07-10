@@ -1,6 +1,5 @@
-import { Rectangle } from 'src/math/rectangle';
-import { Size } from 'src/math/size';
-
+import { Rectangle } from '../math/rectangle';
+import { Size } from '../math/size';
 import { Image } from './image';
 
 interface FrameSize {

@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { inject } from 'src/di/inject';
-import { Color } from 'src/graphics/color';
-import { TimeStep } from 'src/utils/timeStep';
-
+import { inject } from '../di/inject';
+import { Color } from '../graphics/color';
+import { TimeStep } from '../utils/timeStep';
 import { Ease, easeLinear } from './easing';
 
 interface TweenProperty {

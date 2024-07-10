@@ -1,6 +1,5 @@
-import { Mat4 } from 'src/math/mat4';
-import { Vec3 } from 'src/math/vec3';
-
+import { Mat4 } from '../../math/mat4';
+import { Vec3 } from '../../math/vec3';
 import { Color } from '../color';
 import { Context } from '../context';
 import { shapeFrag, shapeVert } from '../defaultShaders';

@@ -1,5 +1,4 @@
-import { inject } from 'src/di/inject';
-
+import { inject } from '../di/inject';
 import { Context } from './context';
 import { Shader } from './shader';
 import { BlendMode, BlendOperation } from './types';

@@ -1,7 +1,6 @@
-import { Mat4 } from 'src/math/mat4';
-import { toRad } from 'src/math/mathUtils';
-import { Vec2 } from 'src/math/vec2';
-
+import { Mat4 } from '../../math/mat4';
+import { toRad } from '../../math/mathUtils';
+import { Vec2 } from '../../math/vec2';
 import { Component } from '../component';
 
 export interface CTransformOptions {

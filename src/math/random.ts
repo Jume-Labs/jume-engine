@@ -1,5 +1,4 @@
-import { Color } from 'src/graphics/color';
-
+import { Color } from '../graphics/color';
 import { clamp } from './mathUtils';
 
 const MULTIPLIER = 48271.0;

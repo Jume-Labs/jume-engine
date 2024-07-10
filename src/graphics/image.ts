@@ -1,5 +1,4 @@
-import { inject } from 'src/di/inject';
-
+import { inject } from '../di/inject';
 import { Context } from './context';
 import { TextureFilter, TextureWrap } from './types';
 

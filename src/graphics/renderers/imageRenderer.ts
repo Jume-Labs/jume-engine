@@ -1,6 +1,5 @@
-import { Mat4 } from 'src/math/mat4';
-import { Vec3 } from 'src/math/vec3';
-
+import { Mat4 } from '../../math/mat4';
+import { Vec3 } from '../../math/vec3';
 import { BitmapFont } from '../bitmapFont';
 import { Color } from '../color';
 import { Context } from '../context';

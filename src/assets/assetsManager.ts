@@ -1,12 +1,12 @@
-import { AudioManager } from 'src/audio/audioManager';
-import { Sound } from 'src/audio/sound';
-import { inject } from 'src/di/inject';
-import { Atlas } from 'src/graphics/atlas';
-import { BitmapFont } from 'src/graphics/bitmapFont';
-import { Context } from 'src/graphics/context';
-import { Image } from 'src/graphics/image';
-import { Shader } from 'src/graphics/shader';
-import { ShaderType } from 'src/graphics/types';
+import { AudioManager } from '../audio/audioManager';
+import { Sound } from '../audio/sound';
+import { inject } from '../di/inject';
+import { Atlas } from '../graphics/atlas';
+import { BitmapFont } from '../graphics/bitmapFont';
+import { Context } from '../graphics/context';
+import { Image } from '../graphics/image';
+import { Shader } from '../graphics/shader';
+import { ShaderType } from '../graphics/types';
 
 export class AssetManager {
   private images: Record<string, Image> = {};

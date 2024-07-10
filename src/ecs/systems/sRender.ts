@@ -1,5 +1,4 @@
-import { removeByValue } from 'src/utils/arrayUtils';
-
+import { removeByValue } from '../../utils/arrayUtils';
 import { CRender } from '../components/cRender';
 import { CTransform } from '../components/cTransform';
 import { Entity } from '../entity';

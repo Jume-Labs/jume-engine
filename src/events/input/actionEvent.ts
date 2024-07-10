@@ -1,6 +1,5 @@
-import { InputActionType } from 'src/input/input';
-import { KeyCode } from 'src/input/keyCode';
-
+import { InputActionType } from '../../input/input';
+import { KeyCode } from '../../input/keyCode';
 import { Event, EventType } from '../event';
 
 export class ActionEvent extends Event {

@@ -1,5 +1,4 @@
-import { clamp } from 'src/math/mathUtils';
-
+import { clamp } from '../math/mathUtils';
 import { Sound } from './sound';
 
 export class AudioChannel {

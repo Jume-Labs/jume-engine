@@ -1,5 +1,4 @@
-import { Mat4 } from 'src/math/mat4';
-
+import { Mat4 } from '../../math/mat4';
 import { Context } from '../context';
 import { Pipeline } from '../pipeline';
 

@@ -1,6 +1,5 @@
-import { inject } from 'src/di/inject';
-import { Mat4 } from 'src/math/mat4';
-
+import { inject } from '../di/inject';
+import { Mat4 } from '../math/mat4';
 import { Context } from './context';
 import { TextureFilter, TextureWrap } from './types';
 

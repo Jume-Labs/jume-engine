@@ -1,83 +1,83 @@
 /* eslint-disable simple-import-sort/exports */
-export * from 'src/assets/assetsManager';
+export * from './assets/assetsManager';
 
-export * from 'src/audio/audioChannel';
-export * from 'src/audio/audioManager';
-export * from 'src/audio/sound';
+export * from './audio/audioChannel';
+export * from './audio/audioManager';
+export * from './audio/sound';
 
-export * from 'src/di/inject';
-export * from 'src/di/services';
+export * from './di/inject';
+export * from './di/services';
 
-export * from 'src/ecs/component';
-export * from 'src/ecs/entity';
-export * from 'src/ecs/entityManager';
-export * from 'src/ecs/system';
-export * from 'src/ecs/systemManager';
+export * from './ecs/component';
+export * from './ecs/entity';
+export * from './ecs/entityManager';
+export * from './ecs/system';
+export * from './ecs/systemManager';
 
-export * from 'src/ecs/components/cBasicBody';
-export * from 'src/ecs/components/cRender';
-export * from 'src/ecs/components/cSprite';
-export * from 'src/ecs/components/cTransform';
-export * from 'src/ecs/components/cUpdate';
+export * from './ecs/components/cBasicBody';
+export * from './ecs/components/cRender';
+export * from './ecs/components/cSprite';
+export * from './ecs/components/cTransform';
+export * from './ecs/components/cUpdate';
 
-export * from 'src/ecs/systems/sBasicPhysics';
-export * from 'src/ecs/systems/sRender';
-export * from 'src/ecs/systems/sUpdate';
+export * from './ecs/systems/sBasicPhysics';
+export * from './ecs/systems/sRender';
+export * from './ecs/systems/sUpdate';
 
-export * from 'src/events/applicationEvent';
-export * from 'src/events/basicPhysicsEvent';
-export * from 'src/events/event';
-export * from 'src/events/eventManager';
+export * from './events/applicationEvent';
+export * from './events/basicPhysicsEvent';
+export * from './events/event';
+export * from './events/eventManager';
 
-export * from 'src/events/input/actionEvent';
-export * from 'src/events/input/gamepadEvent';
-export * from 'src/events/input/keyboardEvent';
-export * from 'src/events/input/mouseEvent';
-export * from 'src/events/input/touchEvent';
+export * from './events/input/actionEvent';
+export * from './events/input/gamepadEvent';
+export * from './events/input/keyboardEvent';
+export * from './events/input/mouseEvent';
+export * from './events/input/touchEvent';
 
-export * from 'src/graphics/animation';
-export * from 'src/graphics/atlas';
-export * from 'src/graphics/bitmapFont';
-export * from 'src/graphics/color';
-export * from 'src/graphics/context';
-export * from 'src/graphics/defaultShaders';
-export * from 'src/graphics/graphics';
-export * from 'src/graphics/image';
-export * from 'src/graphics/pipeline';
-export * from 'src/graphics/renderTarget';
-export * from 'src/graphics/shader';
-export * from 'src/graphics/types';
+export * from './graphics/animation';
+export * from './graphics/atlas';
+export * from './graphics/bitmapFont';
+export * from './graphics/color';
+export * from './graphics/context';
+export * from './graphics/defaultShaders';
+export * from './graphics/graphics';
+export * from './graphics/image';
+export * from './graphics/pipeline';
+export * from './graphics/renderTarget';
+export * from './graphics/shader';
+export * from './graphics/types';
 
-export * from 'src/input/input';
-export * from 'src/input/keyCode';
+export * from './input/input';
+export * from './input/keyCode';
 
-export * from 'src/math/mat4';
-export * from 'src/math/mathUtils';
-export * from 'src/math/random';
-export * from 'src/math/rectangle';
-export * from 'src/math/size';
-export * from 'src/math/vec2';
-export * from 'src/math/vec3';
+export * from './math/mat4';
+export * from './math/mathUtils';
+export * from './math/random';
+export * from './math/rectangle';
+export * from './math/size';
+export * from './math/vec2';
+export * from './math/vec3';
 
-export * from 'src/physics/basic/interactionTypes';
-export * from 'src/physics/basic/quadTree';
-export * from 'src/physics/basic/rayHit';
+export * from './physics/basic/interactionTypes';
+export * from './physics/basic/quadTree';
+export * from './physics/basic/rayHit';
 
-export * from 'src/scenes/scene';
-export * from 'src/scenes/sceneManager';
+export * from './scenes/scene';
+export * from './scenes/sceneManager';
 
-export * from 'src/tweens/easing';
-export * from 'src/tweens/tween';
-export * from 'src/tweens/tweenManager';
-export * from 'src/tweens/tweenSequence';
+export * from './tweens/easing';
+export * from './tweens/tween';
+export * from './tweens/tweenManager';
+export * from './tweens/tweenSequence';
 
-export * from 'src/utils/arrayUtils';
-export * from 'src/utils/bitset';
-export * from 'src/utils/browserInfo';
-export * from 'src/utils/timeStep';
+export * from './utils/arrayUtils';
+export * from './utils/bitset';
+export * from './utils/browserInfo';
+export * from './utils/timeStep';
 
-export * from 'src/view/camera';
-export * from 'src/view/scaleModes';
-export * from 'src/view/view';
+export * from './view/camera';
+export * from './view/scaleModes';
+export * from './view/view';
 
-export * from 'src/jume';
+export * from './jume';

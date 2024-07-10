@@ -1,8 +1,7 @@
-import { BitmapFont } from 'src/graphics/bitmapFont';
-import { Color } from 'src/graphics/color';
-import { Graphics } from 'src/graphics/graphics';
-import { Vec2 } from 'src/math/vec2';
-
+import { BitmapFont } from '../../graphics/bitmapFont';
+import { Color } from '../../graphics/color';
+import { Graphics } from '../../graphics/graphics';
+import { Vec2 } from '../../math/vec2';
 import { Component, Renderable } from '../component';
 
 export interface CTextOptions {

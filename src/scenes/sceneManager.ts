@@ -1,5 +1,4 @@
-import { Graphics } from 'src/graphics/graphics';
-
+import { Graphics } from '../graphics/graphics';
 import { Scene } from './scene';
 
 export class SceneManager {

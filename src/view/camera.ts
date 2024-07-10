@@ -1,11 +1,10 @@
-import { inject } from 'src/di/inject';
-import { Color } from 'src/graphics/color';
-import { RenderTarget } from 'src/graphics/renderTarget';
-import { Mat4 } from 'src/math/mat4';
-import { clamp, rotateAround, toRad } from 'src/math/mathUtils';
-import { Rectangle } from 'src/math/rectangle';
-import { Vec2 } from 'src/math/vec2';
-
+import { inject } from '../di/inject';
+import { Color } from '../graphics/color';
+import { RenderTarget } from '../graphics/renderTarget';
+import { Mat4 } from '../math/mat4';
+import { clamp, rotateAround, toRad } from '../math/mathUtils';
+import { Rectangle } from '../math/rectangle';
+import { Vec2 } from '../math/vec2';
 import { View } from './view';
 
 export class Camera {

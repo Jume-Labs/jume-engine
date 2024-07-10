@@ -1,5 +1,4 @@
-import { removeByValue } from 'src/utils/arrayUtils';
-
+import { removeByValue } from '../utils/arrayUtils';
 import { Event, EventType } from './event';
 
 export class EventListener {

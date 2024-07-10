@@ -1,7 +1,6 @@
-import { Graphics } from 'src/graphics/graphics';
-import { removeByValue } from 'src/utils/arrayUtils';
-import { Camera } from 'src/view/camera';
-
+import { Graphics } from '../graphics/graphics';
+import { removeByValue } from '../utils/arrayUtils';
+import { Camera } from '../view/camera';
 import { Component, ComponentType } from './component';
 import { Entity } from './entity';
 

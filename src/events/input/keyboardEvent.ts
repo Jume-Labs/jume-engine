@@ -1,5 +1,4 @@
-import { KeyCode } from 'src/input/keyCode';
-
+import { KeyCode } from '../../input/keyCode';
 import { Event, EventType } from '../event';
 
 export class KeyboardEvent extends Event {

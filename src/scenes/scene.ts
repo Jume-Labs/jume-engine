@@ -1,12 +1,12 @@
-import { inject } from 'src/di/inject';
-import { Entity } from 'src/ecs/entity';
-import { EntityManager } from 'src/ecs/entityManager';
-import { System, SystemType } from 'src/ecs/system';
-import { SystemManager } from 'src/ecs/systemManager';
-import { Graphics } from 'src/graphics/graphics';
-import { TweenManager } from 'src/tweens/tweenManager';
-import { Camera } from 'src/view/camera';
-import { View } from 'src/view/view';
+import { inject } from '../di/inject';
+import { Entity } from '../ecs/entity';
+import { EntityManager } from '../ecs/entityManager';
+import { System, SystemType } from '../ecs/system';
+import { SystemManager } from '../ecs/systemManager';
+import { Graphics } from '../graphics/graphics';
+import { TweenManager } from '../tweens/tweenManager';
+import { Camera } from '../view/camera';
+import { View } from '../view/view';
 
 export class Scene {
   isOverlay = false;
