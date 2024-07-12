@@ -1,5 +1,5 @@
-import { distance, linesIntersect } from './mathUtils';
-import { Vec2 } from './vec2';
+import { distance, linesIntersect } from './mathUtils.js';
+import { Vec2 } from './vec2.js';
 
 export class Rectangle {
   x: number;

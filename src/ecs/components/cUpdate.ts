@@ -1,4 +1,4 @@
-import { Component, Updatable } from '../component';
+import { Component, Updatable } from '../component.js';
 
 export class CUpdate extends Component {
   updateComponents: Updatable[] = [];

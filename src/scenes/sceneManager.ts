@@ -1,5 +1,5 @@
-import { Graphics } from '../graphics/graphics';
-import { Scene } from './scene';
+import { Graphics } from '../graphics/graphics.js';
+import { Scene, SceneType } from './scene.js';
 
 export class SceneManager {
   get current(): Scene {
@@ -31,7 +31,7 @@ export class SceneManager {
     this.current.render(graphics);
   }
 
-  push(scene: Scene, removeCurrent = false, below = false, removeAll = false): void {
+  push(sceneType: SceneType, removeCurrent = false, below = false, removeAll = false): void {
     if (removeCurrent) {
       this.stack.pop()!.destroy();
     }
@@ -46,11 +46,11 @@ export class SceneManager {
       }
     }
 
+    const scene = this.addScene(sceneType, below);
+
     if (scene.isOverlay && this.stack.length > 0 && !this.current.pauseInOverlay) {
       this.current.resume();
     }
-
-    this.addScene(scene, below);
   }
 
   pop(): void {
@@ -60,16 +60,21 @@ export class SceneManager {
     this.current.resume();
   }
 
-  private addScene(scene: Scene, below: boolean): void {
+  private addScene(sceneType: SceneType, below: boolean): Scene {
+    const scene = new sceneType();
     if (below) {
       if (this.stack.length <= 1) {
         this.stack.unshift(scene);
       } else {
         this.stack.splice(this.stack.length - 2, 0, scene);
       }
+      scene.init();
       scene.pause();
     } else {
       this.stack.push(scene);
+      scene.init();
     }
+
+    return scene;
   }
 }

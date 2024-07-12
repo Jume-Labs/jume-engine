@@ -1,6 +1,6 @@
-import { Rectangle } from '../math/rectangle';
-import { Size } from '../math/size';
-import { Image } from './image';
+import { Rectangle } from '../math/rectangle.js';
+import { Size } from '../math/size.js';
+import { Image } from './image.js';
 
 interface FrameSize {
   x: number;
@@ -10,7 +10,7 @@ interface FrameSize {
 }
 
 interface AtlasFrameInfo {
-  fileName: string;
+  filename: string;
   trimmed: boolean;
   frame: FrameSize;
   spriteSourceSize: FrameSize;
@@ -45,7 +45,7 @@ export class AtlasFrame {
     );
     const sourceSize = new Size(frameInfo.sourceSize.w, frameInfo.sourceSize.h);
 
-    return new AtlasFrame(frameInfo.fileName, frameRect, frameInfo.trimmed, sourceRect, sourceSize);
+    return new AtlasFrame(frameInfo.filename, frameRect, frameInfo.trimmed, sourceRect, sourceSize);
   }
 
   constructor(name: string, frame: Rectangle, trimmed: boolean, sourceRect: Rectangle, sourceSize: Size) {

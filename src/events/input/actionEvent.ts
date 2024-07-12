@@ -1,6 +1,6 @@
-import { InputActionType } from '../../input/input';
-import { KeyCode } from '../../input/keyCode';
-import { Event, EventType } from '../event';
+import { InputActionType } from '../../input/input.js';
+import { KeyCode } from '../../input/keyCode.js';
+import { Event, EventType } from '../event.js';
 
 export class ActionEvent extends Event {
   static readonly ACTION = new EventType(ActionEvent, 'jume_input_action_event');

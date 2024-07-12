@@ -1,8 +1,8 @@
-import { Atlas, AtlasFrame } from '../../graphics/atlas';
-import { Color } from '../../graphics/color';
-import { Graphics } from '../../graphics/graphics';
-import { Vec2 } from '../../math/vec2';
-import { Component, Renderable } from '../component';
+import { Atlas, AtlasFrame } from '../../graphics/atlas.js';
+import { Color } from '../../graphics/color.js';
+import { Graphics } from '../../graphics/graphics.js';
+import { Vec2 } from '../../math/vec2.js';
+import { Component, Renderable } from '../component.js';
 
 export interface CSpriteOptions {
   atlas: Atlas;
@@ -52,6 +52,7 @@ export class CSprite extends Component implements Renderable {
     if (options.tint) {
       this.tint.copyFrom(options.tint);
     }
+    this.setFrame(options.frameName, options.atlas);
 
     this.active = true;
 

@@ -1,11 +1,11 @@
-import { inject } from '../di/inject';
-import { Color } from '../graphics/color';
-import { RenderTarget } from '../graphics/renderTarget';
-import { Mat4 } from '../math/mat4';
-import { clamp, rotateAround, toRad } from '../math/mathUtils';
-import { Rectangle } from '../math/rectangle';
-import { Vec2 } from '../math/vec2';
-import { View } from './view';
+import { inject } from '../di/inject.js';
+import { Color } from '../graphics/color.js';
+import { RenderTarget } from '../graphics/renderTarget.js';
+import { Mat4 } from '../math/mat4.js';
+import { clamp, rotateAround, toRad } from '../math/mathUtils.js';
+import { Rectangle } from '../math/rectangle.js';
+import { Vec2 } from '../math/vec2.js';
+import { View } from './view.js';
 
 export class Camera {
   active = true;

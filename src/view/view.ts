@@ -1,6 +1,6 @@
-import { Size } from '../math/size';
-import { Vec2 } from '../math/vec2';
-import { ScaleMode, scaleModeFitView } from './scaleModes';
+import { Size } from '../math/size.js';
+import { Vec2 } from '../math/vec2.js';
+import { ScaleMode, scaleModeFitView } from './scaleModes.js';
 
 export class View {
   readonly pixelRatio: number;
@@ -109,6 +109,7 @@ export class View {
     this.targetFps = targetFps;
 
     this._scaleMode = scaleModeFitView;
+    this.scaleToFit();
   }
 
   scaleToFit(): void {

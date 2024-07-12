@@ -1,8 +1,8 @@
-import { Graphics } from '../graphics/graphics';
-import { removeByValue } from '../utils/arrayUtils';
-import { Camera } from '../view/camera';
-import { Component, ComponentType } from './component';
-import { Entity } from './entity';
+import { Graphics } from '../graphics/graphics.js';
+import { removeByValue } from '../utils/arrayUtils.js';
+import { Camera } from '../view/camera.js';
+import { Component, ComponentType } from './component.js';
+import { Entity } from './entity.js';
 
 export type SystemType<T extends System> = new (systems: Map<SystemType<System>, System>, order: number) => T;
 

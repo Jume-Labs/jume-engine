@@ -1,8 +1,10 @@
-import { removeByValue } from '../../utils/arrayUtils';
-import { CRender } from '../components/cRender';
-import { CTransform } from '../components/cTransform';
-import { Entity } from '../entity';
-import { System } from '../system';
+import { Graphics } from '../../graphics/graphics.js';
+import { removeByValue } from '../../utils/arrayUtils.js';
+import { Camera } from '../../view/camera.js';
+import { CRender } from '../components/cRender.js';
+import { CTransform } from '../components/cTransform.js';
+import { Entity } from '../entity.js';
+import { System } from '../system.js';
 
 export class SRender extends System {
   private entities: Entity[] = [];
@@ -13,12 +15,82 @@ export class SRender extends System {
 
   init(): SRender {
     for (let i = 0; i < 32; i++) {
-      this.layers[1] = [];
+      this.layers[i] = [];
     }
 
     this.registerList(this.entities, [CRender, CTransform], this.entityAdded, this.entityRemoved);
+    this.active = true;
 
     return this;
+  }
+
+  override render(graphics: Graphics, cameras: Camera[]): void {
+    for (const entity of this.entities) {
+      if (entity.active) {
+        this.updateLayer(entity);
+      }
+    }
+
+    // Render all entities with each camera.
+    for (const camera of cameras) {
+      if (camera.active) {
+        camera.updateTransform();
+
+        // Use the camera render target and clear it.
+        graphics.pushTarget(camera.target);
+        graphics.start(true, camera.bgColor);
+
+        // Apply the camera transform to render the entities in the correct place.
+        graphics.pushTransform();
+        graphics.applyTransform(camera.transform);
+
+        // Render the entities in all layers.
+        for (const key in this.layers) {
+          const entities = this.layers[key];
+          if (entities.length > 0 && !camera.ignoredLayers.includes(parseInt(key))) {
+            for (const entity of entities) {
+              if (entity.active) {
+                const transform = entity.getComponent(CTransform);
+                transform.updateMatrix();
+
+                graphics.pushTransform();
+                graphics.applyTransform(transform.matrix);
+
+                entity.getComponent(CRender).render(graphics);
+
+                graphics.popTransform();
+              }
+            }
+          }
+        }
+
+        // Debug Render the entities in all layers.
+        for (const key in this.layers) {
+          const entities = this.layers[key];
+          if (entities.length > 0 && !camera.ignoredLayers.includes(parseInt(key))) {
+            for (const entity of entities) {
+              if (entity.active) {
+                entity.getComponent(CRender).debugRender(graphics);
+              }
+            }
+          }
+        }
+
+        graphics.popTransform();
+        graphics.present();
+        graphics.popTarget();
+      }
+    }
+
+    graphics.transform.identity();
+    graphics.color.set(1, 1, 1, 1);
+
+    graphics.start();
+    // Render all cameras to the main target.
+    for (const camera of cameras) {
+      graphics.drawRenderTarget(camera.screenBounds.x, camera.screenBounds.y, camera.target);
+    }
+    graphics.present();
   }
 
   entityAdded = (entity: Entity): void => {

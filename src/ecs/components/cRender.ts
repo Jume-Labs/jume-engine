@@ -1,5 +1,5 @@
-import { Graphics } from '../../graphics/graphics';
-import { Component, Renderable } from '../component';
+import { Graphics } from '../../graphics/graphics.js';
+import { Component, Renderable } from '../component.js';
 
 export class CRender extends Component {
   layerChanged = false;
@@ -15,7 +15,7 @@ export class CRender extends Component {
     this._layer = value;
   }
 
-  Infinity(renderComponents: Renderable[], layer = 0): CRender {
+  init(renderComponents: Renderable[], layer = 0): CRender {
     this.layer = layer;
     this.renderComponents = renderComponents;
     this.active = true;

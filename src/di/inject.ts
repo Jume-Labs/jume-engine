@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { getService } from './services';
+import { getService } from './services.js';
 
 /**
  * @inject decorator. Injects a service getter into a field.

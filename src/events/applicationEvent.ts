@@ -1,4 +1,4 @@
-import { Event, EventType } from './event';
+import { Event, EventType } from './event.js';
 
 export class ApplicationEvent extends Event {
   static readonly BACKGROUND = new EventType(ApplicationEvent, 'jume_background_event');

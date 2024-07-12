@@ -1,5 +1,5 @@
-import { KeyCode } from '../../input/keyCode';
-import { Event, EventType } from '../event';
+import { KeyCode } from '../../input/keyCode.js';
+import { Event, EventType } from '../event.js';
 
 export class KeyboardEvent extends Event {
   static readonly KEY_UP = new EventType(KeyboardEvent, 'jume_key_up_event');

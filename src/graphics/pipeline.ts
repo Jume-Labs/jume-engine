@@ -1,7 +1,7 @@
-import { inject } from '../di/inject';
-import { Context } from './context';
-import { Shader } from './shader';
-import { BlendMode, BlendOperation } from './types';
+import { inject } from '../di/inject.js';
+import { Context } from './context.js';
+import { Shader } from './shader.js';
+import { BlendMode, BlendOperation } from './types.js';
 
 export class Pipeline {
   blendSource: BlendMode;

@@ -1,12 +1,12 @@
-import { AudioManager } from '../audio/audioManager';
-import { Sound } from '../audio/sound';
-import { inject } from '../di/inject';
-import { Atlas } from '../graphics/atlas';
-import { BitmapFont } from '../graphics/bitmapFont';
-import { Context } from '../graphics/context';
-import { Image } from '../graphics/image';
-import { Shader } from '../graphics/shader';
-import { ShaderType } from '../graphics/types';
+import { AudioManager } from '../audio/audioManager.js';
+import { Sound } from '../audio/sound.js';
+import { inject } from '../di/inject.js';
+import { Atlas } from '../graphics/atlas.js';
+import { BitmapFont } from '../graphics/bitmapFont.js';
+import { Context } from '../graphics/context.js';
+import { Image } from '../graphics/image.js';
+import { Shader } from '../graphics/shader.js';
+import { ShaderType } from '../graphics/types.js';
 
 export class AssetManager {
   private images: Record<string, Image> = {};
@@ -22,7 +22,7 @@ export class AssetManager {
   private atlases: Record<string, Atlas> = {};
 
   @inject
-  private readonly audio!: AudioManager;
+  private readonly audioManager!: AudioManager;
 
   @inject
   private readonly context!: Context;
@@ -194,7 +194,7 @@ export class AssetManager {
     const response = await fetch(path);
     if (response.status < 400) {
       const buffer = await response.arrayBuffer();
-      const sound = await this.audio.decodeSound(id, buffer);
+      const sound = await this.audioManager.decodeSound(id, buffer);
 
       if (sound) {
         if (keep) {

@@ -1,6 +1,6 @@
-import { inject } from '../di/inject';
-import { Context } from './context';
-import { TextureFilter, TextureWrap } from './types';
+import { inject } from '../di/inject.js';
+import { Context } from './context.js';
+import { TextureFilter, TextureWrap } from './types.js';
 
 export class Image {
   readonly width: number;

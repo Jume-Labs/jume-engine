@@ -1,12 +1,12 @@
-import { Mat4 } from '../../math/mat4';
-import { Vec3 } from '../../math/vec3';
-import { Color } from '../color';
-import { Context } from '../context';
-import { shapeFrag, shapeVert } from '../defaultShaders';
-import { Pipeline } from '../pipeline';
-import { Shader } from '../shader';
-import { LineAlign } from '../types';
-import { BaseRenderer } from './baseRenderer';
+import { Mat4 } from '../../math/mat4.js';
+import { Vec3 } from '../../math/vec3.js';
+import { Color } from '../color.js';
+import { Context } from '../context.js';
+import { shapeFrag, shapeVert } from '../defaultShaders.js';
+import { Pipeline } from '../pipeline.js';
+import { Shader } from '../shader.js';
+import { LineAlign } from '../types.js';
+import { BaseRenderer } from './baseRenderer.js';
 
 const OFFSET = 7 * 3;
 const VERTICES_PER_TRI = 3;

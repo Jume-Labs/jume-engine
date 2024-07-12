@@ -1,6 +1,6 @@
-import { removeByValue } from '../utils/arrayUtils';
-import { Tween } from './tween';
-import { TweenSequence } from './tweenSequence';
+import { removeByValue } from '../utils/arrayUtils.js';
+import { Tween } from './tween.js';
+import { TweenSequence } from './tweenSequence.js';
 
 export class TweenManager {
   private readonly current: Tween[] = [];

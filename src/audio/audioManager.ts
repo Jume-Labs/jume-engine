@@ -1,5 +1,5 @@
-import { AudioChannel } from './audioChannel';
-import { Sound } from './sound';
+import { AudioChannel } from './audioChannel.js';
+import { Sound } from './sound.js';
 
 export class AudioManager {
   readonly context: AudioContext;

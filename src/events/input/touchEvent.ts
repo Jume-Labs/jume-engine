@@ -1,4 +1,4 @@
-import { Event, EventType } from '../event';
+import { Event, EventType } from '../event.js';
 
 export class TouchEvent extends Event {
   static readonly TOUCH_START = new EventType(TouchEvent, 'jume_touch_start_event');

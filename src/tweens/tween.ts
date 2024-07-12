@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { inject } from '../di/inject';
-import { Color } from '../graphics/color';
-import { TimeStep } from '../utils/timeStep';
-import { Ease, easeLinear } from './easing';
+import { inject } from '../di/inject.js';
+import { Color } from '../graphics/color.js';
+import { TimeStep } from '../utils/timeStep.js';
+import { Ease, easeLinear } from './easing.js';
 
 interface TweenProperty {
   start: number | Color;

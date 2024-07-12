@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { Size } from './size';
+import { Size } from './size.js';
 
 describe('math/size', () => {
   it('should create a new size', () => {

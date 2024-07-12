@@ -1,4 +1,4 @@
-import { Atlas, AtlasFrame } from './atlas';
+import { Atlas, AtlasFrame } from './atlas.js';
 
 export type AnimationMode = 'normal' | 'loop' | 'reversed' | 'loop reversed' | 'ping pong';
 

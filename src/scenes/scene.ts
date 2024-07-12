@@ -1,12 +1,14 @@
-import { inject } from '../di/inject';
-import { Entity } from '../ecs/entity';
-import { EntityManager } from '../ecs/entityManager';
-import { System, SystemType } from '../ecs/system';
-import { SystemManager } from '../ecs/systemManager';
-import { Graphics } from '../graphics/graphics';
-import { TweenManager } from '../tweens/tweenManager';
-import { Camera } from '../view/camera';
-import { View } from '../view/view';
+import { inject } from '../di/inject.js';
+import { Entity } from '../ecs/entity.js';
+import { EntityManager } from '../ecs/entityManager.js';
+import { System, SystemType } from '../ecs/system.js';
+import { SystemManager } from '../ecs/systemManager.js';
+import { Graphics } from '../graphics/graphics.js';
+import { TweenManager } from '../tweens/tweenManager.js';
+import { Camera } from '../view/camera.js';
+import { View } from '../view/view.js';
+
+export type SceneType = new () => Scene;
 
 export class Scene {
   isOverlay = false;
@@ -30,6 +32,8 @@ export class Scene {
     this.entityManager = new EntityManager(this.systemManager);
     this.tweenManager = new TweenManager();
   }
+
+  init(): void {}
 
   addEntity(entity: Entity): void {
     this.entityManager.add(entity);

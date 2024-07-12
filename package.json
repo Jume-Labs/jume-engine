@@ -12,6 +12,7 @@
     "test": "vitest run",
     "lint": "eslint src"
   },
+  "type": "module",
   "keywords": [],
   "author": "Codescapade",
   "license": "MIT",

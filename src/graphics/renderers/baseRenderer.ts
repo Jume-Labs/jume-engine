@@ -1,6 +1,6 @@
-import { Mat4 } from '../../math/mat4';
-import { Context } from '../context';
-import { Pipeline } from '../pipeline';
+import { Mat4 } from '../../math/mat4.js';
+import { Context } from '../context.js';
+import { Pipeline } from '../pipeline.js';
 
 export class BaseRenderer {
   protected readonly BUFFER_SIZE = 4000;

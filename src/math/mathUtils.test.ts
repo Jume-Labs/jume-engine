@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { clamp, distance, fuzzyEqual, lerp, rotateAround, toDeg, toRad } from './mathUtils';
+import { clamp, distance, fuzzyEqual, lerp, rotateAround, toDeg, toRad } from './mathUtils.js';
 
 describe('math/mathUtils', () => {
   it('should lerp between two values', () => {

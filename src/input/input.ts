@@ -1,12 +1,12 @@
-import { AudioManager } from '../audio/audioManager';
-import { inject } from '../di/inject';
-import { EventManager } from '../events/eventManager';
-import { ActionEvent } from '../events/input/actionEvent';
-import { GamepadEvent as JumeGamepadEvent } from '../events/input/gamepadEvent';
-import { KeyboardEvent as JumeKeyboardEvent } from '../events/input/keyboardEvent';
-import { MouseEvent as JumeMouseEvent } from '../events/input/mouseEvent';
-import { TouchEvent as JumeTouchEvent } from '../events/input/touchEvent';
-import { getKeyCodeFromString, KeyCode } from './keyCode';
+import { AudioManager } from '../audio/audioManager.js';
+import { inject } from '../di/inject.js';
+import { EventManager } from '../events/eventManager.js';
+import { ActionEvent } from '../events/input/actionEvent.js';
+import { GamepadEvent as JumeGamepadEvent } from '../events/input/gamepadEvent.js';
+import { KeyboardEvent as JumeKeyboardEvent } from '../events/input/keyboardEvent.js';
+import { MouseEvent as JumeMouseEvent } from '../events/input/mouseEvent.js';
+import { TouchEvent as JumeTouchEvent } from '../events/input/touchEvent.js';
+import { getKeyCodeFromString, KeyCode } from './keyCode.js';
 
 export type InputActionType =
   | 'none'

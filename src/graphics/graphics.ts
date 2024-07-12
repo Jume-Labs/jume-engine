@@ -1,14 +1,14 @@
-import { Mat4 } from '../math/mat4';
-import { View } from '../view/view';
-import { BitmapFont } from './bitmapFont';
-import { Color } from './color';
-import { Context } from './context';
-import { Image } from './image';
-import { Pipeline } from './pipeline';
-import { ImageRenderer } from './renderers/imageRenderer';
-import { ShapeRenderer } from './renderers/shapeRenderer';
-import { RenderTarget } from './renderTarget';
-import { BlendMode, BlendOperation, LineAlign, MipmapFilter, TextureFilter, TextureWrap } from './types';
+import { Mat4 } from '../math/mat4.js';
+import { View } from '../view/view.js';
+import { BitmapFont } from './bitmapFont.js';
+import { Color } from './color.js';
+import { Context } from './context.js';
+import { Image } from './image.js';
+import { Pipeline } from './pipeline.js';
+import { ImageRenderer } from './renderers/imageRenderer.js';
+import { ShapeRenderer } from './renderers/shapeRenderer.js';
+import { RenderTarget } from './renderTarget.js';
+import { BlendMode, BlendOperation, LineAlign, MipmapFilter, TextureFilter, TextureWrap } from './types.js';
 
 const MAX_TARGET_STACK = 64;
 const MAX_TRANSFORM_STACK = 128;

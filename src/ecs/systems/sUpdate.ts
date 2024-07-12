@@ -1,6 +1,6 @@
-import { CUpdate } from '../components/cUpdate';
-import { Entity } from '../entity';
-import { System } from '../system';
+import { CUpdate } from '../components/cUpdate.js';
+import { Entity } from '../entity.js';
+import { System } from '../system.js';
 
 export class SUpdate extends System {
   private entities: Entity[] = [];

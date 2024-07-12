@@ -1,4 +1,4 @@
-import { clamp } from '../math/mathUtils';
+import { clamp } from '../math/mathUtils.js';
 
 const HEX_COlOR_REGEX = new RegExp(/^#([a-fA-F\d]{2})([a-fA-F\d]{2})([a-fA-F\d]{2})([a-fA-F\d]{2})$/);
 

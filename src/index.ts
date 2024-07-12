@@ -1,76 +1,76 @@
 /* eslint-disable simple-import-sort/exports */
-export * from './assets/assetsManager';
+export * from './assets/assetsManager.js';
 
-export * from './audio/audioChannel';
-export * from './audio/audioManager';
-export * from './audio/sound';
+export * from './audio/audioChannel.js';
+export * from './audio/audioManager.js';
+export * from './audio/sound.js';
 
-export * from './di/inject';
-export * from './di/services';
+export * from './di/inject.js';
+export * from './di/services.js';
 
-export * from './ecs/component';
-export * from './ecs/entity';
-export * from './ecs/entityManager';
-export * from './ecs/system';
-export * from './ecs/systemManager';
+export * from './ecs/component.js';
+export * from './ecs/entity.js';
+export * from './ecs/entityManager.js';
+export * from './ecs/system.js';
+export * from './ecs/systemManager.js';
 
-export * from './ecs/components/cRender';
-export * from './ecs/components/cSprite';
-export * from './ecs/components/cTransform';
-export * from './ecs/components/cUpdate';
+export * from './ecs/components/cRender.js';
+export * from './ecs/components/cSprite.js';
+export * from './ecs/components/cTransform.js';
+export * from './ecs/components/cUpdate.js';
 
-export * from './ecs/systems/sRender';
-export * from './ecs/systems/sUpdate';
+export * from './ecs/systems/sRender.js';
+export * from './ecs/systems/sUpdate.js';
 
-export * from './events/applicationEvent';
-export * from './events/event';
-export * from './events/eventManager';
+export * from './events/applicationEvent.js';
+export * from './events/event.js';
+export * from './events/eventManager.js';
 
-export * from './events/input/actionEvent';
-export * from './events/input/gamepadEvent';
-export * from './events/input/keyboardEvent';
-export * from './events/input/mouseEvent';
-export * from './events/input/touchEvent';
+export * from './events/input/actionEvent.js';
+export * from './events/input/gamepadEvent.js';
+export * from './events/input/keyboardEvent.js';
+export * from './events/input/mouseEvent.js';
+export * from './events/input/touchEvent.js';
 
-export * from './graphics/animation';
-export * from './graphics/atlas';
-export * from './graphics/bitmapFont';
-export * from './graphics/color';
-export * from './graphics/context';
-export * from './graphics/defaultShaders';
-export * from './graphics/graphics';
-export * from './graphics/image';
-export * from './graphics/pipeline';
-export * from './graphics/renderTarget';
-export * from './graphics/shader';
-export * from './graphics/types';
+export * from './graphics/animation.js';
+export * from './graphics/atlas.js';
+export * from './graphics/bitmapFont.js';
+export * from './graphics/color.js';
+export * from './graphics/context.js';
+export * from './graphics/defaultShaders.js';
+export * from './graphics/graphics.js';
+export * from './graphics/image.js';
+export * from './graphics/pipeline.js';
+export * from './graphics/renderTarget.js';
+export * from './graphics/shader.js';
+export * from './graphics/types.js';
 
-export * from './input/input';
-export * from './input/keyCode';
+export * from './input/input.js';
+export * from './input/keyCode.js';
 
-export * from './math/mat4';
-export * from './math/mathUtils';
-export * from './math/random';
-export * from './math/rectangle';
-export * from './math/size';
-export * from './math/vec2';
-export * from './math/vec3';
+export * from './math/mat4.js';
+export * from './math/mathUtils.js';
+export * from './math/random.js';
+export * from './math/rectangle.js';
+export * from './math/size.js';
+export * from './math/vec2.js';
+export * from './math/vec3.js';
 
-export * from './scenes/scene';
-export * from './scenes/sceneManager';
+export * from './scenes/scene.js';
+export * from './scenes/sceneManager.js';
 
-export * from './tweens/easing';
-export * from './tweens/tween';
-export * from './tweens/tweenManager';
-export * from './tweens/tweenSequence';
+export * from './tweens/easing.js';
+export * from './tweens/tween.js';
+export * from './tweens/tweenManager.js';
+export * from './tweens/tweenSequence.js';
 
-export * from './utils/arrayUtils';
-export * from './utils/bitset';
-export * from './utils/browserInfo';
-export * from './utils/timeStep';
+export * from './utils/arrayUtils.js';
+export * from './utils/bitset.js';
+export * from './utils/browserInfo.js';
+export * from './utils/timeStep.js';
 
-export * from './view/camera';
-export * from './view/scaleModes';
-export * from './view/view';
+export * from './view/camera.js';
+export * from './view/scaleModes.js';
+export * from './view/view.js';
 
-export * from './jume';
+export * from './jume.js';

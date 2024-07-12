@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { afterEach, beforeAll, describe, expect, it } from 'vitest';
 
-import { addService, clearService, getService, removeService } from './services';
+import { addService, clearService, getService, removeService } from './services.js';
 
 describe('di/services', () => {
   beforeAll(() => {

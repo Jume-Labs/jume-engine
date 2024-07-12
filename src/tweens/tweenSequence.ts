@@ -1,4 +1,4 @@
-import { Tween } from './tween';
+import { Tween } from './tween.js';
 
 export class TweenSequence {
   list: Tween[];

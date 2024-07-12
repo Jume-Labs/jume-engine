@@ -1,4 +1,4 @@
-import { Component, ComponentType } from './component';
+import { Component, ComponentType } from './component.js';
 
 export class Entity {
   active = true;

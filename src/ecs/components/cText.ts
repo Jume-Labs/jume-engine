@@ -1,8 +1,8 @@
-import { BitmapFont } from '../../graphics/bitmapFont';
-import { Color } from '../../graphics/color';
-import { Graphics } from '../../graphics/graphics';
-import { Vec2 } from '../../math/vec2';
-import { Component, Renderable } from '../component';
+import { BitmapFont } from '../../graphics/bitmapFont.js';
+import { Color } from '../../graphics/color.js';
+import { Graphics } from '../../graphics/graphics.js';
+import { Vec2 } from '../../math/vec2.js';
+import { Component, Renderable } from '../component.js';
 
 export interface CTextOptions {
   font: BitmapFont;

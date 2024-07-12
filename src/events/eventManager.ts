@@ -1,5 +1,5 @@
-import { removeByValue } from '../utils/arrayUtils';
-import { Event, EventType } from './event';
+import { removeByValue } from '../utils/arrayUtils.js';
+import { Event, EventType } from './event.js';
 
 export class EventListener {
   active = true;

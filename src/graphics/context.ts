@@ -1,4 +1,4 @@
-import { BlendMode, BlendOperation, MipmapFilter, TextureFilter, TextureWrap } from './types';
+import { BlendMode, BlendOperation, MipmapFilter, TextureFilter, TextureWrap } from './types.js';
 
 export class Context {
   readonly isGL1: boolean;

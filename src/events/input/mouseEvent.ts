@@ -1,4 +1,4 @@
-import { Event, EventType } from '../event';
+import { Event, EventType } from '../event.js';
 
 export class MouseEvent extends Event {
   static readonly MOUSE_DOWN = new EventType(MouseEvent, 'jume_mouse_down_event');

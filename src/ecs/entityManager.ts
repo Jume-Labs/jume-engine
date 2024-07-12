@@ -1,6 +1,6 @@
-import { removeByValue } from '../utils/arrayUtils';
-import { Entity } from './entity';
-import { SystemManager } from './systemManager';
+import { removeByValue } from '../utils/arrayUtils.js';
+import { Entity } from './entity.js';
+import { SystemManager } from './systemManager.js';
 
 export class EntityManager {
   private readonly entities: Entity[] = [];

@@ -1,14 +1,14 @@
-import { Mat4 } from '../../math/mat4';
-import { toRad } from '../../math/mathUtils';
-import { Vec2 } from '../../math/vec2';
-import { Component } from '../component';
+import { Mat4 } from '../../math/mat4.js';
+import { toRad } from '../../math/mathUtils.js';
+import { Vec2 } from '../../math/vec2.js';
+import { Component } from '../component.js';
 
 export interface CTransformOptions {
   x?: number;
   y?: number;
   rotation?: number;
   scaleX?: number;
-  scaleXY: number;
+  scaleXY?: number;
   parent?: CTransform;
 }
 

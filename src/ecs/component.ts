@@ -1,4 +1,4 @@
-import { Graphics } from '../graphics/graphics';
+import { Graphics } from '../graphics/graphics.js';
 
 export type ComponentType<T extends Component> = new (
   entityId: number,

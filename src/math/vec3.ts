@@ -1,4 +1,4 @@
-import { Mat4 } from './mat4';
+import { Mat4 } from './mat4.js';
 
 export class Vec3 {
   x: number;
@@ -50,7 +50,7 @@ export class Vec3 {
   }
 
   transformMat4({ value }: Mat4, x?: number, y?: number, z?: number): void {
-    if (!x || !y || !z) {
+    if (x === undefined || y === undefined || z === undefined) {
       x = this.x;
       y = this.y;
       z = this.z;
@@ -63,7 +63,7 @@ export class Vec3 {
 
     this.x = (value[0] * x + value[4] * y + value[8] * z + value[12]) / w;
     this.y = (value[1] * x + value[5] * y + value[9] * z + value[13]) / w;
-    this.x = (value[2] * x + value[6] * y + value[10] * z + value[14]) / w;
+    this.z = (value[2] * x + value[6] * y + value[10] * z + value[14]) / w;
   }
 
   toString(): string {

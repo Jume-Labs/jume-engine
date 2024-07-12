@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
-import { inject, injectWithName } from './inject';
-import { addService, clearService } from './services';
+import { inject, injectWithName } from './inject.js';
+import { addService, clearService } from './services.js';
 
 describe('di/inject', () => {
   beforeAll(() => {

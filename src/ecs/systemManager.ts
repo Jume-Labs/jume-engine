@@ -1,9 +1,9 @@
-import { Graphics } from '../graphics/graphics';
-import { removeByValue } from '../utils/arrayUtils';
-import { Camera } from '../view/camera';
-import { View } from '../view/view';
-import { Entity } from './entity';
-import { System, SystemType } from './system';
+import { Graphics } from '../graphics/graphics.js';
+import { removeByValue } from '../utils/arrayUtils.js';
+import { Camera } from '../view/camera.js';
+import { View } from '../view/view.js';
+import { Entity } from './entity.js';
+import { System, SystemType } from './system.js';
 
 export class SystemManager {
   private systems = new Map<SystemType<System>, System>();

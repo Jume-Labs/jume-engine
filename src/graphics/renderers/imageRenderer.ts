@@ -1,15 +1,15 @@
-import { Mat4 } from '../../math/mat4';
-import { Vec3 } from '../../math/vec3';
-import { BitmapFont } from '../bitmapFont';
-import { Color } from '../color';
-import { Context } from '../context';
-import { imageFrag, imageVert } from '../defaultShaders';
-import { Image } from '../image';
-import { Pipeline } from '../pipeline';
-import { RenderTarget } from '../renderTarget';
-import { Shader } from '../shader';
-import { MipmapFilter, TextureFilter, TextureWrap } from '../types';
-import { BaseRenderer } from './baseRenderer';
+import { Mat4 } from '../../math/mat4.js';
+import { Vec3 } from '../../math/vec3.js';
+import { BitmapFont } from '../bitmapFont.js';
+import { Color } from '../color.js';
+import { Context } from '../context.js';
+import { imageFrag, imageVert } from '../defaultShaders.js';
+import { Image } from '../image.js';
+import { Pipeline } from '../pipeline.js';
+import { RenderTarget } from '../renderTarget.js';
+import { Shader } from '../shader.js';
+import { MipmapFilter, TextureFilter, TextureWrap } from '../types.js';
+import { BaseRenderer } from './baseRenderer.js';
 
 const OFFSET = 9 * 4;
 const VERTICES_PER_QUAD = 4;
@@ -50,8 +50,8 @@ export class ImageRenderer extends BaseRenderer {
       this.indexIndices[i * INDICES_PER_QUAD + 1] = i * VERTICES_PER_QUAD + 1;
       this.indexIndices[i * INDICES_PER_QUAD + 2] = i * VERTICES_PER_QUAD + 2;
       this.indexIndices[i * INDICES_PER_QUAD + 3] = i * VERTICES_PER_QUAD;
-      this.indexIndices[i * INDICES_PER_QUAD + 4] = i * VERTICES_PER_QUAD + 1;
-      this.indexIndices[i * INDICES_PER_QUAD + 5] = i * VERTICES_PER_QUAD + 2;
+      this.indexIndices[i * INDICES_PER_QUAD + 4] = i * VERTICES_PER_QUAD + 2;
+      this.indexIndices[i * INDICES_PER_QUAD + 5] = i * VERTICES_PER_QUAD + 3;
     }
     this.createDefaultPipeline();
   }

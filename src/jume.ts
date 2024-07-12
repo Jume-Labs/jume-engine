@@ -1,19 +1,19 @@
-import { AssetManager } from './assets/assetsManager';
-import { AudioManager } from './audio/audioManager';
-import { addService } from './di/services';
-import { ApplicationEvent } from './events/applicationEvent';
-import { EventManager } from './events/eventManager';
-import { Context } from './graphics/context';
-import { Graphics } from './graphics/graphics';
-import { RenderTarget } from './graphics/renderTarget';
-import { Input } from './input/input';
-import { Mat4 } from './math/mat4';
-import { Random } from './math/random';
-import { Scene } from './scenes/scene';
-import { SceneManager } from './scenes/sceneManager';
-import { isMobile } from './utils/browserInfo';
-import { TimeStep } from './utils/timeStep';
-import { View } from './view/view';
+import { AssetManager } from './assets/assetsManager.js';
+import { AudioManager } from './audio/audioManager.js';
+import { addService } from './di/services.js';
+import { ApplicationEvent } from './events/applicationEvent.js';
+import { EventManager } from './events/eventManager.js';
+import { Context } from './graphics/context.js';
+import { Graphics } from './graphics/graphics.js';
+import { RenderTarget } from './graphics/renderTarget.js';
+import { Input } from './input/input.js';
+import { Mat4 } from './math/mat4.js';
+import { Random } from './math/random.js';
+import { SceneType } from './scenes/scene.js';
+import { SceneManager } from './scenes/sceneManager.js';
+import { isMobile } from './utils/browserInfo.js';
+import { TimeStep } from './utils/timeStep.js';
+import { View } from './view/view.js';
 
 const MAX_DT = 1.0 / 15;
 
@@ -88,7 +88,7 @@ export class Jume {
 
     addService('audioManager', new AudioManager());
 
-    addService('assets', new AssetManager());
+    addService('assetManager', new AssetManager());
 
     this.eventManager = new EventManager();
     addService('eventManager', this.eventManager);
@@ -111,8 +111,8 @@ export class Jume {
     window.addEventListener('resize', () => this.resize(window.innerWidth, window.innerHeight));
   }
 
-  launch(scene: Scene): void {
-    this.sceneManager.push(scene);
+  launch(sceneType: SceneType): void {
+    this.sceneManager.push(sceneType);
 
     requestAnimationFrame((_time) => {
       this.prevTime = Date.now();

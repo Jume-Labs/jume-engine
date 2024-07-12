@@ -1,6 +1,6 @@
-import { inject } from '../di/inject';
-import { Context } from './context';
-import { ShaderType } from './types';
+import { inject } from '../di/inject.js';
+import { Context } from './context.js';
+import { ShaderType } from './types.js';
 
 export class Shader {
   readonly glShader: WebGLShader;

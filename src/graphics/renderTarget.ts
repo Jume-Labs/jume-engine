@@ -1,7 +1,7 @@
-import { inject } from '../di/inject';
-import { Mat4 } from '../math/mat4';
-import { Context } from './context';
-import { TextureFilter, TextureWrap } from './types';
+import { inject } from '../di/inject.js';
+import { Mat4 } from '../math/mat4.js';
+import { Context } from './context.js';
+import { TextureFilter, TextureWrap } from './types.js';
 
 export class RenderTarget {
   readonly width: number;
@@ -30,13 +30,13 @@ export class RenderTarget {
     return this._vWrap;
   }
 
-  private _magFilter: TextureFilter = 'linear';
+  private _magFilter: TextureFilter;
 
-  private _minFilter: TextureFilter = 'linear';
+  private _minFilter: TextureFilter;
 
-  private _uWrap: TextureWrap = 'clamp to edge';
+  private _uWrap: TextureWrap;
 
-  private _vWrap: TextureWrap = 'clamp to edge';
+  private _vWrap: TextureWrap;
 
   @inject
   private context!: Context;

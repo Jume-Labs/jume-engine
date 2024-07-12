@@ -1,4 +1,4 @@
-import { Event, EventType } from '../event';
+import { Event, EventType } from '../event.js';
 
 export class GamepadEvent extends Event {
   static readonly GAMEPAD_CONNECTED = new EventType(GamepadEvent, 'jume_gamepad_connected_event');
