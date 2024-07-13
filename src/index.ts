@@ -57,8 +57,7 @@ export * from './math/size.js';
 export * from './math/vec2.js';
 export * from './math/vec3.js';
 
-export * from './scenes/scene.js';
-export * from './scenes/sceneManager.js';
+export * from './scenes/scenes.js';
 
 export * from './tweens/easing.js';
 export * from './tweens/tween.js';

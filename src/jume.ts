@@ -9,8 +9,7 @@ import { RenderTarget } from './graphics/renderTarget.js';
 import { Input } from './input/input.js';
 import { Mat4 } from './math/mat4.js';
 import { Random } from './math/random.js';
-import { SceneType } from './scenes/scene.js';
-import { SceneManager } from './scenes/sceneManager.js';
+import { SceneManager, SceneType } from './scenes/scenes.js';
 import { isMobile } from './utils/browserInfo.js';
 import { TimeStep } from './utils/timeStep.js';
 import { View } from './view/view.js';
@@ -112,7 +111,7 @@ export class Jume {
   }
 
   launch(sceneType: SceneType): void {
-    this.sceneManager.push(sceneType);
+    this.sceneManager.changeScene({ type: 'push', sceneType });
 
     requestAnimationFrame((_time) => {
       this.prevTime = Date.now();
