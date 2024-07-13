@@ -1,9 +1,6 @@
 import { Graphics } from '../graphics/graphics.js';
 
-export type ComponentType<T extends Component> = new (
-  entityId: number,
-  components: Map<ComponentType<Component>, Component>
-) => T;
+export type ComponentType<T extends Component> = new (...args: any[]) => T;
 
 export interface Renderable {
   render(graphics: Graphics): void;
@@ -12,6 +9,11 @@ export interface Renderable {
 
 export interface Updatable {
   update(dt: number): void;
+}
+
+export interface BaseComponentProps {
+  entityId: number;
+  components: Map<ComponentType<Component>, Component>;
 }
 
 export class Component {
@@ -25,9 +27,9 @@ export class Component {
 
   private readonly components: Map<ComponentType<Component>, Component>;
 
-  constructor(entityId: number, components: Map<ComponentType<Component>, Component>) {
-    this._entityId = entityId;
-    this.components = components;
+  constructor(base: BaseComponentProps, _props?: unknown) {
+    this._entityId = base.entityId;
+    this.components = base.components;
   }
 
   destroy(): void {}

@@ -26,8 +26,13 @@ export class Entity {
     }
   }
 
-  addComponent<T extends Component>(componentType: ComponentType<T>): T {
-    const component = new componentType(this.id, this.components);
+  addComponent<T extends Component, P = unknown>(componentType: ComponentType<T>, props: P): T {
+    const base = {
+      entityId: this.id,
+      components: this.components,
+    };
+
+    const component = new componentType(base, props);
     this.components.set(componentType, component);
     this.componentsUpdated = true;
 

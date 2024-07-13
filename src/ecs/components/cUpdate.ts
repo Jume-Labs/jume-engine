@@ -1,10 +1,14 @@
-import { Component, Updatable } from '../component.js';
+import { BaseComponentProps, Component, Updatable } from '../component.js';
 
+export interface CUpdateProps {
+  updateComponents: Updatable[];
+}
 export class CUpdate extends Component {
   updateComponents: Updatable[] = [];
 
-  Infinity(updateComponents: Updatable[]): CUpdate {
-    this.updateComponents = updateComponents;
+  constructor(base: BaseComponentProps, props: CUpdateProps) {
+    super(base);
+    this.updateComponents = props.updateComponents;
     this.active = true;
 
     return this;

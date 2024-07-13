@@ -2,9 +2,9 @@ import { Atlas, AtlasFrame } from '../../graphics/atlas.js';
 import { Color } from '../../graphics/color.js';
 import { Graphics } from '../../graphics/graphics.js';
 import { Vec2 } from '../../math/vec2.js';
-import { Component, Renderable } from '../component.js';
+import { BaseComponentProps, Component, Renderable } from '../component.js';
 
-export interface CSpriteOptions {
+export interface CSpriteProps {
   atlas: Atlas;
   frameName: string;
   anchor?: { x: number; y: number };
@@ -42,17 +42,18 @@ export class CSprite extends Component implements Renderable {
 
   private frame?: AtlasFrame;
 
-  init(options: CSpriteOptions): CSprite {
-    if (options.anchor) {
-      this.anchor.set(options.anchor.x, options.anchor.y);
+  constructor(base: BaseComponentProps, props: CSpriteProps) {
+    super(base);
+    if (props.anchor) {
+      this.anchor.set(props.anchor.x, props.anchor.y);
     }
 
-    this.flipX = options.flipX ?? false;
-    this.flipY = options.flipY ?? false;
-    if (options.tint) {
-      this.tint.copyFrom(options.tint);
+    this.flipX = props.flipX ?? false;
+    this.flipY = props.flipY ?? false;
+    if (props.tint) {
+      this.tint.copyFrom(props.tint);
     }
-    this.setFrame(options.frameName, options.atlas);
+    this.setFrame(props.frameName, props.atlas);
 
     this.active = true;
 

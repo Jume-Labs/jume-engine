@@ -1,9 +1,9 @@
 import { Mat4 } from '../../math/mat4.js';
 import { toRad } from '../../math/mathUtils.js';
 import { Vec2 } from '../../math/vec2.js';
-import { Component } from '../component.js';
+import { BaseComponentProps, Component } from '../component.js';
 
-export interface CTransformOptions {
+export interface CTransformProps {
   x?: number;
   y?: number;
   rotation?: number;
@@ -31,13 +31,11 @@ export class CTransform extends Component {
 
   private tempScale = new Vec2();
 
-  init(options?: CTransformOptions): CTransform {
-    if (options) {
-      this.position.set(options.x ?? 0, options.y ?? 0);
-      this.rotation = options.rotation ?? 0;
-      this.scale.set(options.scaleX ?? 1, options.scaleXY ?? 1);
-    }
-
+  constructor(base: BaseComponentProps, props: CTransformProps) {
+    super(base);
+    this.position.set(props.x ?? 0, props.y ?? 0);
+    this.rotation = props.rotation ?? 0;
+    this.scale.set(props.scaleX ?? 1, props.scaleXY ?? 1);
     this.active = true;
 
     return this;

@@ -2,9 +2,9 @@ import { BitmapFont } from '../../graphics/bitmapFont.js';
 import { Color } from '../../graphics/color.js';
 import { Graphics } from '../../graphics/graphics.js';
 import { Vec2 } from '../../math/vec2.js';
-import { Component, Renderable } from '../component.js';
+import { BaseComponentProps, Component, Renderable } from '../component.js';
 
-export interface CTextOptions {
+export interface CTextProps {
   font: BitmapFont;
   text: string;
   tint?: Color;
@@ -28,17 +28,18 @@ export class CText extends Component implements Renderable {
     return this.font?.height ?? 0;
   }
 
-  init(options: CTextOptions): CText {
-    this.font = options.font;
-    this.text = options.text;
+  constructor(base: BaseComponentProps, props: CTextProps) {
+    super(base);
+    this.font = props.font;
+    this.text = props.text;
 
-    if (options.tint) {
-      this.tint.copyFrom(options.tint);
+    if (props.tint) {
+      this.tint.copyFrom(props.tint);
     }
     this.active = true;
 
-    if (options.anchor) {
-      this.anchor.set(options.anchor.x, options.anchor.y);
+    if (props.anchor) {
+      this.anchor.set(props.anchor.x, props.anchor.y);
     }
 
     return this;

@@ -3,7 +3,7 @@ import { removeByValue } from '../utils/arrayUtils.js';
 import { Camera } from '../view/camera.js';
 import { View } from '../view/view.js';
 import { Entity } from './entity.js';
-import { System, SystemType } from './system.js';
+import { BaseSystemProps, System, SystemType } from './system.js';
 
 export class SystemManager {
   private systems = new Map<SystemType<System>, System>();
@@ -19,8 +19,12 @@ export class SystemManager {
     this.cameras = cameras;
   }
 
-  addSystem<T extends System>(systemType: SystemType<T>, order = 0): T {
-    const system = new systemType(this.systems, order);
+  addSystem<T extends System, P = unknown>(systemType: SystemType<T>, props: P, order = 0): T {
+    const base: BaseSystemProps = {
+      systems: this.systems,
+      order,
+    };
+    const system = new systemType(base, props);
     this.systems.set(systemType, system);
 
     this.systemList.push(system);

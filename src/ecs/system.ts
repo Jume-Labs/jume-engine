@@ -4,7 +4,12 @@ import { Camera } from '../view/camera.js';
 import { Component, ComponentType } from './component.js';
 import { Entity } from './entity.js';
 
-export type SystemType<T extends System> = new (systems: Map<SystemType<System>, System>, order: number) => T;
+export type SystemType<T extends System> = new (...args: any[]) => T;
+
+export interface BaseSystemProps {
+  systems: Map<SystemType<System>, System>;
+  order: number;
+}
 
 interface EntityList {
   entities: Entity[];
@@ -24,9 +29,9 @@ export class System {
 
   private readonly systems: Map<SystemType<System>, System>;
 
-  constructor(systems: Map<SystemType<System>, System>, order: number) {
-    this.systems = systems;
-    this.order = order;
+  constructor(base: BaseSystemProps, _props?: unknown) {
+    this.systems = base.systems;
+    this.order = base.order;
   }
 
   update(_dt: number): void {}

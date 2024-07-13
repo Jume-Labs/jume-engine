@@ -51,8 +51,8 @@ export class Scene {
     return this.entityManager.getById(id);
   }
 
-  addSystem<T extends System>(systemType: SystemType<T>): T {
-    return this.systemManager.addSystem(systemType);
+  addSystem<T extends System, P = unknown>(systemType: SystemType<T>, props: P, order = 0): T {
+    return this.systemManager.addSystem(systemType, props, order);
   }
 
   removeSystem(systemType: typeof System): boolean {

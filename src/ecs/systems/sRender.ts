@@ -4,7 +4,7 @@ import { Camera } from '../../view/camera.js';
 import { CRender } from '../components/cRender.js';
 import { CTransform } from '../components/cTransform.js';
 import { Entity } from '../entity.js';
-import { System } from '../system.js';
+import { BaseSystemProps, System } from '../system.js';
 
 export class SRender extends System {
   private entities: Entity[] = [];
@@ -13,7 +13,9 @@ export class SRender extends System {
 
   private layerTracking = new Map<Entity, number>();
 
-  init(): SRender {
+  constructor(base: BaseSystemProps) {
+    super(base);
+
     for (let i = 0; i < 32; i++) {
       this.layers[i] = [];
     }

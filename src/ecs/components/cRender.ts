@@ -1,5 +1,10 @@
 import { Graphics } from '../../graphics/graphics.js';
-import { Component, Renderable } from '../component.js';
+import { BaseComponentProps, Component, Renderable } from '../component.js';
+
+export interface CRenderProps {
+  renderComponents: Renderable[];
+  layer?: number;
+}
 
 export class CRender extends Component {
   layerChanged = false;
@@ -15,12 +20,13 @@ export class CRender extends Component {
     this._layer = value;
   }
 
-  init(renderComponents: Renderable[], layer = 0): CRender {
-    this.layer = layer;
-    this.renderComponents = renderComponents;
-    this.active = true;
+  constructor(base: BaseComponentProps, props: CRenderProps) {
+    super(base);
 
-    return this;
+    const { renderComponents, layer } = props;
+    this.renderComponents = renderComponents;
+    this._layer = layer ?? 0;
+    this.active = true;
   }
 
   render(graphics: Graphics): void {

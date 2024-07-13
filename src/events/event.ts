@@ -4,6 +4,7 @@ export class EventType<T extends Event> {
     readonly name: string
   ) {}
 }
+
 export class Event {
   canceled = false;
 
