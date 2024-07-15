@@ -78,7 +78,9 @@ export class AssetManager {
           .then((value) => {
             resolve(value as T);
           })
-          .catch((reason) => reject(reason));
+          .catch((reason) => {
+            reject(reason);
+          });
       } else {
         reject('Loader is not registered for type');
       }
@@ -164,10 +166,15 @@ class TextLoader extends AssetLoader<String> {
     super(String, manager);
   }
 
-  async load(path: string): Promise<String> {
+  async load(id: string, path: string, _props?: unknown, keep = true): Promise<String> {
     const response = await fetch(path);
     if (response.status < 400) {
-      return await response.text();
+      const text = new String(await response.text());
+      if (keep) {
+        this.loadedAssets[id] = text;
+      }
+
+      return text;
     } else {
       throw new Error(`Unable to load text ${path}.`);
     }
@@ -180,8 +187,8 @@ class BitmapFontLoader extends AssetLoader<BitmapFont> {
   }
 
   async load(id: string, path: string, _props?: unknown, keep = true): Promise<BitmapFont> {
-    const image = await this.manager.loadAsset(Image, `jume_bitmap_font_${id}`, `${path}.png`, keep);
-    const data = await this.manager.loadAsset(String, `jume_bitmap_font_${id}`, `${path}.fnt`, keep);
+    const image = await this.manager.loadAsset(Image, `jume_bitmap_font_${id}`, `${path}.png`, undefined, keep);
+    const data = await this.manager.loadAsset(String, `jume_bitmap_font_${id}`, `${path}.fnt`, undefined, keep);
 
     const font = new BitmapFont(image, data.valueOf());
     if (keep) {
@@ -224,7 +231,7 @@ class ShaderLoader extends AssetLoader<Shader> {
 
     const shaderType: ShaderType = extension === '.vert' ? 'vertex' : 'fragment';
 
-    const source = await this.manager.loadAsset(String, `jume_shader_${id}`, path, false);
+    const source = await this.manager.loadAsset(String, `jume_shader_${id}`, path, undefined, false);
     const shader = new Shader(source.valueOf(), shaderType);
 
     if (keep) {
@@ -280,8 +287,8 @@ class AtlasLoader extends AssetLoader<Atlas> {
   }
 
   async load(id: string, path: string, _props?: unknown, keep?: boolean): Promise<Atlas> {
-    const image = await this.manager.loadAsset(Image, `jume_atlas_${id}`, `${path}.png`, keep);
-    const data = await this.manager.loadAsset(String, `jume_atlas_${id}`, `${path}.json`, keep);
+    const image = await this.manager.loadAsset(Image, `jume_atlas_${id}`, `${path}.png`, undefined, keep);
+    const data = await this.manager.loadAsset(String, `jume_atlas_${id}`, `${path}.json`, undefined, keep);
 
     const atlas = new Atlas(image, data.valueOf());
     if (keep) {
