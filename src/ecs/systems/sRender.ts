@@ -1,6 +1,8 @@
+import { inject } from '../../di/inject.js';
 import { Graphics } from '../../graphics/graphics.js';
 import { removeByValue } from '../../utils/arrayUtils.js';
 import { Camera } from '../../view/camera.js';
+import { View } from '../../view/view.js';
 import { CRender } from '../components/cRender.js';
 import { CTransform } from '../components/cTransform.js';
 import { Entity } from '../entity.js';
@@ -12,6 +14,9 @@ export class SRender extends System {
   private layers: Record<number, Entity[]> = {};
 
   private layerTracking = new Map<Entity, number>();
+
+  @inject
+  private view!: View;
 
   constructor(base: BaseSystemProps) {
     super(base);
@@ -66,13 +71,15 @@ export class SRender extends System {
           }
         }
 
-        // Debug Render the entities in all layers.
-        for (const key in this.layers) {
-          const entities = this.layers[key];
-          if (entities.length > 0 && !camera.ignoredLayers.includes(parseInt(key))) {
-            for (const entity of entities) {
-              if (entity.active) {
-                entity.getComponent(CRender).debugRender(graphics);
+        if (this.view.debugRender) {
+          // Debug Render the entities in all layers.
+          for (const key in this.layers) {
+            const entities = this.layers[key];
+            if (entities.length > 0 && !camera.ignoredLayers.includes(parseInt(key))) {
+              for (const entity of entities) {
+                if (entity.active) {
+                  entity.getComponent(CRender).debugRender(graphics);
+                }
               }
             }
           }

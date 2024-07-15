@@ -8,28 +8,114 @@ import { Image } from '../graphics/image.js';
 import { Shader } from '../graphics/shader.js';
 import { ShaderType } from '../graphics/types.js';
 
+export abstract class AssetLoader<T> {
+  readonly assetType: new (...args: any[]) => T;
+
+  protected manager: AssetManager;
+
+  protected loadedAssets: Record<string, T> = {};
+
+  constructor(assetType: new (...args: any[]) => T, manager: AssetManager) {
+    this.assetType = assetType;
+    this.manager = manager;
+  }
+
+  abstract load(id: string, path: string, props?: unknown, keep?: boolean): Promise<T>;
+
+  add(id: string, instance: T): void {
+    this.loadedAssets[id] = instance;
+  }
+
+  get(id: string): T {
+    if (this.loadedAssets[id]) {
+      return this.loadedAssets[id];
+    }
+
+    throw new Error(`Asset with id "${id}" not loaded`);
+  }
+
+  unload(id: string): boolean {
+    if (this.loadedAssets[id]) {
+      delete this.loadedAssets[id];
+    }
+    return true;
+  }
+}
+
+/**
+ * Class to load and store assets.
+ */
 export class AssetManager {
-  private images: Record<string, Image> = {};
-
-  private texts: Record<string, string> = {};
-
-  private bitmapFonts: Record<string, BitmapFont> = {};
-
-  private shaders: Record<string, Shader> = {};
-
-  private sounds: Record<string, Sound> = {};
-
-  private atlases: Record<string, Atlas> = {};
-
-  @inject
-  private readonly audioManager!: AudioManager;
-
-  @inject
-  private readonly context!: Context;
+  private readonly loaders = new Map<new (...args: any[]) => unknown, AssetLoader<unknown>>();
 
   constructor() {}
 
-  async loadImage(id: string, path: string, keep = true): Promise<Image> {
+  registerBuiltinLoaders(): void {
+    this.registerLoader(new ImageLoader(this));
+    this.registerLoader(new TextLoader(this));
+    this.registerLoader(new BitmapFontLoader(this));
+    this.registerLoader(new ShaderLoader(this));
+    this.registerLoader(new SoundLoader(this));
+    this.registerLoader(new AtlasLoader(this));
+  }
+
+  registerLoader<T>(loader: AssetLoader<T>): void {
+    this.loaders.set(loader.assetType, loader);
+  }
+
+  async loadAsset<T>(
+    type: new (...args: any[]) => T,
+    id: string,
+    path: string,
+    props?: unknown,
+    keep = true
+  ): Promise<T> {
+    return new Promise((resolve, reject) => {
+      if (this.loaders.has(type)) {
+        this.loaders
+          .get(type)!
+          .load(id, path, props, keep)
+          .then((value) => {
+            resolve(value as T);
+          })
+          .catch((reason) => reject(reason));
+      } else {
+        reject('Loader is not registered for type');
+      }
+    });
+  }
+
+  addAsset<T>(type: new (...args: any[]) => T, id: string, instance: T): void {
+    if (this.loaders.has(type)) {
+      this.loaders.get(type)!.add(id, instance);
+    } else {
+      throw new Error('Loader is not registered for type');
+    }
+  }
+
+  getAsset<T>(type: new (...args: any[]) => T, id: string): T {
+    if (this.loaders.has(type)) {
+      return this.loaders.get(type)!.get(id) as T;
+    }
+
+    throw new Error('Loader is not registered for type');
+  }
+
+  unloadAsset<T>(type: new (...args: any[]) => T, id: string): boolean {
+    if (this.loaders.has(type)) {
+      return this.loaders.get(type)!.unload(id);
+    } else {
+      throw new Error('Loader is not registered for type');
+    }
+  }
+}
+
+class ImageLoader extends AssetLoader<Image> {
+  constructor(manager: AssetManager) {
+    super(Image, manager);
+  }
+
+  async load(id: string, path: string, _props?: unknown, keep = true): Promise<Image> {
     return new Promise((resolve, reject) => {
       const element = document.createElement('img');
       element.onload = (): void => {
@@ -46,107 +132,84 @@ export class AssetManager {
         if (data) {
           const image = new Image(element.width, element.height, data);
           if (keep) {
-            this.images[id] = image;
+            this.loadedAssets[id] = image;
           }
-
           resolve(image);
         } else {
-          reject(`Unable to load image "${id}".`);
+          reject(`Unable to load image "${path}".`);
         }
       };
 
       element.onerror = (): void => {
-        reject(`Unable to load image "${id}".`);
+        reject(`Unable to load image "${path}".`);
       };
 
       element.src = path;
     });
   }
 
-  addImage(id: string, image: Image): void {
-    this.images[id] = image;
-  }
-
-  getImage(id: string): Image {
-    if (this.images[id]) {
-      return this.images[id];
+  override unload(id: string): boolean {
+    const image = this.loadedAssets[id];
+    if (image) {
+      image.destroy();
+      return super.unload(id);
     }
 
-    throw new Error(`Image "${id}" is not loaded.`);
+    return false;
+  }
+}
+
+class TextLoader extends AssetLoader<String> {
+  constructor(manager: AssetManager) {
+    super(String, manager);
   }
 
-  unloadImage(id: string): void {
-    if (this.images[id]) {
-      this.images[id].destroy();
-      delete this.images[id];
-    }
-  }
-
-  async loadText(id: string, path: string, keep = true): Promise<string> {
+  async load(path: string): Promise<String> {
     const response = await fetch(path);
     if (response.status < 400) {
-      const text = await response.text();
-      if (keep) {
-        this.texts[id] = text;
-      }
-
-      return text;
+      return await response.text();
     } else {
-      throw new Error(`Unable to load text ${id}.`);
+      throw new Error(`Unable to load text ${path}.`);
     }
   }
+}
 
-  addText(id: string, text: string): void {
-    this.texts[id] = text;
+class BitmapFontLoader extends AssetLoader<BitmapFont> {
+  constructor(manager: AssetManager) {
+    super(BitmapFont, manager);
   }
 
-  getText(id: string): string {
-    if (this.texts[id]) {
-      return this.texts[id];
-    }
+  async load(id: string, path: string, _props?: unknown, keep = true): Promise<BitmapFont> {
+    const image = await this.manager.loadAsset(Image, `jume_bitmap_font_${id}`, `${path}.png`, keep);
+    const data = await this.manager.loadAsset(String, `jume_bitmap_font_${id}`, `${path}.fnt`, keep);
 
-    throw new Error(`Text "${id}" is not loaded.`);
-  }
-
-  unloadText(id: string): void {
-    if (this.texts[id]) {
-      delete this.texts[id];
-    }
-  }
-
-  async loadBitmapFont(id: string, path: string, keep = true): Promise<BitmapFont> {
-    const image = await this.loadImage(`jume_bitmap_font_${id}`, `${path}.png`, keep);
-    const data = await this.loadText(`jume_bitmap_font_${id}`, `${path}.fnt`, keep);
-
-    const font = new BitmapFont(image, data);
+    const font = new BitmapFont(image, data.valueOf());
     if (keep) {
-      this.bitmapFonts[id] = font;
+      this.loadedAssets[id] = font;
     }
 
     return font;
   }
 
-  addBitmapFont(id: string, font: BitmapFont): void {
-    this.bitmapFonts[id] = font;
-  }
-
-  getBitmapFont(id: string): BitmapFont {
-    if (this.bitmapFonts[id]) {
-      return this.bitmapFonts[id];
+  override unload(id: string): boolean {
+    if (this.loadedAssets[id]) {
+      this.manager.unloadAsset(Image, `jume_bitmap_fot_${id}`);
+      this.manager.unloadAsset(String, `jume_bitmap_font_${id}`);
     }
 
-    throw new Error(`Bitmap font "${id}" is not loaded.`);
+    return super.unload(id);
+  }
+}
+
+class ShaderLoader extends AssetLoader<Shader> {
+  @inject
+  private context!: Context;
+
+  constructor(manager: AssetManager) {
+    super(Shader, manager);
   }
 
-  unloadBitmapFont(id: string): void {
-    if (this.bitmapFonts[id]) {
-      this.unloadImage(`jume_bitmap_font_${id}`);
-      this.unloadText(`jume_bitmap_font_${id}`);
-      delete this.bitmapFonts[id];
-    }
-  }
-
-  async loadShader(id: string, path: string, keep = true): Promise<Shader> {
+  async load(id: string, path: string, _props?: unknown, keep = true): Promise<Shader> {
     const dotIndex = path.lastIndexOf('.');
     if (dotIndex === -1) {
       throw new Error(`Path ${path} is missing the file extension`);
@@ -161,36 +224,36 @@ export class AssetManager {
 
     const shaderType: ShaderType = extension === '.vert' ? 'vertex' : 'fragment';
 
-    const source = await this.loadText(`jume_shader_${id}`, path, false);
-    const shader = new Shader(source, shaderType);
+    const source = await this.manager.loadAsset(String, `jume_shader_${id}`, path, false);
+    const shader = new Shader(source.valueOf(), shaderType);
 
     if (keep) {
-      this.shaders[id] = shader;
+      this.loadedAssets[id] = shader;
     }
 
     return shader;
   }
 
-  addShader(id: string, shader: Shader): void {
-    this.shaders[id] = shader;
-  }
-
-  getShader(id: string): Shader {
-    if (this.shaders[id]) {
-      return this.shaders[id];
+  override unload(id: string): boolean {
+    const shader = this.loadedAssets[id];
+    if (shader) {
+      shader.destroy();
+      return super.unload(id);
     }
 
-    throw new Error(`Shader "${id}" is not loaded.`);
+    return false;
+  }
+}
+
+class SoundLoader extends AssetLoader<Sound> {
+  @inject
+  audioManager!: AudioManager;
+
+  constructor(manager: AssetManager) {
+    super(Sound, manager);
   }
 
-  unloadShader(id: string): void {
-    if (this.shaders[id]) {
-      this.shaders[id].destroy();
-      delete this.shaders[id];
-    }
-  }
-
-  async loadSound(id: string, path: string, keep = true): Promise<Sound> {
+  async load(id: string, path: string, _props?: unknown, keep?: boolean): Promise<Sound> {
     const response = await fetch(path);
     if (response.status < 400) {
       const buffer = await response.arrayBuffer();
@@ -198,7 +261,7 @@ export class AssetManager {
 
       if (sound) {
         if (keep) {
-          this.sounds[id] = sound;
+          this.loadedAssets[id] = sound;
         }
 
         return sound;
@@ -209,52 +272,33 @@ export class AssetManager {
       throw new Error(`Unable to load sound ${id}.`);
     }
   }
+}
 
-  addSound(id: string, sound: Sound): void {
-    this.sounds[id] = sound;
+class AtlasLoader extends AssetLoader<Atlas> {
+  constructor(manager: AssetManager) {
+    super(Atlas, manager);
   }
 
-  getSound(id: string): Sound {
-    if (this.sounds[id]) {
-      return this.sounds[id];
-    }
+  async load(id: string, path: string, _props?: unknown, keep?: boolean): Promise<Atlas> {
+    const image = await this.manager.loadAsset(Image, `jume_atlas_${id}`, `${path}.png`, keep);
+    const data = await this.manager.loadAsset(String, `jume_atlas_${id}`, `${path}.json`, keep);
 
-    throw new Error(`Sound "${id}" is not loaded.`);
-  }
-
-  unloadSound(id: string): void {
-    if (this.sounds[id]) {
-      delete this.sounds[id];
-    }
-  }
-
-  async loadAtlas(id: string, path: string, keep = true): Promise<Atlas> {
-    const image = await this.loadImage(`jume_atlas_${id}`, `${path}.png`, keep);
-    const data = await this.loadText(`jume_atlas_${id}`, `${path}.json`, keep);
-
-    const atlas = new Atlas(image, data);
+    const atlas = new Atlas(image, data.valueOf());
     if (keep) {
-      this.atlases[id] = atlas;
+      this.loadedAssets[id] = atlas;
     }
 
     return atlas;
   }
 
-  addAtlas(id: string, atlas: Atlas): void {
-    this.atlases[id] = atlas;
-  }
+  override unload(id: string): boolean {
+    if (this.loadedAssets[id]) {
+      this.manager.unloadAsset(Image, `jume_atlas_${id}`);
+      this.manager.unloadAsset(String, `jume_atlas_${id}`);
 
-  getAtlas(id: string): Atlas {
-    if (this.atlases[id]) {
-      return this.atlases[id];
+      return super.unload(id);
     }
 
-    throw new Error(`Atlas "${id}" is not loaded.`);
-  }
-
-  unloadAtlas(id: string): void {
-    if (this.atlases[id]) {
-      delete this.atlases[id];
-    }
+    return false;
   }
 }

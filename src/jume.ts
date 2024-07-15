@@ -87,7 +87,9 @@ export class Jume {
 
     addService('audioManager', new AudioManager());
 
-    addService('assetManager', new AssetManager());
+    const assetManager = new AssetManager();
+    addService('assetManager', assetManager);
+    assetManager.registerBuiltinLoaders();
 
     this.eventManager = new EventManager();
     addService('eventManager', this.eventManager);
@@ -163,10 +165,10 @@ export class Jume {
       }
       const excess = passed % interval;
 
-      this.update(passed - excess);
+      this.update((passed - excess) / 1000);
       this.prevTime = now - excess;
     } else {
-      this.update(passed);
+      this.update(passed / 1000);
       this.prevTime = now;
     }
   };
