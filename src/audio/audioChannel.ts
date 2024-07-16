@@ -1,9 +1,18 @@
 import { clamp } from '../math/mathUtils.js';
 import { Sound } from './sound.js';
 
+/**
+ * An audio channel controls the playback of a sound.
+ */
 export class AudioChannel {
+  /**
+   * The current sound for this channel.
+   */
   sound?: Sound;
 
+  /**
+   * The channel buffer source.
+   */
   source?: AudioBufferSourceNode;
 
   startTime: number;

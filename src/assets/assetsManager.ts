@@ -8,24 +8,58 @@ import { Image } from '../graphics/image.js';
 import { Shader } from '../graphics/shader.js';
 import { ShaderType } from '../graphics/types.js';
 
+/**
+ * Base class for custom asset loaders.
+ */
 export abstract class AssetLoader<T> {
+  /**
+   * The type of asset the loader manages.
+   */
   readonly assetType: new (...args: any[]) => T;
 
+  /**
+   * Internal asset manager instance.
+   */
   protected manager: AssetManager;
 
+  /**
+   * The map of loaded assets for this loader.
+   */
   protected loadedAssets: Record<string, T> = {};
 
+  /**
+   * Create a new loader instance.
+   * @param assetType The type of asset to manage.
+   * @param manager The asset manager instance.
+   */
   constructor(assetType: new (...args: any[]) => T, manager: AssetManager) {
     this.assetType = assetType;
     this.manager = manager;
   }
 
+  /**
+   * Load an asset. This needs to be implemented per loader.
+   * @param id The id used to reference the asset.
+   * @param path The url path to the asset.
+   * @param props Any other properties needed to load the asset.
+   * @param keep Should this asset be stored.
+   */
   abstract load(id: string, path: string, props?: unknown, keep?: boolean): Promise<T>;
 
+  /**
+   * Add an externally loaded asset to the loader.
+   * @param id The id used to reference the asset.
+   * @param instance The asset instance to add.
+   */
   add(id: string, instance: T): void {
     this.loadedAssets[id] = instance;
   }
 
+  /**
+   * Get a loaded asset by id.
+   * @param id The id of the asset to load.
+   * @returns The loaded asset. Will throw if the asset does not exist.
+   */
   get(id: string): T {
     if (this.loadedAssets[id]) {
       return this.loadedAssets[id];
@@ -34,6 +68,11 @@ export abstract class AssetLoader<T> {
     throw new Error(`Asset with id "${id}" not loaded`);
   }
 
+  /**
+   * Unload a loaded asset.
+   * @param id The id of the asset to unload.
+   * @returns True if the unload wsa successful.
+   */
   unload(id: string): boolean {
     if (this.loadedAssets[id]) {
       delete this.loadedAssets[id];
@@ -43,13 +82,17 @@ export abstract class AssetLoader<T> {
 }
 
 /**
- * Class to load and store assets.
+ * Class to load and manage assets.
  */
 export class AssetManager {
+  /**
+   * The registered loaders.
+   */
   private readonly loaders = new Map<new (...args: any[]) => unknown, AssetLoader<unknown>>();
 
-  constructor() {}
-
+  /**
+   * Register all built-in loaders. Gets called automatically when the engine starts.
+   */
   registerBuiltinLoaders(): void {
     this.registerLoader(new ImageLoader(this));
     this.registerLoader(new TextLoader(this));
@@ -59,10 +102,23 @@ export class AssetManager {
     this.registerLoader(new AtlasLoader(this));
   }
 
+  /**
+   * Register a new loader.
+   * @param loader The loader to register.
+   */
   registerLoader<T>(loader: AssetLoader<T>): void {
     this.loaders.set(loader.assetType, loader);
   }
 
+  /**
+   * Load an asset.
+   * @param type The class type of asset to load.
+   * @param id The id used to reference the asset.
+   * @param path The url path to the asset.
+   * @param props Any other properties needed to load the asset.
+   * @param keep Should this asset be stored.
+   * @returns The loaded asset.
+   */
   async loadAsset<T>(
     type: new (...args: any[]) => T,
     id: string,
@@ -87,6 +143,12 @@ export class AssetManager {
     });
   }
 
+  /**
+   * Add an externally loaded asset to the manager.
+   * @param type The type of asset to add.
+   * @param id The id used to reference the asset.
+   * @param instance The asset to add.
+   */
   addAsset<T>(type: new (...args: any[]) => T, id: string, instance: T): void {
     if (this.loaders.has(type)) {
       this.loaders.get(type)!.add(id, instance);
@@ -95,6 +157,12 @@ export class AssetManager {
     }
   }
 
+  /**
+   * Get a loaded asset.
+   * @param type The type of asset to get.
+   * @param id The id of the asset.
+   * @returns The loaded asset. Will throw if the asset is not loaded.
+   */
   getAsset<T>(type: new (...args: any[]) => T, id: string): T {
     if (this.loaders.has(type)) {
       return this.loaders.get(type)!.get(id) as T;
@@ -103,6 +171,12 @@ export class AssetManager {
     throw new Error('Loader is not registered for type');
   }
 
+  /**
+   * Unload and remove an asset from the manager.
+   * @param type The type of asset to unload.
+   * @param id The id of the asset.
+   * @returns True if the unload was successful.
+   */
   unloadAsset<T>(type: new (...args: any[]) => T, id: string): boolean {
     if (this.loaders.has(type)) {
       return this.loaders.get(type)!.unload(id);
