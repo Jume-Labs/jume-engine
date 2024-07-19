@@ -90,16 +90,6 @@ export class SRender extends System {
         graphics.popTarget();
       }
     }
-
-    graphics.transform.identity();
-    graphics.color.set(1, 1, 1, 1);
-
-    graphics.start();
-    // Render all cameras to the main target.
-    for (const camera of cameras) {
-      graphics.drawRenderTarget(camera.screenBounds.x, camera.screenBounds.y, camera.target);
-    }
-    graphics.present();
   }
 
   entityAdded = (entity: Entity): void => {

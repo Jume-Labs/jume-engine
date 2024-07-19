@@ -17,7 +17,7 @@ export class Bitset {
   }
 
   has(mask: number): boolean {
-    return (this.value & mask) !== 0;
+    return (this.value & mask) === mask;
   }
 
   hasAll(masks: number[]): boolean {

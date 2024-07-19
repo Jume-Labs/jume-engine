@@ -136,7 +136,7 @@ export class Graphics {
     this.transformStack.pop()?.put();
   }
 
-  start(clear?: boolean, clearColor?: Color): void {
+  start(clear = true, clearColor?: Color): void {
     const gl = this.context.gl;
     if (this.targetStack.length > 0) {
       const target = this.targetStack[this.targetStack.length - 1];

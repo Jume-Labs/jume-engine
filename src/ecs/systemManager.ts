@@ -84,6 +84,16 @@ export class SystemManager {
         system.debugRender(graphics, this.cameras);
       }
     }
+
+    graphics.transform.identity();
+    graphics.color.set(1, 1, 1, 1);
+
+    graphics.start();
+    // Render all cameras to the main target.
+    for (const camera of this.cameras) {
+      graphics.drawRenderTarget(camera.screenBounds.x, camera.screenBounds.y, camera.target);
+    }
+    graphics.present();
   }
 
   updateSystemEntities(entity: Entity, removed = false): void {

@@ -25,11 +25,10 @@ export class Color {
   static fromBytes(red: number, green: number, blue: number, alpha = 255, out?: Color): Color {
     out ??= new Color();
 
-    const r = 1.0 / clamp(red, 0, 255);
-    const g = 1.0 / clamp(green, 0, 255);
-    const b = 1.0 / clamp(blue, 0, 255);
-    const a = 1.0 / clamp(alpha, 0, 255);
-
+    const r = clamp(red, 0, 255) / 255;
+    const g = clamp(green, 0, 255) / 255;
+    const b = clamp(blue, 0, 255) / 255;
+    const a = clamp(alpha, 0, 255) / 255;
     out.set(r, g, b, a);
 
     return out;

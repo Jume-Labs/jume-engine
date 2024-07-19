@@ -25,8 +25,6 @@ export class Scene {
 
   pauseInOverlay = true;
 
-  created = false;
-
   @inject
   protected view!: View;
 
@@ -114,8 +112,9 @@ export class SceneManager {
 
   update(dt: number): void {
     if (this.nextScene) {
-      this.goToNextScene(this.nextScene);
+      const scene = this.nextScene;
       this.nextScene = undefined;
+      this.goToNextScene(scene);
     }
 
     if (this.current.isOverlay && this.stack.length > 1) {
@@ -174,10 +173,6 @@ export class SceneManager {
 
   private pop(): boolean {
     if (this.stack.length > 1) {
-      if (!this.current.created) {
-        return false;
-      }
-
       this.stack.pop()!.destroy();
       this.current.resume();
 
@@ -189,7 +184,6 @@ export class SceneManager {
 
   private addScene(sceneType: SceneType, below?: boolean): Scene {
     const scene = new sceneType();
-    scene.created = true;
 
     if (below) {
       if (this.stack.length <= 1) {

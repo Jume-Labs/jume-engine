@@ -215,7 +215,7 @@ export class ShapeRenderer extends BaseRenderer {
   }
 
   private setColor(color: Color): void {
-    const i = this.index + OFFSET;
+    const i = this.index * OFFSET;
     const red = color.red;
     const green = color.green;
     const blue = color.blue;
