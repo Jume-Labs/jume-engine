@@ -10,8 +10,9 @@
   "scripts": {
     "prepare": "tsc -p tsconfig.build.json",
     "build": "tsc -p tsconfig.build.json",
-    "test": "vitest run",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "prettier": "prettier src --check",
+    "test": "vitest run"
   },
   "type": "module",
   "keywords": [],
