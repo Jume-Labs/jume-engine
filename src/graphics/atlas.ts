@@ -73,6 +73,10 @@ export class Atlas {
   }
 
   getFrame(name: string): AtlasFrame {
+    if (!this.frames[name]) {
+      console.log(`Frame ${name} does not exist in atlas`);
+    }
+
     return this.frames[name];
   }
 }

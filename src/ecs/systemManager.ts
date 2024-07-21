@@ -75,13 +75,11 @@ export class SystemManager {
       }
     }
 
-    if (!this.view.debugRender) {
-      return;
-    }
-
-    for (const system of this.systemList) {
-      if (system.active && system.debug) {
-        system.debugRender(graphics, this.cameras);
+    if (this.view.debugRender) {
+      for (const system of this.systemList) {
+        if (system.active && system.debug) {
+          system.debugRender(graphics, this.cameras);
+        }
       }
     }
 

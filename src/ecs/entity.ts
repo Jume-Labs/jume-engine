@@ -1,12 +1,23 @@
-import { Component, ComponentType } from './component.js';
+import { Component, ComponentType, hasRenderable, hasUpdatable, Renderable, Updatable } from './component.js';
 
 export class Entity {
   active = true;
 
   componentsUpdated = false;
 
+  layerChanged = false;
+
   get id(): number {
     return this._id;
+  }
+
+  get layer(): number {
+    return this._layer;
+  }
+
+  set layer(value: number) {
+    this._layer = value;
+    this.layerChanged = true;
   }
 
   private static nextId = 0;
@@ -16,6 +27,12 @@ export class Entity {
   private _id: number;
 
   private readonly components = new Map<ComponentType<Component>, Component>();
+
+  private updatetableComponents: Updatable[] = [];
+
+  private renderableComponents: Renderable[] = [];
+
+  private _layer = 0;
 
   constructor() {
     if (Entity.nextId > Number.MAX_SAFE_INTEGER) {
@@ -36,6 +53,14 @@ export class Entity {
     this.components.set(componentType, component);
     this.componentsUpdated = true;
 
+    if (hasUpdatable(component)) {
+      this.updatetableComponents.push(component as unknown as Updatable);
+    }
+
+    if (hasRenderable(component)) {
+      this.renderableComponents.push(component as unknown as Renderable);
+    }
+
     return component;
   }
 
@@ -48,6 +73,16 @@ export class Entity {
       this.components.delete(componentType);
       this.componentsUpdated = true;
       removed = true;
+
+      let index = this.updatetableComponents.indexOf(component as unknown as Updatable);
+      if (index !== -1) {
+        this.updatetableComponents.splice(index, 1);
+      }
+
+      index = this.renderableComponents.indexOf(component as unknown as Renderable);
+      if (index !== -1) {
+        this.renderableComponents.splice(index, 1);
+      }
     }
 
     return removed;
@@ -78,5 +113,13 @@ export class Entity {
       component.destroy();
       this.components.delete(key);
     }
+  }
+
+  getRenderComponents(): Renderable[] {
+    return this.renderableComponents;
+  }
+
+  getUpdateComponents(): Updatable[] {
+    return this.updatetableComponents;
   }
 }

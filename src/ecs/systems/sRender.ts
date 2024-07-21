@@ -3,7 +3,6 @@ import { Graphics } from '../../graphics/graphics.js';
 import { removeByValue } from '../../utils/arrayUtils.js';
 import { Camera } from '../../view/camera.js';
 import { View } from '../../view/view.js';
-import { CRender } from '../components/cRender.js';
 import { CTransform } from '../components/cTransform.js';
 import { Entity } from '../entity.js';
 import { BaseSystemProps, System } from '../system.js';
@@ -25,7 +24,12 @@ export class SRender extends System {
       this.layers[i] = [];
     }
 
-    this.registerList(this.entities, [CRender, CTransform], this.entityAdded, this.entityRemoved);
+    this.registerList({
+      entities: this.entities,
+      renderables: true,
+      addCallback: this.entityAdded,
+      removeCallback: this.entityRemoved,
+    });
     this.active = true;
 
     return this;
@@ -63,7 +67,9 @@ export class SRender extends System {
                 graphics.pushTransform();
                 graphics.applyTransform(transform.matrix);
 
-                entity.getComponent(CRender).render(graphics);
+                for (const comp of entity.getRenderComponents()) {
+                  comp.cRender(graphics);
+                }
 
                 graphics.popTransform();
               }
@@ -78,7 +84,17 @@ export class SRender extends System {
             if (entities.length > 0 && !camera.ignoredLayers.includes(parseInt(key))) {
               for (const entity of entities) {
                 if (entity.active) {
-                  entity.getComponent(CRender).debugRender(graphics);
+                  const transform = entity.getComponent(CTransform);
+                  transform.updateMatrix();
+
+                  graphics.pushTransform();
+                  graphics.applyTransform(transform.matrix);
+
+                  for (const comp of entity.getRenderComponents()) {
+                    comp.cDebugRender(graphics);
+                  }
+
+                  graphics.popTransform();
                 }
               }
             }
@@ -93,22 +109,21 @@ export class SRender extends System {
   }
 
   entityAdded = (entity: Entity): void => {
-    const layer = entity.getComponent(CRender).layer;
+    const layer = entity.layer;
     this.layerTracking.set(entity, layer);
     this.layers[layer].push(entity);
   };
 
   entityRemoved = (entity: Entity): void => {
-    const layer = entity.getComponent(CRender).layer;
+    const layer = entity.layer;
     removeByValue(this.layers[layer], entity);
     this.layerTracking.delete(entity);
   };
 
   updateLayer(entity: Entity): void {
-    const renderComp = entity.getComponent(CRender);
-    if (renderComp.layerChanged) {
-      renderComp.layerChanged = false;
-      const layer = renderComp.layer;
+    if (entity.layerChanged) {
+      entity.layerChanged = false;
+      const layer = entity.layer;
       const currentLayer = this.layerTracking.get(entity);
 
       if (currentLayer && currentLayer !== layer) {

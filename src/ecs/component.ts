@@ -3,12 +3,20 @@ import { Graphics } from '../graphics/graphics.js';
 export type ComponentType<T extends Component> = new (...args: any[]) => T;
 
 export interface Renderable {
-  render(graphics: Graphics): void;
-  debugRender(graphics: Graphics): void;
+  cRender(graphics: Graphics): void;
+  cDebugRender(graphics: Graphics): void;
 }
 
 export interface Updatable {
-  update(dt: number): void;
+  cUpdate(dt: number): void;
+}
+
+export function hasRenderable(component: Component): boolean {
+  return 'cRender' in component && 'cDebugRender' in component;
+}
+
+export function hasUpdatable(component: Component): boolean {
+  return 'cUpdate' in component;
 }
 
 export interface BaseComponentProps {
@@ -17,7 +25,7 @@ export interface BaseComponentProps {
 }
 
 export class Component {
-  active = false;
+  active = true;
 
   get entityId(): number {
     return this._entityId;

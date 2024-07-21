@@ -14,11 +14,9 @@ export * from './ecs/entityManager.js';
 export * from './ecs/system.js';
 export * from './ecs/systemManager.js';
 
-export * from './ecs/components/cRender.js';
 export * from './ecs/components/cSprite.js';
 export * from './ecs/components/cText.js';
 export * from './ecs/components/cTransform.js';
-export * from './ecs/components/cUpdate.js';
 
 export * from './ecs/systems/sRender.js';
 export * from './ecs/systems/sUpdate.js';

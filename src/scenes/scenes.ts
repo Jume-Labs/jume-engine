@@ -28,13 +28,13 @@ export class Scene {
   @inject
   protected view!: View;
 
-  private readonly cameras: Camera[];
+  protected readonly cameras: Camera[];
 
-  private readonly entityManager: EntityManager;
+  protected readonly entityManager: EntityManager;
 
-  private readonly systemManager: SystemManager;
+  protected readonly systemManager: SystemManager;
 
-  private readonly tweenManager: TweenManager;
+  protected readonly tweenManager: TweenManager;
 
   constructor() {
     this.cameras = [new Camera()];
@@ -117,6 +117,10 @@ export class SceneManager {
       this.goToNextScene(scene);
     }
 
+    if (!this.current) {
+      return;
+    }
+
     if (this.current.isOverlay && this.stack.length > 1) {
       const below = this.stack[this.stack.length - 2];
       if (!below.pauseInOverlay) {
@@ -128,6 +132,10 @@ export class SceneManager {
   }
 
   render(graphics: Graphics): void {
+    if (!this.current) {
+      return;
+    }
+
     if (this.current.isOverlay && this.stack.length > 1) {
       this.stack[this.stack.length - 2].render(graphics);
     }

@@ -13,7 +13,9 @@ export interface BaseSystemProps {
 
 interface EntityList {
   entities: Entity[];
-  components: ComponentType<Component>[];
+  components?: ComponentType<Component>[];
+  updatables?: boolean;
+  renderables?: boolean;
   addCallback?: (entity: Entity) => void;
   removeCallback?: (entity: Entity) => void;
 }
@@ -21,9 +23,9 @@ interface EntityList {
 export class System {
   readonly order: number;
 
-  active = false;
+  active = true;
 
-  debug = false;
+  debug = true;
 
   private readonly lists: EntityList[] = [];
 
@@ -51,12 +53,12 @@ export class System {
           }
         }
       } else {
-        if (!list.entities.includes(entity) && entity.hasComponents(list.components)) {
+        if (!list.entities.includes(entity) && this.hasAny(entity, list)) {
           list.entities.push(entity);
           if (list.addCallback) {
             list.addCallback(entity);
           }
-        } else if (list.entities.includes(entity) && !entity.hasComponents(list.components)) {
+        } else if (list.entities.includes(entity) && !this.hasAny(entity, list)) {
           if (removeByValue(list.entities, entity)) {
             if (list.removeCallback) {
               list.removeCallback(entity);
@@ -77,17 +79,33 @@ export class System {
     return this.systems.has(systemType);
   }
 
-  protected registerList(
-    entities: Entity[],
-    components: ComponentType<Component>[],
-    addCallback?: (entity: Entity) => void,
-    removeCallback?: (entity: Entity) => void
-  ): void {
+  protected registerList({
+    entities,
+    components,
+    updatables,
+    renderables,
+    addCallback,
+    removeCallback,
+  }: EntityList): void {
     this.lists.push({
       entities,
       components,
+      updatables,
+      renderables,
       addCallback,
       removeCallback,
     });
+  }
+
+  private hasAny(entity: Entity, list: EntityList): boolean {
+    if (list.components) {
+      return entity.hasComponents(list.components);
+    } else if (list.renderables && entity.getRenderComponents().length > 0) {
+      return true;
+    } else if (list.updatables && entity.getUpdateComponents().length > 0) {
+      return true;
+    }
+
+    return false;
   }
 }

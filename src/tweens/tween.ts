@@ -154,7 +154,7 @@ export class Tween {
     this.dataList = [];
 
     for (const key in from) {
-      if (target[key]) {
+      if (target[key] !== undefined) {
         let startValue = from[key] as number | Color;
         let endValue = to[key] as number | Color;
 
@@ -175,6 +175,8 @@ export class Tween {
         if (!(startValue instanceof Color) && !(endValue instanceof Color)) {
           data.change = endValue - startValue;
         }
+
+        this.dataList.push(data);
       }
     }
   }

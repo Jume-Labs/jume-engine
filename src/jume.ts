@@ -125,14 +125,18 @@ export class Jume {
     this.inBackground = true;
     const event = ApplicationEvent.get(ApplicationEvent.BACKGROUND);
     this.eventManager.send(event);
-    this.sceneManager.current.toBackground();
+    if (this.sceneManager.current) {
+      this.sceneManager.current.toBackground();
+    }
   }
 
   toForeground(): void {
     this.inBackground = false;
     const event = ApplicationEvent.get(ApplicationEvent.FOREGROUND);
     this.eventManager.send(event);
-    this.sceneManager.current.toForeground();
+    if (this.sceneManager.current) {
+      this.sceneManager.current.toForeground();
+    }
   }
 
   private resize(width: number, height: number): void {
@@ -150,7 +154,9 @@ export class Jume {
 
     const event = ApplicationEvent.get(ApplicationEvent.RESIZE, width * ratio, height * ratio);
     this.eventManager.send(event);
-    this.sceneManager.current.resize(width * ratio, height * ratio);
+    if (this.sceneManager.current) {
+      this.sceneManager.current.resize(width * ratio, height * ratio);
+    }
   }
 
   private loop = (_time: number): void => {

@@ -1,4 +1,3 @@
-import { CUpdate } from '../components/cUpdate.js';
 import { Entity } from '../entity.js';
 import { BaseSystemProps, System } from '../system.js';
 
@@ -8,7 +7,7 @@ export class SUpdate extends System {
   constructor(base: BaseSystemProps) {
     super(base);
 
-    this.registerList(this.entities, [CUpdate]);
+    this.registerList({ entities: this.entities, updatables: true });
     this.active = true;
 
     return this;
@@ -20,7 +19,9 @@ export class SUpdate extends System {
     }
 
     for (const entity of this.entities) {
-      entity.getComponent(CUpdate).update(dt);
+      for (const comp of entity.getUpdateComponents()) {
+        comp.cUpdate(dt);
+      }
     }
   }
 }

@@ -45,7 +45,7 @@ export class CText extends Component implements Renderable {
     return this;
   }
 
-  render(graphics: Graphics): void {
+  cRender(graphics: Graphics): void {
     if (!this.font) {
       return;
     }
@@ -54,5 +54,5 @@ export class CText extends Component implements Renderable {
     graphics.drawBitmapText(-this.width * this.anchor.x, -this.height * this.anchor.y, this.font, this.text);
   }
 
-  debugRender(_graphics: Graphics): void {}
+  cDebugRender(_graphics: Graphics): void {}
 }

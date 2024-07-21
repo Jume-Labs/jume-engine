@@ -68,7 +68,7 @@ export class CSprite extends Component implements Renderable {
     this.frame = this.atlas?.getFrame(frameName);
   }
 
-  render(graphics: Graphics): void {
+  cRender(graphics: Graphics): void {
     if (!this._atlas || !this.frame) {
       return;
     }
@@ -89,5 +89,5 @@ export class CSprite extends Component implements Renderable {
     );
   }
 
-  debugRender(_graphics: Graphics): void {}
+  cDebugRender(_graphics: Graphics): void {}
 }
