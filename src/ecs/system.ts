@@ -6,19 +6,19 @@ import { Entity } from './entity.js';
 
 export type SystemType<T extends System> = new (...args: any[]) => T;
 
-export interface BaseSystemProps {
+export type BaseSystemProps = {
   systems: Map<SystemType<System>, System>;
   order: number;
-}
+};
 
-interface EntityList {
+type EntityList = {
   entities: Entity[];
   components?: ComponentType<Component>[];
   updatables?: boolean;
   renderables?: boolean;
   addCallback?: (entity: Entity) => void;
   removeCallback?: (entity: Entity) => void;
-}
+};
 
 export class System {
   readonly order: number;

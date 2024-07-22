@@ -2,6 +2,11 @@ import { Graphics } from '../graphics/graphics.js';
 
 export type ComponentType<T extends Component> = new (...args: any[]) => T;
 
+export type BaseComponentProps = {
+  entityId: number;
+  components: Map<ComponentType<Component>, Component>;
+};
+
 export interface Renderable {
   cRender(graphics: Graphics): void;
   cDebugRender(graphics: Graphics): void;
@@ -17,11 +22,6 @@ export function hasRenderable(component: Component): boolean {
 
 export function hasUpdatable(component: Component): boolean {
   return 'cUpdate' in component;
-}
-
-export interface BaseComponentProps {
-  entityId: number;
-  components: Map<ComponentType<Component>, Component>;
 }
 
 export class Component {

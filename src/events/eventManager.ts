@@ -22,7 +22,7 @@ export class EventManager {
     this.listeners = {};
   }
 
-  on<T extends Event>(
+  add<T extends Event>(
     type: EventType<T>,
     callback: (event: T) => void,
     canCancel = true,
@@ -49,7 +49,7 @@ export class EventManager {
     return listener;
   }
 
-  off(listener: EventListener): void {
+  remove(listener: EventListener): void {
     const list = this.listeners[listener.eventType];
     if (list) {
       removeByValue(list, listener);

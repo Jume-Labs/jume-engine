@@ -24,12 +24,12 @@ export type InputActionType =
   | 'gamepad axis'
   | 'gamepad button';
 
-export interface GamepadState {
+export type GamepadState = {
   axes: Record<number, number>;
   buttons: Record<number, number>;
-}
+};
 
-interface InputActionBinding {
+type InputActionBinding = {
   binding: string;
 
   keyboard: {
@@ -56,7 +56,7 @@ interface InputActionBinding {
     gamepadAxis: number[];
     gamepadButton: number[];
   };
-}
+};
 
 function createActionBinding(name: string): InputActionBinding {
   return {

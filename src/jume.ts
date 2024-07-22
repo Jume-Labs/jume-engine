@@ -14,7 +14,37 @@ import { isMobile } from './utils/browserInfo.js';
 import { TimeStep } from './utils/timeStep.js';
 import { View } from './view/view.js';
 
+type JumeOptions = {
+  name?: string;
+  designWidth?: number;
+  designHeight?: number;
+  canvasWidth?: number;
+  canvasHeight?: number;
+  canvasId?: string;
+  pauseInBackground?: boolean;
+  forceGL1?: boolean;
+  pixelFilter?: boolean;
+  fullScreen?: boolean;
+  hdpi?: boolean;
+  targetFps?: number;
+};
+
 const MAX_DT = 1.0 / 15;
+
+function setDefaultOptions(options: JumeOptions): void {
+  options.name ??= 'Jume Game';
+  options.designWidth ??= 800;
+  options.designHeight ??= 600;
+  options.canvasWidth ??= options.designWidth;
+  options.canvasHeight ??= options.designHeight;
+  options.canvasId ??= 'jume';
+  options.fullScreen ??= false;
+  options.pauseInBackground ??= true;
+  options.forceGL1 ??= false;
+  options.pixelFilter ??= false;
+  options.hdpi ??= false;
+  options.targetFps ??= -1;
+}
 
 export class Jume {
   private prevTime = 0;
@@ -210,34 +240,4 @@ export class Jume {
     this.graphics.drawRenderTarget(0, 0, this.target);
     this.graphics.present();
   }
-}
-
-interface JumeOptions {
-  name?: string;
-  designWidth?: number;
-  designHeight?: number;
-  canvasWidth?: number;
-  canvasHeight?: number;
-  canvasId?: string;
-  pauseInBackground?: boolean;
-  forceGL1?: boolean;
-  pixelFilter?: boolean;
-  fullScreen?: boolean;
-  hdpi?: boolean;
-  targetFps?: number;
-}
-
-function setDefaultOptions(options: JumeOptions): void {
-  options.name ??= 'Jume Game';
-  options.designWidth ??= 800;
-  options.designHeight ??= 600;
-  options.canvasWidth ??= options.designWidth;
-  options.canvasHeight ??= options.designHeight;
-  options.canvasId ??= 'jume';
-  options.fullScreen ??= false;
-  options.pauseInBackground ??= true;
-  options.forceGL1 ??= false;
-  options.pixelFilter ??= false;
-  options.hdpi ??= false;
-  options.targetFps ??= -1;
 }

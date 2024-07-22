@@ -12,13 +12,13 @@ export type SceneType = new () => Scene;
 
 export type SceneChangeType = 'push' | 'pop';
 
-export interface SceneChange {
+export type SceneChange = {
   sceneType: SceneType;
   type: SceneChangeType;
   removeCurrent?: boolean;
   below?: boolean;
   removeAll?: boolean;
-}
+};
 
 export class Scene {
   isOverlay = false;

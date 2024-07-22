@@ -4,14 +4,14 @@ import { Graphics } from '../../graphics/graphics.js';
 import { Vec2 } from '../../math/vec2.js';
 import { BaseComponentProps, Component, Renderable } from '../component.js';
 
-export interface CSpriteProps {
+export type CSpriteProps = {
   atlas: Atlas;
   frameName: string;
   anchor?: { x: number; y: number };
   tint?: Color;
   flipX?: boolean;
   flipY?: boolean;
-}
+};
 
 export class CSprite extends Component implements Renderable {
   anchor = new Vec2(0.5, 0.5);

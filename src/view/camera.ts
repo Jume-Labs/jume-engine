@@ -7,6 +7,27 @@ import { Rectangle } from '../math/rectangle.js';
 import { Vec2 } from '../math/vec2.js';
 import { View } from './view.js';
 
+export type CameraProps = {
+  x?: number;
+
+  y?: number;
+
+  rotation?: number;
+
+  zoom?: number;
+
+  viewX?: number;
+
+  viewY?: number;
+
+  viewWidth?: number;
+
+  viewHeight?: number;
+
+  bgColor?: Color;
+
+  ignoredLayers?: number[];
+};
 export class Camera {
   active = true;
 
@@ -35,11 +56,11 @@ export class Camera {
   @inject
   private view!: View;
 
-  constructor(options?: CameraOptions) {
+  constructor(props?: CameraProps) {
     this.transform = new Mat4();
 
-    if (options) {
-      const { x, y, rotation, zoom, viewX, viewY, viewWidth, viewHeight, bgColor, ignoredLayers } = options;
+    if (props) {
+      const { x, y, rotation, zoom, viewX, viewY, viewWidth, viewHeight, bgColor, ignoredLayers } = props;
 
       this.position.set(x ?? this.view.viewCenterX, y ?? this.view.viewCenterY);
       this.rotation = rotation ?? 0;
@@ -121,26 +142,4 @@ export class Camera {
 
     return out;
   }
-}
-
-export interface CameraOptions {
-  x?: number;
-
-  y?: number;
-
-  rotation?: number;
-
-  zoom?: number;
-
-  viewX?: number;
-
-  viewY?: number;
-
-  viewWidth?: number;
-
-  viewHeight?: number;
-
-  bgColor?: Color;
-
-  ignoredLayers?: number[];
 }

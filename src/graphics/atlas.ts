@@ -2,14 +2,14 @@ import { Rectangle } from '../math/rectangle.js';
 import { Size } from '../math/size.js';
 import { Image } from './image.js';
 
-interface FrameSize {
+type FrameSize = {
   x: number;
   y: number;
   w: number;
   h: number;
-}
+};
 
-interface AtlasFrameInfo {
+type AtlasFrameInfo = {
   filename: string;
   trimmed: boolean;
   frame: FrameSize;
@@ -18,11 +18,11 @@ interface AtlasFrameInfo {
     w: number;
     h: number;
   };
-}
+};
 
-interface AtlasData {
+type AtlasData = {
   frames: AtlasFrameInfo[];
-}
+};
 
 export class AtlasFrame {
   readonly name: string;

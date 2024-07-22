@@ -4,12 +4,12 @@ import { Graphics } from '../../graphics/graphics.js';
 import { Vec2 } from '../../math/vec2.js';
 import { BaseComponentProps, Component, Renderable } from '../component.js';
 
-export interface CTextProps {
+export type CTextProps = {
   font: BitmapFont;
   text: string;
   tint?: Color;
   anchor?: { x: number; y: number };
-}
+};
 
 export class CText extends Component implements Renderable {
   font?: BitmapFont;

@@ -4,12 +4,12 @@ import { Color } from '../graphics/color.js';
 import { TimeStep } from '../utils/timeStep.js';
 import { Ease, easeLinear } from './easing.js';
 
-interface TweenProperty {
+type TweenProperty = {
   start: number | Color;
   end: number | Color;
   propertyName: string;
   change?: number;
-}
+};
 
 export class Tween {
   complete = false;

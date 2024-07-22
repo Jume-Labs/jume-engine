@@ -1,5 +1,22 @@
 import { Image } from './image.js';
 
+export type BmFontChar = {
+  id: number;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  xOffset: number;
+  yOffset: number;
+  xAdvance: number;
+};
+
+export type BmKerning = {
+  first: number;
+  second: number;
+  amount: number;
+};
+
 export class BitmapFont {
   /**
    * The image with the font characters.
@@ -76,23 +93,6 @@ export class BitmapFont {
     }
     return length;
   }
-}
-
-export interface BmFontChar {
-  id: number;
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  xOffset: number;
-  yOffset: number;
-  xAdvance: number;
-}
-
-export interface BmKerning {
-  first: number;
-  second: number;
-  amount: number;
 }
 
 export class FontData {
