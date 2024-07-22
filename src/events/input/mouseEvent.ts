@@ -1,5 +1,7 @@
 import { Event, EventType } from '../event.js';
 
+type MouseEventType = 'down' | 'up' | 'move' | 'wheel' | 'enter' | 'leave';
+
 export class MouseEvent extends Event {
   static readonly MOUSE_DOWN = new EventType(MouseEvent, 'jume_mouse_down_event');
 
@@ -25,9 +27,18 @@ export class MouseEvent extends Event {
 
   private static readonly POOL: MouseEvent[] = [];
 
-  static get(type: EventType<MouseEvent>, button = -1, x = 0, y = 0, deltaX = 0, deltaY = 0): MouseEvent {
+  private static readonly TYPE_MAP: Record<MouseEventType, EventType<MouseEvent>> = {
+    down: MouseEvent.MOUSE_DOWN,
+    up: MouseEvent.MOUSE_UP,
+    move: MouseEvent.MOUSE_MOVE,
+    wheel: MouseEvent.MOUSE_WHEEL,
+    enter: MouseEvent.MOUSE_ENTER,
+    leave: MouseEvent.MOUSE_LEAVE,
+  };
+
+  static get(type: MouseEventType, button = -1, x = 0, y = 0, deltaX = 0, deltaY = 0): MouseEvent {
     const event = MouseEvent.POOL.length > 0 ? MouseEvent.POOL.pop()! : new MouseEvent();
-    event._name = type.name;
+    event._name = MouseEvent.TYPE_MAP[type].name;
     event.button = button;
     event.x = x;
     event.y = y;

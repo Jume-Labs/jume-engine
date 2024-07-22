@@ -153,7 +153,7 @@ export class Jume {
 
   toBackground(): void {
     this.inBackground = true;
-    const event = ApplicationEvent.get(ApplicationEvent.BACKGROUND);
+    const event = ApplicationEvent.get('background');
     this.eventManager.send(event);
     if (this.sceneManager.current) {
       this.sceneManager.current.toBackground();
@@ -162,7 +162,7 @@ export class Jume {
 
   toForeground(): void {
     this.inBackground = false;
-    const event = ApplicationEvent.get(ApplicationEvent.FOREGROUND);
+    const event = ApplicationEvent.get('foreground');
     this.eventManager.send(event);
     if (this.sceneManager.current) {
       this.sceneManager.current.toForeground();
@@ -182,7 +182,7 @@ export class Jume {
       this.target = new RenderTarget(this.view.viewWidth, this.view.viewHeight);
     }
 
-    const event = ApplicationEvent.get(ApplicationEvent.RESIZE, width * ratio, height * ratio);
+    const event = ApplicationEvent.get('resize', width * ratio, height * ratio);
     this.eventManager.send(event);
     if (this.sceneManager.current) {
       this.sceneManager.current.resize(width * ratio, height * ratio);

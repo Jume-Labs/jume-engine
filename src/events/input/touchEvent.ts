@@ -1,5 +1,7 @@
 import { Event, EventType } from '../event.js';
 
+type TouchEventType = 'start' | 'move' | 'end';
+
 export class TouchEvent extends Event {
   static readonly TOUCH_START = new EventType(TouchEvent, 'jume_touch_start_event');
 
@@ -17,9 +19,15 @@ export class TouchEvent extends Event {
 
   private static readonly POOL: TouchEvent[] = [];
 
-  static get(type: EventType<TouchEvent>, id: number, x: number, y: number, touchCount: number): TouchEvent {
+  private static readonly TYPE_MAP: Record<TouchEventType, EventType<TouchEvent>> = {
+    start: TouchEvent.TOUCH_START,
+    move: TouchEvent.TOUCH_MOVE,
+    end: TouchEvent.TOUCH_END,
+  };
+
+  static get(type: TouchEventType, id: number, x: number, y: number, touchCount: number): TouchEvent {
     const event = TouchEvent.POOL.length > 0 ? TouchEvent.POOL.pop()! : new TouchEvent();
-    event._name = type.name;
+    event._name = TouchEvent.TYPE_MAP[type].name;
     event.id = id;
     event.x = x;
     event.y = y;

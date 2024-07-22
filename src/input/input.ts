@@ -137,7 +137,7 @@ export class Input {
           const action = ActionEvent.getGamepadEvent('gamepad axis', gamepad.index, i, axis);
           this.sendAction(action);
 
-          const ev = JumeGamepadEvent.get(JumeGamepadEvent.GAMEPAD_AXIS, gamepad.index, i, undefined, axis);
+          const ev = JumeGamepadEvent.get('axis', gamepad.index, i, undefined, axis);
           this.eventManager.send(ev);
         }
       }
@@ -150,7 +150,7 @@ export class Input {
           const action = ActionEvent.getGamepadEvent('gamepad button', gamepad.index, i, button);
           this.sendAction(action);
 
-          const ev = JumeGamepadEvent.get(JumeGamepadEvent.GAMEPAD_BUTTON, gamepad.index, i, button);
+          const ev = JumeGamepadEvent.get('button', gamepad.index, i, button);
           this.eventManager.send(ev);
         }
       }
@@ -310,7 +310,7 @@ export class Input {
     const action = ActionEvent.getKeyEvent('keyboard key', keyCode, event.code, event.key, '', true);
     this.sendAction(action);
 
-    const ev = JumeKeyboardEvent.get(JumeKeyboardEvent.KEY_DOWN, keyCode, event.code, event.key);
+    const ev = JumeKeyboardEvent.get('down', keyCode, event.code, event.key);
     this.eventManager.send(ev);
   };
 
@@ -322,7 +322,7 @@ export class Input {
     const action = ActionEvent.getKeyEvent('keyboard key', keyCode, event.code, event.key, '', false, false);
     this.sendAction(action);
 
-    const ev = JumeKeyboardEvent.get(JumeKeyboardEvent.KEY_UP, keyCode, event.code, event.key);
+    const ev = JumeKeyboardEvent.get('up', keyCode, event.code, event.key);
     this.eventManager.send(ev);
   };
 
@@ -334,7 +334,7 @@ export class Input {
     const action = ActionEvent.getKeyEvent('keyboard text', keyCode, event.code, event.key, event.key);
     this.sendAction(action);
 
-    const ev = JumeKeyboardEvent.get(JumeKeyboardEvent.KEY_PRESS, keyCode, event.code, event.key, event.key);
+    const ev = JumeKeyboardEvent.get('press', keyCode, event.code, event.key, event.key);
     this.eventManager.send(ev);
   };
 
@@ -346,7 +346,7 @@ export class Input {
     const action = ActionEvent.getMouseEvent('mouse button', event.button, x, y, undefined, undefined, true);
     this.sendAction(action);
 
-    const ev = JumeMouseEvent.get(JumeMouseEvent.MOUSE_DOWN, event.button, x, y);
+    const ev = JumeMouseEvent.get('down', event.button, x, y);
     this.eventManager.send(ev);
   };
 
@@ -367,7 +367,7 @@ export class Input {
     );
     this.sendAction(action);
 
-    const ev = JumeMouseEvent.get(JumeMouseEvent.MOUSE_UP, event.button, x, y);
+    const ev = JumeMouseEvent.get('up', event.button, x, y);
     this.eventManager.send(ev);
   };
 
@@ -379,7 +379,7 @@ export class Input {
     const action = ActionEvent.getMouseEvent('mouse move', undefined, x, y, event.movementX, event.movementY);
     this.sendAction(action);
 
-    const ev = JumeMouseEvent.get(JumeMouseEvent.MOUSE_MOVE, undefined, x, y, event.movementX, event.movementY);
+    const ev = JumeMouseEvent.get('move', undefined, x, y, event.movementX, event.movementY);
     this.eventManager.send(ev);
   };
 
@@ -394,14 +394,7 @@ export class Input {
     );
     this.sendAction(action);
 
-    const ev = JumeMouseEvent.get(
-      JumeMouseEvent.MOUSE_WHEEL,
-      undefined,
-      undefined,
-      undefined,
-      event.deltaX,
-      event.deltaY
-    );
+    const ev = JumeMouseEvent.get('wheel', undefined, undefined, undefined, event.deltaX, event.deltaY);
     this.eventManager.send(ev);
   };
 
@@ -409,7 +402,7 @@ export class Input {
     const action = ActionEvent.getMouseEvent('mouse enter');
     this.sendAction(action);
 
-    const ev = JumeMouseEvent.get(JumeMouseEvent.MOUSE_ENTER);
+    const ev = JumeMouseEvent.get('enter');
     this.eventManager.send(ev);
   };
 
@@ -417,7 +410,7 @@ export class Input {
     const action = ActionEvent.getMouseEvent('mouse leave');
     this.sendAction(action);
 
-    const ev = JumeMouseEvent.get(JumeMouseEvent.MOUSE_LEAVE);
+    const ev = JumeMouseEvent.get('leave');
     this.eventManager.send(ev);
   };
 
@@ -450,13 +443,7 @@ export class Input {
         );
         this.sendAction(action);
 
-        const ev = JumeTouchEvent.get(
-          JumeTouchEvent.TOUCH_START,
-          touch.identifier,
-          touch.clientX,
-          touch.clientY,
-          event.touches.length
-        );
+        const ev = JumeTouchEvent.get('start', touch.identifier, touch.clientX, touch.clientY, event.touches.length);
         this.eventManager.send(ev);
       }
     }
@@ -464,7 +451,7 @@ export class Input {
     const action = ActionEvent.getMouseEvent('mouse button', 0, evX, evY, undefined, undefined, true);
     this.sendAction(action);
 
-    const ev = JumeMouseEvent.get(JumeMouseEvent.MOUSE_DOWN, 0, evX, evY);
+    const ev = JumeMouseEvent.get('down', 0, evX, evY);
     this.eventManager.send(ev);
   };
 
@@ -493,13 +480,7 @@ export class Input {
         );
         this.sendAction(action);
 
-        const ev = JumeTouchEvent.get(
-          JumeTouchEvent.TOUCH_END,
-          touch.identifier,
-          touch.clientX,
-          touch.clientY,
-          event.touches.length
-        );
+        const ev = JumeTouchEvent.get('end', touch.identifier, touch.clientX, touch.clientY, event.touches.length);
         this.eventManager.send(ev);
       }
     }
@@ -507,7 +488,7 @@ export class Input {
     const action = ActionEvent.getMouseEvent('mouse button', 0, evX, evY, undefined, undefined, undefined, true);
     this.sendAction(action);
 
-    const ev = JumeMouseEvent.get(JumeMouseEvent.MOUSE_UP, 0, evX, evY);
+    const ev = JumeMouseEvent.get('up', 0, evX, evY);
     this.eventManager.send(ev);
   };
 
@@ -534,13 +515,7 @@ export class Input {
         );
         this.sendAction(action);
 
-        const ev = JumeTouchEvent.get(
-          JumeTouchEvent.TOUCH_MOVE,
-          touch.identifier,
-          touch.clientX,
-          touch.clientY,
-          event.touches.length
-        );
+        const ev = JumeTouchEvent.get('move', touch.identifier, touch.clientX, touch.clientY, event.touches.length);
         this.eventManager.send(ev);
       }
     }
@@ -548,7 +523,7 @@ export class Input {
     const action = ActionEvent.getMouseEvent('mouse move', 0, evX, evY, undefined, undefined);
     this.sendAction(action);
 
-    const ev = JumeMouseEvent.get(JumeMouseEvent.MOUSE_MOVE, undefined, evX, evY);
+    const ev = JumeMouseEvent.get('move', undefined, evX, evY);
     this.eventManager.send(ev);
   };
 
@@ -577,13 +552,7 @@ export class Input {
         );
         this.sendAction(action);
 
-        const ev = JumeTouchEvent.get(
-          JumeTouchEvent.TOUCH_END,
-          touch.identifier,
-          touch.clientX,
-          touch.clientY,
-          event.touches.length
-        );
+        const ev = JumeTouchEvent.get('end', touch.identifier, touch.clientX, touch.clientY, event.touches.length);
         this.eventManager.send(ev);
       }
     }
@@ -591,7 +560,7 @@ export class Input {
     const action = ActionEvent.getMouseEvent('mouse button', 0, evX, evY, undefined, undefined, undefined, true);
     this.sendAction(action);
 
-    const ev = JumeMouseEvent.get(JumeMouseEvent.MOUSE_UP, 0, evX, evY);
+    const ev = JumeMouseEvent.get('up', 0, evX, evY);
     this.eventManager.send(ev);
   };
 
@@ -604,7 +573,7 @@ export class Input {
     const action = ActionEvent.getGamepadEvent('gamepad connected', event.gamepad.index);
     this.sendAction(action);
 
-    const ev = JumeGamepadEvent.get(JumeGamepadEvent.GAMEPAD_CONNECTED, event.gamepad.index);
+    const ev = JumeGamepadEvent.get('connected', event.gamepad.index);
     this.eventManager.send(ev);
   };
 
@@ -614,7 +583,7 @@ export class Input {
     const action = ActionEvent.getGamepadEvent('gamepad disconnected', event.gamepad.index);
     this.sendAction(action);
 
-    const ev = JumeGamepadEvent.get(JumeGamepadEvent.GAMEPAD_DISCONNECTED, event.gamepad.index);
+    const ev = JumeGamepadEvent.get('disconnected', event.gamepad.index);
     this.eventManager.send(ev);
   };
 }

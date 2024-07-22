@@ -1,5 +1,7 @@
 import { Event, EventType } from './event.js';
 
+type ApplicationEventType = 'background' | 'foreground' | 'resize';
+
 export class ApplicationEvent extends Event {
   static readonly BACKGROUND = new EventType(ApplicationEvent, 'jume_background_event');
 
@@ -13,9 +15,15 @@ export class ApplicationEvent extends Event {
 
   private static readonly POOL: ApplicationEvent[] = [];
 
-  static get(type: EventType<ApplicationEvent>, width = 0, height = 0): ApplicationEvent {
+  private static readonly TYPE_MAP: Record<ApplicationEventType, EventType<ApplicationEvent>> = {
+    background: ApplicationEvent.BACKGROUND,
+    foreground: ApplicationEvent.FOREGROUND,
+    resize: ApplicationEvent.RESIZE,
+  };
+
+  static get(type: ApplicationEventType, width = 0, height = 0): ApplicationEvent {
     const event = ApplicationEvent.POOL.length > 0 ? ApplicationEvent.POOL.pop()! : new ApplicationEvent();
-    event._name = type.name;
+    event._name = ApplicationEvent.TYPE_MAP[type].name;
     event.width = width;
     event.height = height;
 
