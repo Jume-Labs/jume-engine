@@ -91,7 +91,9 @@ export class SRender extends System {
                   graphics.applyTransform(transform.matrix);
 
                   for (const comp of entity.getRenderComponents()) {
-                    comp.cDebugRender(graphics);
+                    if (comp.cDebugRender) {
+                      comp.cDebugRender(graphics);
+                    }
                   }
 
                   graphics.popTransform();

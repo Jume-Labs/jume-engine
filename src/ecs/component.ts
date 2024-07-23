@@ -9,7 +9,7 @@ export type BaseComponentProps = {
 
 export interface Renderable {
   cRender(graphics: Graphics): void;
-  cDebugRender(graphics: Graphics): void;
+  cDebugRender?(graphics: Graphics): void;
 }
 
 export interface Updatable {

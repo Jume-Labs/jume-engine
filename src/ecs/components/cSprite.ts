@@ -88,6 +88,4 @@ export class CSprite extends Component implements Renderable {
       this.flipY
     );
   }
-
-  cDebugRender(_graphics: Graphics): void {}
 }

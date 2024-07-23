@@ -53,6 +53,4 @@ export class CText extends Component implements Renderable {
     graphics.color.copyFrom(this.tint);
     graphics.drawBitmapText(-this.width * this.anchor.x, -this.height * this.anchor.y, this.font, this.text);
   }
-
-  cDebugRender(_graphics: Graphics): void {}
 }
