@@ -134,7 +134,12 @@ export class Jume {
     this.sceneManager = new SceneManager();
     addService('sceneManager', this.sceneManager);
 
-    this.target = new RenderTarget(this.view.viewWidth, this.view.viewHeight);
+    this.target = new RenderTarget(
+      this.view.viewWidth,
+      this.view.viewHeight,
+      this.view.pixelFilter ? 'nearest' : 'linear',
+      this.view.pixelFilter ? 'nearest' : 'linear'
+    );
 
     canvas.focus();
     canvas.addEventListener('blur', () => this.toBackground());

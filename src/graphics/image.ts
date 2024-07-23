@@ -1,4 +1,5 @@
 import { inject } from '../di/inject.js';
+import { View } from '../view/view.js';
 import { Context } from './context.js';
 import { TextureFilter, TextureWrap } from './types.js';
 
@@ -31,9 +32,9 @@ export class Image {
 
   private _texture: WebGLTexture;
 
-  private _magFilter: TextureFilter = 'linear';
+  private _magFilter: TextureFilter;
 
-  private _minFilter: TextureFilter = 'linear';
+  private _minFilter: TextureFilter;
 
   private _uWrap: TextureWrap = 'clamp to edge';
 
@@ -42,13 +43,18 @@ export class Image {
   @inject
   private context!: Context;
 
+  @inject
+  private view!: View;
+
   constructor(width: number, height: number, data: Uint8ClampedArray) {
     this.width = width;
     this.height = height;
     this.data = data;
+    this._magFilter = this.view.pixelFilter ? 'nearest' : 'linear';
+    this._minFilter = this.view.pixelFilter ? 'nearest' : 'linear';
 
     this._texture = this.createTexture();
-    this.updateTexture();
+    this.updateTexture(this._magFilter, this._minFilter, this._uWrap, this._vWrap);
   }
 
   updateTexture(

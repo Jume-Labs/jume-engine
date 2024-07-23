@@ -101,7 +101,12 @@ export class Camera {
       width * this.view.viewWidth,
       height * this.view.viewHeight
     );
-    this.target = new RenderTarget(width * this.view.viewWidth, height * this.view.viewHeight);
+    this.target = new RenderTarget(
+      width * this.view.viewWidth,
+      height * this.view.viewHeight,
+      this.view.pixelFilter ? 'nearest' : 'linear',
+      this.view.pixelFilter ? 'nearest' : 'linear'
+    );
   }
 
   updateBounds(): void {
