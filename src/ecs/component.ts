@@ -17,7 +17,7 @@ export interface Updatable {
 }
 
 export function hasRenderable(component: Component): boolean {
-  return 'cRender' in component && 'cDebugRender' in component;
+  return 'cRender' in component;
 }
 
 export function hasUpdatable(component: Component): boolean {
