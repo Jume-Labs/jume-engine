@@ -9,7 +9,7 @@ export class View {
 
   readonly canvas: HTMLCanvasElement;
 
-  pixelFilter: boolean;
+  readonly pixelFilter: boolean;
 
   targetFps: number;
 

@@ -55,14 +55,16 @@ export class TweenManager {
           tween.runComplete();
           sequence.index++;
 
-          if (sequence.repeat > sequence.timesCompleted || sequence.repeat === -1) {
-            for (const seqTween of sequence.list) {
-              seqTween.complete = false;
-              seqTween.resetTime();
+          if (sequence.index > sequence.list.length - 1) {
+            if (sequence.repeat > sequence.timesCompleted || sequence.repeat === -1) {
+              for (const seqTween of sequence.list) {
+                seqTween.complete = false;
+                seqTween.resetTime();
+              }
+              sequence.timesCompleted++;
+            } else {
+              removeByValue(this.sequences, sequence);
             }
-            sequence.timesCompleted++;
-          } else {
-            removeByValue(this.sequences, sequence);
           }
         }
       }

@@ -10,7 +10,7 @@ export class TweenSequence {
   repeat = 0;
 
   get currentTween(): Tween {
-    return this.list[this.list.length - 1];
+    return this.list[this.index];
   }
 
   constructor(tweens: Tween[], repeat = 0) {
