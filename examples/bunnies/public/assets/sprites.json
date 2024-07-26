@@ -1,0 +1,25 @@
+{
+  "frames": [
+    {
+      "filename": "bunny",
+      "frame": {
+        "x": 1,
+        "y": 1,
+        "w": 26,
+        "h": 38
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 1,
+        "y": 1,
+        "w": 28,
+        "h": 40
+      },
+      "sourceSize": {
+        "w": 28,
+        "h": 40
+      }
+    }
+  ]
+}

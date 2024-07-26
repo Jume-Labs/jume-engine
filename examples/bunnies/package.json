@@ -1,0 +1,30 @@
+{
+  "name": "jume-vite-template",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "lint": "eslint src",
+    "prettier": "prettier src --check",
+    "atlas": "jume-atlas pack",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@jume-labs/eslint-config": "^1.0.0",
+    "@jume-labs/jume-atlas": "^1.0.0",
+    "@jume-labs/prettier-config": "^1.0.1",
+    "@typescript-eslint/eslint-plugin": "^7.17.0",
+    "@typescript-eslint/parser": "^7.17.0",
+    "eslint": "8.56.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "prettier": "^3.3.3",
+    "typescript": "^5.2.2",
+    "vite": "^5.3.4"
+  },
+  "dependencies": {
+    "@jume-labs/jume-engine": "link:../.."
+  }
+}

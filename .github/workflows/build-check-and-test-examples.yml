@@ -1,0 +1,46 @@
+name: Build, Check and Test Examples
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        example-paths: [examples/bunnies]
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 9
+
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: 'pnpm'
+
+    - name: Install dependencies
+      working-directory: ${{ matrix.example-paths }}
+      run: pnpm install
+    
+    - name: Build
+      working-directory: ${{ matrix.example-paths }}
+      run: pnpm build
+
+    - name: Lint
+      working-directory: ${{ matrix.example-paths }}
+      run: pnpm lint
+
+    - name: Prettier
+      working-directory: ${{ matrix.example-paths }}
+      run: pnpm prettier
+
+    - name: Test
+      working-directory: ${{ matrix.example-paths }}
+      run: pnpm test

@@ -8,6 +8,13 @@ import { Image } from '../graphics/image.js';
 import { Shader } from '../graphics/shader.js';
 import { ShaderType } from '../graphics/types.js';
 
+export type AssetItem = {
+  type: new (...args: any[]) => unknown;
+  id: string;
+  path: string;
+  props?: unknown;
+};
+
 /**
  * Base class for custom asset loaders.
  */
@@ -139,6 +146,30 @@ export class AssetManager {
           });
       } else {
         reject('Loader is not registered for type');
+      }
+    });
+  }
+
+  /**
+   * Load a list of assets in parallel. Returns when all assets are loaded.
+   * @param assets The assets to load.
+   */
+  async loadAll(assets: AssetItem[]): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const count = assets.length;
+      let loaded = 0;
+
+      for (const { type, id, path, props } of assets) {
+        this.loadAsset(type, id, path, props)
+          .then(() => {
+            loaded++;
+            if (loaded === count) {
+              resolve();
+            }
+          })
+          .catch((reason) => {
+            reject(reason);
+          });
       }
     });
   }
