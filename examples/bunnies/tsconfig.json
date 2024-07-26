@@ -18,11 +18,7 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-
-    "paths": {
-      "@jume-labs/jume-engine": ["../../"]
-    }
+    "noFallthroughCasesInSwitch": true
   },
   "include": ["src"]
 }

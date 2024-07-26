@@ -25,11 +25,17 @@ jobs:
         node-version: 20
         cache: 'pnpm'
 
+    - name: Install dependencies Jume
+      run: pnpm install
+
+    - name: Build Jume
+      run: pnpm build
+
     - name: Install dependencies
       working-directory: ${{ matrix.example-paths }}
       run: pnpm install
     
-    - name: Build
+    - name: Build Example
       working-directory: ${{ matrix.example-paths }}
       run: pnpm build
 
