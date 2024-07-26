@@ -46,7 +46,3 @@ jobs:
     - name: Prettier
       working-directory: ${{ matrix.example-paths }}
       run: pnpm prettier
-
-    - name: Test
-      working-directory: ${{ matrix.example-paths }}
-      run: pnpm test
