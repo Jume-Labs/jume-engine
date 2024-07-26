@@ -7,10 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      '@jume-labs/jume-engine':
-        specifier: link:../..
-        version: link:../..
     devDependencies:
       '@jume-labs/eslint-config':
         specifier: ^1.0.0
