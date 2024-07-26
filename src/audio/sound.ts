@@ -1,10 +1,24 @@
+/**
+ * Sound buffer used to play a sound.
+ */
 export class Sound {
-  readonly name: string;
+  /**
+   * The id used when loading the sound.
+   */
+  readonly id: string;
 
+  /**
+   * The sound buffer data.
+   */
   readonly buffer: AudioBuffer;
 
-  constructor(name: string, buffer: AudioBuffer) {
-    this.name = name;
+  /**
+   * Create a new Sound instance.
+   * @param id The id used when loading the sound.
+   * @param buffer The sound buffer data.
+   */
+  constructor(id: string, buffer: AudioBuffer) {
+    this.id = id;
     this.buffer = buffer;
   }
 }

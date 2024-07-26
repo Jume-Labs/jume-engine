@@ -1,17 +1,38 @@
 import { AudioChannel } from './audioChannel.js';
 import { Sound } from './sound.js';
 
+/**
+ * The game audio manager.
+ */
 export class AudioManager {
+  /**
+   * The web audio context.
+   */
   readonly context: AudioContext;
 
+  /**
+   * The main gain node that controls all volume.
+   */
   private readonly mainGain: GainNode;
 
+  /**
+   * All audio channels.
+   */
   private audioChannels: AudioChannel[];
 
+  /**
+   * The volume before muting.
+   */
   private prevVolume: number;
 
+  /**
+   * Is the volume muted.
+   */
   private muted: boolean;
 
+  /**
+   * Create a new AudioManager instance.
+   */
   constructor() {
     this.context = new AudioContext();
     this.mainGain = this.context.createGain();
@@ -21,11 +42,16 @@ export class AudioManager {
     this.prevVolume = 1;
     this.muted = false;
 
-    for (let i = 0; i < 16; i++) {
+    for (let i = 0; i < 32; i++) {
       this.audioChannels.push(new AudioChannel(this.context.createGain()));
     }
   }
 
+  /**
+   * Get the volume of a channel or if no channel is passed get the main volume.
+   * @param channelId Optional channel id.
+   * @returns The volume (0 - 1).
+   */
   getVolume(channelId?: number): number {
     if (channelId) {
       return this.audioChannels[channelId].volume;
@@ -34,6 +60,11 @@ export class AudioManager {
     }
   }
 
+  /**
+   * Set the volume of a channel or the main volume if no channel is passed.
+   * @param value The new volume (0 - 1).
+   * @param channelId Optional channel id.
+   */
   setVolume(value: number, channelId?: number): void {
     if (channelId) {
       this.audioChannels[channelId].volume = value;
@@ -42,14 +73,28 @@ export class AudioManager {
     }
   }
 
+  /**
+   * Get the current loops left from a channel.
+   * @param channelId The audio channel to check.
+   * @returns The current loops left.
+   */
   getLoop(channelId: number): number {
     return this.audioChannels[channelId].loop;
   }
 
+  /**
+   * Set the amount of loops left.
+   * @param value The new loop count.
+   * @param channelId The channel to set the loops on.
+   */
   setLoop(value: number, channelId: number): void {
     this.audioChannels[channelId].loop = value;
   }
 
+  /**
+   * Get the next free audio channel.
+   * @returns The channel id. If -1 is returned there are no free channels.
+   */
   getFreeChannel(): number {
     for (let i = 0; i < this.audioChannels.length; i++) {
       if (this.audioChannels[i].ended) {
@@ -61,6 +106,15 @@ export class AudioManager {
     return -1;
   }
 
+  /**
+   * Play a sound.
+   * @param sound The sound to play.
+   * @param loop The amount of loops.
+   * @param volume The volume for the sound.
+   * @param channelId Optional channel id to use.
+   * @param startTime The position to start the sound.
+   * @returns The channel id the sound is playing on.
+   */
   play(sound: Sound, loop = 0, volume = 1, channelId = -1, startTime = 0): number {
     if (channelId === -1) {
       channelId = this.getFreeChannel();
@@ -110,6 +164,10 @@ export class AudioManager {
     return channelId;
   }
 
+  /**
+   * Stop a channel or if no channel is passed stop all audio.
+   * @param channelId Optional channel id.
+   */
   stop(channelId?: number): void {
     const channels = channelId ? [this.audioChannels[channelId]] : this.audioChannels;
     for (const channel of channels) {
@@ -117,6 +175,10 @@ export class AudioManager {
     }
   }
 
+  /**
+   * pause a channel or if no channel is passed pause all audio.
+   * @param channelId Optional channel id.
+   */
   pause(channelId?: number): void {
     const time = this.context.currentTime;
     const channels = channelId ? [this.audioChannels[channelId]] : this.audioChannels;
@@ -125,6 +187,10 @@ export class AudioManager {
     }
   }
 
+  /**
+   * Resume a channel or if no channel is passed resume all audio.
+   * @param channelId Optional channel id.
+   */
   resume(channelId: number): void {
     if (channelId) {
       const channel = this.audioChannels[channelId];
@@ -141,14 +207,26 @@ export class AudioManager {
     }
   }
 
+  /**
+   * Check if a channel is playing a sound.
+   * @param channelId The channel id to check.
+   * @returns True if the sound is playing.
+   */
   isPlaying(channelId: number): boolean {
     return !this.audioChannels[channelId].ended && !this.audioChannels[channelId].paused;
   }
 
+  /**
+   * Check if the audio is muted.
+   * @returns True if the audio is muted.
+   */
   isMuted(): boolean {
     return this.muted;
   }
 
+  /**
+   * Mute all audio. This sets the volume to 0, but doesn't stop the audio playing.
+   */
   mute(): void {
     if (!this.muted) {
       this.prevVolume = this.getVolume();
@@ -157,6 +235,9 @@ export class AudioManager {
     }
   }
 
+  /**
+   * Unmute all audio.
+   */
   unMute(): void {
     if (this.muted) {
       this.muted = false;
@@ -164,10 +245,16 @@ export class AudioManager {
     }
   }
 
-  async decodeSound(name: string, buffer: ArrayBuffer): Promise<Sound | null> {
+  /**
+   * Decode a buffer and create a Sound instance with it.
+   * @param id The sound id.
+   * @param buffer The sound buffer.
+   * @returns The created Sound or null if the buffer could not be decoded.
+   */
+  async decodeSound(id: string, buffer: ArrayBuffer): Promise<Sound | null> {
     const data = await this.context.decodeAudioData(buffer);
     if (data) {
-      return new Sound(name, data);
+      return new Sound(id, data);
     }
 
     return null;

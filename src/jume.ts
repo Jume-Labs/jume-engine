@@ -14,64 +14,163 @@ import { isMobile } from './utils/browserInfo.js';
 import { TimeStep } from './utils/timeStep.js';
 import { View } from './view/view.js';
 
-type JumeOptions = {
+/**
+ * The properties you can use to customize the Jume engine startup.
+ */
+type JumeProps = {
+  /**
+   * The name that goes in the title of the page.
+   */
   name?: string;
+
+  /**
+   * The width in pixels the game is designed for before scaling.
+   */
   designWidth?: number;
+
+  /**
+   * The height in pixels the game is designed for before scaling.
+   */
   designHeight?: number;
+
+  /**
+   * The html canvas width in pixels. If not provided it will be set the the design width.
+   */
   canvasWidth?: number;
+
+  /**
+   * The html canvas height in pixels. If not provided it will be set the the design height.
+   */
   canvasHeight?: number;
+
+  /**
+   * The id of the html canvas. Default is 'jume'.
+   */
   canvasId?: string;
+
+  /**
+   * Should the game pause when not focused. Default is true.
+   */
   pauseInBackground?: boolean;
+
+  /**
+   * Should WebGL 1 be used even if 2 is available. Default is false.
+   */
   forceGL1?: boolean;
+
+  /**
+   * Should all filtering be 'nearest'. This is good for pixel art games.
+   */
   pixelFilter?: boolean;
+
+  /**
+   * Should the game be the full width of the browser.
+   * TODO: Make this work properly on desktop.
+   */
   fullScreen?: boolean;
+
+  /**
+   * Should the game use the actual pixels instead of browser pixel ratio pixels. Default is false.
+   * This will look better, but performance will be worse if there is a lot on the screen.
+   */
   hdpi?: boolean;
+
+  /**
+   * The target fps to run the game in. Default is 60.
+   */
   targetFps?: number;
 };
 
+/**
+ * This is the maximum value the delta time can be. To prevent big spikes.
+ */
 const MAX_DT = 1.0 / 15;
 
-function setDefaultOptions(options: JumeOptions): void {
-  options.name ??= 'Jume Game';
-  options.designWidth ??= 800;
-  options.designHeight ??= 600;
-  options.canvasWidth ??= options.designWidth;
-  options.canvasHeight ??= options.designHeight;
-  options.canvasId ??= 'jume';
-  options.fullScreen ??= false;
-  options.pauseInBackground ??= true;
-  options.forceGL1 ??= false;
-  options.pixelFilter ??= false;
-  options.hdpi ??= false;
-  options.targetFps ??= -1;
+/**
+ * Set default values for the props that are not provided.
+ * @param props The startup properties.
+ */
+function setDefaultPropValues(props: JumeProps): void {
+  props.name ??= 'Jume Game';
+  props.designWidth ??= 800;
+  props.designHeight ??= 600;
+  props.canvasWidth ??= props.designWidth;
+  props.canvasHeight ??= props.designHeight;
+  props.canvasId ??= 'jume';
+  props.fullScreen ??= false;
+  props.pauseInBackground ??= true;
+  props.forceGL1 ??= false;
+  props.pixelFilter ??= false;
+  props.hdpi ??= false;
+  props.targetFps ??= -1;
 }
 
+/**
+ * This is the main engine class. You use this to start the game.
+ */
 export class Jume {
+  /**
+   * The time passed on the previous update.
+   */
   private prevTime = 0;
 
+  /**
+   * Check to see if the game is running in the background.
+   */
   private inBackground = false;
 
+  /**
+   * Check to see if the game should pause when in the background.
+   */
   private pauseInBackground = true;
 
+  /**
+   * The rendering context.
+   */
   private context: Context;
 
+  /**
+   * The game event manager.
+   */
   private eventManager: EventManager;
 
+  /**
+   * The main graphics reference.
+   */
   private graphics: Graphics;
 
+  /**
+   * The input manager.
+   */
   private input: Input;
 
+  /**
+   * The game scene manager use to switch scenes.
+   */
   private sceneManager: SceneManager;
 
+  /**
+   * The time step controls time in the game.
+   */
   private timeStep: TimeStep;
 
+  /**
+   * The view class to get view / canvas sizes etc.
+   */
   private view: View;
 
+  /**
+   * The main render target.
+   */
   private target: RenderTarget;
 
-  constructor(options?: JumeOptions) {
-    options ??= {};
-    setDefaultOptions(options);
+  /**
+   * Create a new jume game instance.
+   * @param props The startup properties.
+   */
+  constructor(props?: JumeProps) {
+    props ??= {};
+    setDefaultPropValues(props);
 
     const {
       name,
@@ -86,7 +185,7 @@ export class Jume {
       pixelFilter,
       hdpi,
       targetFps,
-    } = options;
+    } = props;
 
     const isFullScreen = isMobile() && fullScreen!;
     const width = isFullScreen ? window.innerWidth : canvasWidth!;
@@ -94,7 +193,10 @@ export class Jume {
     const pixelRatio = hdpi! ? window.devicePixelRatio : 1;
 
     document.title = name!;
+
     const canvas = document.getElementById(canvasId!) as HTMLCanvasElement;
+
+    // If there is no canvas the game can't start so throw an error.
     if (!canvas) {
       throw new Error('Canvas element not found');
     }
@@ -147,6 +249,10 @@ export class Jume {
     window.addEventListener('resize', () => this.resize(window.innerWidth, window.innerHeight));
   }
 
+  /**
+   * Launch the game. This is a separate function to make sure all internal systems are started.
+   * @param sceneType The scene type to start with.
+   */
   launch(sceneType: SceneType): void {
     this.sceneManager.changeScene({ type: 'push', sceneType });
 
@@ -156,6 +262,9 @@ export class Jume {
     });
   }
 
+  /**
+   * Move the game to the background. Can be called from outside if needed. Like with capacitor for example.
+   */
   toBackground(): void {
     this.inBackground = true;
     const event = ApplicationEvent.get('background');
@@ -165,6 +274,9 @@ export class Jume {
     }
   }
 
+  /**
+   * Move the game to foreground. Can be called from outside if needed. Like with capacitor for example.
+   */
   toForeground(): void {
     this.inBackground = false;
     const event = ApplicationEvent.get('foreground');
@@ -174,6 +286,11 @@ export class Jume {
     }
   }
 
+  /**
+   * Gets called when the browser window resizes.
+   * @param width The new window width in pixels.
+   * @param height The new window height in pixels.
+   */
   private resize(width: number, height: number): void {
     const ratio = this.view.pixelRatio;
     if (this.view.isFullScreen) {
@@ -194,6 +311,10 @@ export class Jume {
     }
   }
 
+  /**
+   * This is the main game loop.
+   * @param _time
+   */
   private loop = (_time: number): void => {
     requestAnimationFrame(this.loop);
 
@@ -214,6 +335,10 @@ export class Jume {
     }
   };
 
+  /**
+   * This updates everything in the game and then renders it.
+   * @param dt The time passed since the last update in seconds.
+   */
   private update(dt: number): void {
     if (!this.inBackground || !this.pauseInBackground) {
       // Make sure time doesn't skip too much.
@@ -221,26 +346,40 @@ export class Jume {
         dt = MAX_DT;
       }
       this.timeStep.update(dt);
+
+      // Use time step dt here because the time step can slow down or speed up the game.
       this.sceneManager.update(this.timeStep.dt);
 
       this.render();
     }
   }
 
+  /**
+   * Render the game.
+   */
   private render(): void {
+    // Reset the transform.
     this.graphics.transform.identity();
+
+    // Push the main render target on the stack.
     this.graphics.pushTarget(this.target);
 
+    // Render the scene to the render target.
     this.sceneManager.render(this.graphics);
 
+    // Pop the target from the stack.
     this.graphics.popTarget();
 
     // TODO: Draw fps and memory here.
+
+    // Reset the transform and color.
     this.graphics.transform.identity();
     this.graphics.color.set(1, 1, 1, 1);
 
+    // Scale the render target to fit the canvas. This scales from view pixels to canvas pixels.
     Mat4.fromScale(this.view.viewScaleX, this.view.viewScaleY, 1, this.graphics.transform);
 
+    // Draw the render target to the canvas.
     this.graphics.start();
     this.graphics.drawRenderTarget(0, 0, this.target);
     this.graphics.present();
