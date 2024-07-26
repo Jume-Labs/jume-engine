@@ -19,7 +19,7 @@ export class SystemManager {
     this.cameras = cameras;
   }
 
-  addSystem<T extends System, P = unknown>(systemType: SystemType<T>, props: P, order = 0): T {
+  addSystem<T extends System, P = unknown>(systemType: SystemType<T>, props?: P, order = 0): T {
     const base: BaseSystemProps = {
       systems: this.systems,
       order,

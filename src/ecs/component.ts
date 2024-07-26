@@ -35,7 +35,7 @@ export class Component {
 
   private readonly components: Map<ComponentType<Component>, Component>;
 
-  constructor(base: BaseComponentProps, _props?: unknown) {
+  constructor(base: BaseComponentProps) {
     this._entityId = base.entityId;
     this.components = base.components;
   }

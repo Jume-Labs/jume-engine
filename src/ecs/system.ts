@@ -31,7 +31,7 @@ export class System {
 
   private readonly systems: Map<SystemType<System>, System>;
 
-  constructor(base: BaseSystemProps, _props?: unknown) {
+  constructor(base: BaseSystemProps) {
     this.systems = base.systems;
     this.order = base.order;
   }

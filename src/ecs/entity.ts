@@ -43,7 +43,7 @@ export class Entity {
     }
   }
 
-  addComponent<T extends Component, P = unknown>(componentType: ComponentType<T>, props: P): T {
+  addComponent<T extends Component, P = unknown>(componentType: ComponentType<T>, props?: P): T {
     const base = {
       entityId: this.id,
       components: this.components,
