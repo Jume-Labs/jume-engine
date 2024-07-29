@@ -1,9 +1,6 @@
 import {
   AssetManager,
   BitmapFont,
-  CText,
-  CTransform,
-  Entity,
   EventListener,
   EventManager,
   inject,
