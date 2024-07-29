@@ -1,11 +1,14 @@
 import { Graphics } from '../graphics/graphics.js';
 
-export type ComponentType<T extends Component> = new (...args: any[]) => T;
+export type ComponentClass<T extends Component> = new (...args: any[]) => T;
 
-export type BaseComponentProps = {
-  entityId: number;
-  components: Map<ComponentType<Component>, Component>;
-};
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type ComponentType<Params extends readonly any[] = any[], T = Component> = new (...params: Params) => T;
+
+export interface BaseComponentProps {
+  entityId?: number;
+  components?: Map<ComponentClass<Component>, Component>;
+}
 
 export interface Renderable {
   cRender(graphics: Graphics): void;
@@ -33,16 +36,16 @@ export class Component {
 
   private _entityId: number;
 
-  private readonly components: Map<ComponentType<Component>, Component>;
+  private readonly components: Map<ComponentClass<Component>, Component>;
 
-  constructor(base: BaseComponentProps) {
-    this._entityId = base.entityId;
-    this.components = base.components;
+  constructor(props: BaseComponentProps) {
+    this._entityId = props.entityId!;
+    this.components = props.components!;
   }
 
   destroy(): void {}
 
-  protected getComponent<T extends Component>(componentType: ComponentType<T>): T {
+  protected getComponent<T extends Component>(componentType: ComponentClass<T>): T {
     return this.components.get(componentType) as T;
   }
 

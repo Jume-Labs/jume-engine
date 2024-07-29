@@ -1,4 +1,12 @@
-import { Component, ComponentType, hasRenderable, hasUpdatable, Renderable, Updatable } from './component.js';
+import {
+  Component,
+  ComponentClass,
+  ComponentType,
+  hasRenderable,
+  hasUpdatable,
+  Renderable,
+  Updatable,
+} from './component.js';
 
 export class Entity {
   active = true;
@@ -26,7 +34,7 @@ export class Entity {
 
   private _id: number;
 
-  private readonly components = new Map<ComponentType<Component>, Component>();
+  private readonly components = new Map<ComponentClass<Component>, Component>();
 
   private updatetableComponents: Updatable[] = [];
 
@@ -43,13 +51,13 @@ export class Entity {
     }
   }
 
-  addComponent<T extends Component, P = unknown>(componentType: ComponentType<T>, props?: P): T {
-    const base = {
-      entityId: this.id,
-      components: this.components,
-    };
+  addComponent<T extends ComponentType>(componentType: T, ...params: ConstructorParameters<T>): InstanceType<T> {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    params[0].entityId = this.id;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    params[0].components = this.components;
 
-    const component = new componentType(base, props);
+    const component = new componentType(...params);
     this.components.set(componentType, component);
     this.componentsUpdated = true;
 
@@ -61,16 +69,16 @@ export class Entity {
       this.renderableComponents.push(component as unknown as Renderable);
     }
 
-    return component;
+    return component as InstanceType<T>;
   }
 
-  removeComponent(componentType: typeof Component): boolean {
+  removeComponent(componentClass: typeof Component): boolean {
     let removed = false;
-    if (this.components.has(componentType)) {
-      const component = this.components.get(componentType)!;
+    if (this.components.has(componentClass)) {
+      const component = this.components.get(componentClass)!;
       component.destroy();
 
-      this.components.delete(componentType);
+      this.components.delete(componentClass);
       this.componentsUpdated = true;
       removed = true;
 
@@ -88,17 +96,17 @@ export class Entity {
     return removed;
   }
 
-  getComponent<T extends Component>(componentType: ComponentType<T>): T {
-    return this.components.get(componentType) as T;
+  getComponent<T extends Component>(componentClass: ComponentClass<T>): T {
+    return this.components.get(componentClass) as T;
   }
 
-  hasComponent(componentType: typeof Component): boolean {
-    return this.components.has(componentType);
+  hasComponent(componentClass: typeof Component): boolean {
+    return this.components.has(componentClass);
   }
 
-  hasComponents(componentTypes: (typeof Component)[]): boolean {
-    for (const componentType of componentTypes) {
-      if (!this.components.has(componentType)) {
+  hasComponents(componentClasses: (typeof Component)[]): boolean {
+    for (const componentClass of componentClasses) {
+      if (!this.components.has(componentClass)) {
         return false;
       }
     }

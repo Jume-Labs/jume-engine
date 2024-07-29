@@ -2,6 +2,9 @@ import { removeByValue } from '../utils/arrayUtils.js';
 import { Entity } from './entity.js';
 import { SystemManager } from './systemManager.js';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type EntityType<Params extends readonly unknown[] = any[], T = Entity> = new (...params: Params) => T;
+
 export class EntityManager {
   private readonly entities: Entity[] = [];
 
@@ -30,9 +33,12 @@ export class EntityManager {
     }
   }
 
-  add(entity: Entity): void {
+  add<T extends EntityType>(entityType: T, ...params: ConstructorParameters<T>): InstanceType<T> {
+    const entity = new entityType(...params);
     this.entities.push(entity);
     this.systemManager.updateSystemEntities(entity);
+
+    return entity as InstanceType<T>;
   }
 
   remove(entity: Entity): boolean {

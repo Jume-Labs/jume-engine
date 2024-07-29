@@ -3,14 +3,14 @@ import { toRad } from '../../math/mathUtils.js';
 import { Vec2 } from '../../math/vec2.js';
 import { BaseComponentProps, Component } from '../component.js';
 
-export type CTransformProps = {
+export interface CTransformProps extends BaseComponentProps {
   x?: number;
   y?: number;
   rotation?: number;
   scaleX?: number;
   scaleXY?: number;
   parent?: CTransform;
-};
+}
 
 export class CTransform extends Component {
   parent?: CTransform;
@@ -31,12 +31,15 @@ export class CTransform extends Component {
 
   private tempScale = new Vec2();
 
-  constructor(base: BaseComponentProps, props: CTransformProps) {
-    super(base);
-    this.position.set(props.x ?? 0, props.y ?? 0);
-    this.rotation = props.rotation ?? 0;
-    this.scale.set(props.scaleX ?? 1, props.scaleXY ?? 1);
-    this.active = true;
+  constructor(props: CTransformProps) {
+    super(props);
+
+    const { x, y, rotation, scaleX, scaleXY, parent } = props;
+
+    this.position.set(x ?? 0, y ?? 0);
+    this.rotation = rotation ?? 0;
+    this.scale.set(scaleX ?? 1, scaleXY ?? 1);
+    this.parent = parent;
 
     return this;
   }

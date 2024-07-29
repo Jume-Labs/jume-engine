@@ -4,12 +4,12 @@ import { Graphics } from '../../graphics/graphics.js';
 import { Vec2 } from '../../math/vec2.js';
 import { BaseComponentProps, Component, Renderable } from '../component.js';
 
-export type CTextProps = {
+export interface CTextProps extends BaseComponentProps {
   font: BitmapFont;
   text: string;
   tint?: Color;
   anchor?: { x: number; y: number };
-};
+}
 
 export class CText extends Component implements Renderable {
   font?: BitmapFont;
@@ -28,18 +28,20 @@ export class CText extends Component implements Renderable {
     return this.font?.height ?? 0;
   }
 
-  constructor(base: BaseComponentProps, props: CTextProps) {
-    super(base);
-    this.font = props.font;
-    this.text = props.text;
+  constructor(props: CTextProps) {
+    super(props);
 
-    if (props.tint) {
-      this.tint.copyFrom(props.tint);
+    const { font, text, tint, anchor } = props;
+
+    this.font = font;
+    this.text = text;
+
+    if (tint) {
+      this.tint.copyFrom(tint);
     }
-    this.active = true;
 
-    if (props.anchor) {
-      this.anchor.set(props.anchor.x, props.anchor.y);
+    if (anchor) {
+      this.anchor.set(anchor.x, anchor.y);
     }
 
     return this;

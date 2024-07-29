@@ -3,27 +3,21 @@ import { Graphics } from '../../graphics/graphics.js';
 import { Vec2 } from '../../math/vec2.js';
 import { BaseComponentProps, Component, Renderable } from '../component.js';
 
-export interface CCircleShapeProps extends BaseComponentProps {
-  radius: number;
-  segments?: number;
+export interface CPolygonShapeProps extends BaseComponentProps {
+  vertices: Vec2[];
   filled?: boolean;
   stroke?: boolean;
+  fillColor?: Color;
   strokeColor?: Color;
   strokeWidth?: number;
-  fillColor?: Color;
-  anchor?: { x: number; y: number };
 }
 
-export class CCircleShape extends Component implements Renderable {
+export class CPolygonShape extends Component implements Renderable {
   strokeColor = new Color(1, 1, 1, 1);
 
   fillColor = new Color(1, 1, 1, 1);
 
-  anchor = new Vec2();
-
-  radius: number;
-
-  segments: number;
+  vertices: Vec2[];
 
   filled: boolean;
 
@@ -31,45 +25,35 @@ export class CCircleShape extends Component implements Renderable {
 
   strokeWidth: number;
 
-  constructor(props: CCircleShapeProps) {
+  constructor(props: CPolygonShapeProps) {
     super(props);
 
-    const { radius, filled, strokeColor, strokeWidth, fillColor, anchor, stroke, segments } = props;
+    const { vertices, fillColor, filled, stroke, strokeColor, strokeWidth } = props;
 
-    this.radius = radius;
-    this.segments = segments ?? 48;
+    this.vertices = vertices;
     this.filled = filled ?? false;
     this.stroke = stroke ?? true;
 
     if (strokeColor) {
       this.strokeColor.copyFrom(strokeColor);
     }
+
     if (fillColor) {
       this.fillColor.copyFrom(fillColor);
     }
 
     this.strokeWidth = strokeWidth ?? 1;
-
-    if (anchor) {
-      this.anchor.set(anchor.x, anchor.y);
-    }
   }
 
   cRender(graphics: Graphics): void {
     if (this.filled) {
       graphics.color.copyFrom(this.fillColor);
-      graphics.drawSolidCircle(-this.radius * this.anchor.x, -this.radius * this.anchor.y, this.radius, this.segments);
+      graphics.drawSolidPolygon(0, 0, this.vertices);
     }
 
     if (this.stroke) {
       graphics.color.copyFrom(this.strokeColor);
-      graphics.drawCircle(
-        -this.radius * this.anchor.x,
-        -this.radius * this.anchor.y,
-        this.radius,
-        this.segments,
-        this.strokeWidth
-      );
+      graphics.drawPolygon(0, 0, this.vertices, this.strokeWidth);
     }
   }
 }

@@ -3,7 +3,7 @@ import { removeByValue } from '../utils/arrayUtils.js';
 import { Camera } from '../view/camera.js';
 import { View } from '../view/view.js';
 import { Entity } from './entity.js';
-import { BaseSystemProps, System, SystemType } from './system.js';
+import { System, SystemConstructible, SystemType } from './system.js';
 
 export class SystemManager {
   private systems = new Map<SystemType<System>, System>();
@@ -19,12 +19,17 @@ export class SystemManager {
     this.cameras = cameras;
   }
 
-  addSystem<T extends System, P = unknown>(systemType: SystemType<T>, props?: P, order = 0): T {
-    const base: BaseSystemProps = {
-      systems: this.systems,
-      order,
-    };
-    const system = new systemType(base, props);
+  addSystem<T extends SystemConstructible>(
+    systemType: T,
+    order: number,
+    ...params: ConstructorParameters<T>
+  ): InstanceType<T> {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    params[0].systems = this.systems;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    params[0].order = order;
+
+    const system = new systemType(...params);
     this.systems.set(systemType, system);
 
     this.systemList.push(system);
@@ -38,7 +43,7 @@ export class SystemManager {
       return 0;
     });
 
-    return system;
+    return system as InstanceType<T>;
   }
 
   removeSystem(systemType: typeof System): boolean {

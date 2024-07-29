@@ -1,19 +1,22 @@
 import { Graphics } from '../graphics/graphics.js';
 import { removeByValue } from '../utils/arrayUtils.js';
 import { Camera } from '../view/camera.js';
-import { Component, ComponentType } from './component.js';
+import { Component, ComponentClass } from './component.js';
 import { Entity } from './entity.js';
 
 export type SystemType<T extends System> = new (...args: any[]) => T;
 
-export type BaseSystemProps = {
-  systems: Map<SystemType<System>, System>;
-  order: number;
-};
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type SystemConstructible<Params extends readonly any[] = any[], T = System> = new (...params: Params) => T;
+
+export interface BaseSystemProps {
+  systems?: Map<SystemType<System>, System>;
+  order?: number;
+}
 
 type EntityList = {
   entities: Entity[];
-  components?: ComponentType<Component>[];
+  components?: ComponentClass<Component>[];
   updatables?: boolean;
   renderables?: boolean;
   addCallback?: (entity: Entity) => void;
@@ -31,9 +34,9 @@ export class System {
 
   private readonly systems: Map<SystemType<System>, System>;
 
-  constructor(base: BaseSystemProps) {
-    this.systems = base.systems;
-    this.order = base.order;
+  constructor(props: BaseSystemProps) {
+    this.systems = props.systems!;
+    this.order = props.order!;
   }
 
   update(_dt: number): void {}

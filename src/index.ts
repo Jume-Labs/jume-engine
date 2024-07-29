@@ -18,8 +18,10 @@ export * from './ecs/system.js';
 export * from './ecs/systemManager.js';
 
 // Included components.
+export * from './ecs/components/cAnimation.js';
 export * from './ecs/components/cBoxShape.js';
 export * from './ecs/components/cCircleShape.js';
+export * from './ecs/components/cPolygonShape.js';
 export * from './ecs/components/cSprite.js';
 export * from './ecs/components/cText.js';
 export * from './ecs/components/cTransform.js';

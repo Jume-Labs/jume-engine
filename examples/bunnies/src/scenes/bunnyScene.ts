@@ -2,9 +2,7 @@ import {
   AssetManager,
   BitmapFont,
   CText,
-  CTextProps,
   CTransform,
-  CTransformProps,
   Entity,
   EventListener,
   EventManager,
@@ -17,13 +15,14 @@ import {
 } from '@jume-labs/jume-engine';
 
 import { EBunny } from '../entities/eBunny';
+import { EText } from '../entities/eText';
 
 export class BunnyScene extends Scene {
   private addingBunnies = false;
 
-  private fpsTextComp: CText;
+  private fps: EText;
 
-  private bunniesTextComp: CText;
+  private bunnyText: EText;
 
   private bunnyCount = 0;
 
@@ -37,36 +36,27 @@ export class BunnyScene extends Scene {
   private timeStep!: TimeStep;
 
   private mouseDownListener: EventListener;
+
   private mouseUpListener: EventListener;
 
   constructor() {
     super();
     this.view.debugRender = false;
 
-    this.addSystem(SUpdate, {});
-    this.addSystem(SRender, {});
+    this.addSystem(SUpdate, 0, {});
+    this.addSystem(SRender, 0, {});
 
     const font = this.assetManager.getAsset(BitmapFont, 'font');
 
-    const fpsText = new Entity();
-    fpsText.layer = 1;
-    fpsText.addComponent<CTransform, CTransformProps>(CTransform, { x: 16, y: 16 });
-    this.fpsTextComp = fpsText.addComponent<CText, CTextProps>(CText, {
-      font,
-      text: 'FPS: 0',
-      anchor: { x: 0, y: 0.5 },
-    });
-    this.addEntity(fpsText);
-
-    const bunniesText = new Entity();
-    bunniesText.layer = 1;
-    bunniesText.addComponent<CTransform, CTransformProps>(CTransform, { x: 16, y: 48 });
-    this.bunniesTextComp = bunniesText.addComponent<CText, CTextProps>(CText, {
+    this.fps = this.addEntity(EText, { layer: 1, x: 16, y: 16, font, text: 'FPS: 0', anchor: { x: 0, y: 0.5 } });
+    this.bunnyText = this.addEntity(EText, {
+      layer: 1,
+      x: 16,
+      y: 48,
       font,
       text: 'Bunnies: 0',
       anchor: { x: 0, y: 0.5 },
     });
-    this.addEntity(bunniesText);
 
     this.mouseDownListener = this.eventManager.add(MouseEvent.MOUSE_DOWN, this.mouseDown);
     this.mouseUpListener = this.eventManager.add(MouseEvent.MOUSE_UP, this.mouseUp);
@@ -77,7 +67,7 @@ export class BunnyScene extends Scene {
   override update(dt: number): void {
     super.update(dt);
 
-    this.fpsTextComp.text = `FPS: ${this.timeStep.fps}`;
+    this.fps.txt.text = `FPS: ${this.timeStep.fps}`;
 
     if (this.addingBunnies) {
       for (let i = 0; i < 20; i++) {
@@ -92,10 +82,10 @@ export class BunnyScene extends Scene {
   }
 
   private createBunny(): void {
-    this.addEntity(new EBunny());
+    this.addEntity(EBunny);
 
     this.bunnyCount++;
-    this.bunniesTextComp.text = `Bunnies: ${this.bunnyCount}`;
+    this.bunnyText.txt.text = `Bunnies: ${this.bunnyCount}`;
   }
 
   private mouseDown = (_event: MouseEvent): void => {

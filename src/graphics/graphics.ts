@@ -1,4 +1,5 @@
 import { Mat4 } from '../math/mat4.js';
+import { Vec2 } from '../math/vec2.js';
 import { View } from '../view/view.js';
 import { BitmapFont } from './bitmapFont.js';
 import { Color } from './color.js';
@@ -212,6 +213,16 @@ export class Graphics {
   drawCircle(x: number, y: number, radius: number, segments = 32, lineWidth = 1): void {
     this.imageRenderer.present();
     this.shapeRenderer.drawCircle(x, y, radius, segments, lineWidth, this.color, this.transform);
+  }
+
+  drawSolidPolygon(x: number, y: number, vertices: Vec2[]): void {
+    this.imageRenderer.present();
+    this.shapeRenderer.drawSolidPolygon(x, y, vertices, this.color, this.transform);
+  }
+
+  drawPolygon(x: number, y: number, vertices: Vec2[], lineWidth = 1): void {
+    this.imageRenderer.present();
+    this.shapeRenderer.drawPolygon(x, y, vertices, lineWidth, this.color, this.transform);
   }
 
   drawImage(x: number, y: number, image: Image, flipX = false, flipY = false): void {

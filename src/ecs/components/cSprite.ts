@@ -4,14 +4,14 @@ import { Graphics } from '../../graphics/graphics.js';
 import { Vec2 } from '../../math/vec2.js';
 import { BaseComponentProps, Component, Renderable } from '../component.js';
 
-export type CSpriteProps = {
+export interface CSpriteProps extends BaseComponentProps {
   atlas: Atlas;
   frameName: string;
   anchor?: { x: number; y: number };
   tint?: Color;
   flipX?: boolean;
   flipY?: boolean;
-};
+}
 
 export class CSprite extends Component implements Renderable {
   anchor = new Vec2(0.5, 0.5);
@@ -42,20 +42,20 @@ export class CSprite extends Component implements Renderable {
 
   private frame?: AtlasFrame;
 
-  constructor(base: BaseComponentProps, props: CSpriteProps) {
-    super(base);
-    if (props.anchor) {
-      this.anchor.set(props.anchor.x, props.anchor.y);
+  constructor(props: CSpriteProps) {
+    super(props);
+
+    const { atlas, frameName, flipX, flipY, anchor, tint } = props;
+    if (anchor) {
+      this.anchor.set(anchor.x, anchor.y);
     }
 
-    this.flipX = props.flipX ?? false;
-    this.flipY = props.flipY ?? false;
-    if (props.tint) {
-      this.tint.copyFrom(props.tint);
+    this.flipX = flipX ?? false;
+    this.flipY = flipY ?? false;
+    if (tint) {
+      this.tint.copyFrom(tint);
     }
-    this.setFrame(props.frameName, props.atlas);
-
-    this.active = true;
+    this.setFrame(frameName, atlas);
 
     return this;
   }

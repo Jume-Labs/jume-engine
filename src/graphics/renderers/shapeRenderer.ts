@@ -1,4 +1,5 @@
 import { Mat4 } from '../../math/mat4.js';
+import { Vec2 } from '../../math/vec2.js';
 import { Vec3 } from '../../math/vec3.js';
 import { Color } from '../color.js';
 import { Context } from '../context.js';
@@ -198,6 +199,50 @@ export class ShapeRenderer extends BaseRenderer {
       sx = cos * sx - sin * sy;
       sy = cos * sy + sin * t;
       this.drawSolidTriangle(px, py, sx + x, sy + y, x, y, color, transform);
+    }
+  }
+
+  drawPolygon(x: number, y: number, vertices: Vec2[], lineWidth: number, color: Color, transform: Mat4): void {
+    if (vertices.length < 3) {
+      console.log('Cannot draw polygon with less than 3 points');
+      return;
+    }
+
+    const start = vertices[0];
+    let last = start;
+
+    for (let i = 1; i < vertices.length; i++) {
+      const current = vertices[i];
+
+      this.drawLine(last.x + x, last.y + y, current.x + x, current.y + y, 'inside', lineWidth, color, transform);
+      last = current;
+    }
+
+    this.drawLine(last.x + x, last.y + y, start.x + x, start.y + y, 'inside', lineWidth, color, transform);
+  }
+
+  drawSolidPolygon(x: number, y: number, vertices: Vec2[], color: Color, transform: Mat4): void {
+    if (vertices.length < 3) {
+      console.log('Cannot draw polygon with less than 3 points');
+      return;
+    }
+
+    const first = vertices[0];
+    let last = vertices[1];
+
+    for (let i = 2; i < vertices.length; i++) {
+      const current = vertices[i];
+      this.drawSolidTriangle(
+        first.x + x,
+        first.y + y,
+        last.x + x,
+        last.y + y,
+        current.x + x,
+        current.y + y,
+        color,
+        transform
+      );
+      last = current;
     }
   }
 

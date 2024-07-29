@@ -1,7 +1,7 @@
 import { inject } from '../di/inject.js';
 import { Entity } from '../ecs/entity.js';
-import { EntityManager } from '../ecs/entityManager.js';
-import { System, SystemType } from '../ecs/system.js';
+import { EntityManager, EntityType } from '../ecs/entityManager.js';
+import { System, SystemConstructible } from '../ecs/system.js';
 import { SystemManager } from '../ecs/systemManager.js';
 import { Graphics } from '../graphics/graphics.js';
 import { TweenManager } from '../tweens/tweenManager.js';
@@ -43,8 +43,8 @@ export class Scene {
     this.tweenManager = new TweenManager();
   }
 
-  addEntity(entity: Entity): void {
-    this.entityManager.add(entity);
+  addEntity<T extends EntityType>(entityType: T, ...params: ConstructorParameters<T>): InstanceType<T> {
+    return this.entityManager.add(entityType, ...params);
   }
 
   removeEntity(entity: Entity): boolean {
@@ -59,8 +59,12 @@ export class Scene {
     return this.entityManager.getById(id);
   }
 
-  addSystem<T extends System, P = unknown>(systemType: SystemType<T>, props?: P, order = 0): T {
-    return this.systemManager.addSystem(systemType, props, order);
+  addSystem<T extends SystemConstructible>(
+    systemType: T,
+    order: number,
+    ...params: ConstructorParameters<T>
+  ): InstanceType<T> {
+    return this.systemManager.addSystem(systemType, order, ...params);
   }
 
   removeSystem(systemType: typeof System): boolean {

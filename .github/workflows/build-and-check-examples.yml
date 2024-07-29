@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        example-paths: [examples/bunnies]
+        example-paths: [examples/bunnies, examples/shapes]
     steps:
     - uses: actions/checkout@v4
 

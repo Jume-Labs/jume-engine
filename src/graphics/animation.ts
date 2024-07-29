@@ -3,7 +3,7 @@ import { Atlas, AtlasFrame } from './atlas.js';
 export type AnimationMode = 'normal' | 'loop' | 'reversed' | 'loop reversed' | 'ping pong';
 
 export class Animation {
-  readonly name: string;
+  readonly id: string;
 
   readonly frames: string[];
 
@@ -13,8 +13,8 @@ export class Animation {
 
   atlas: Atlas;
 
-  constructor(name: string, atlas: Atlas, frames: string[], frameDuration: number, playMode: AnimationMode = 'normal') {
-    this.name = name;
+  constructor(id: string, atlas: Atlas, frames: string[], frameDuration: number, playMode: AnimationMode = 'normal') {
+    this.id = id;
     this.atlas = atlas;
     this.frames = frames;
     this.frameDuration = frameDuration;
