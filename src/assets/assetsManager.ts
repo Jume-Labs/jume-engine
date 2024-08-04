@@ -7,6 +7,7 @@ import { Context } from '../graphics/context.js';
 import { Image } from '../graphics/image.js';
 import { Shader } from '../graphics/shader.js';
 import { ShaderType } from '../graphics/types.js';
+import { Tileset } from '../tilemap/tileset.js';
 
 export type AssetItem = {
   type: new (...args: any[]) => unknown;
@@ -107,6 +108,7 @@ export class AssetManager {
     this.registerLoader(new ShaderLoader(this));
     this.registerLoader(new SoundLoader(this));
     this.registerLoader(new AtlasLoader(this));
+    this.registerLoader(new TilesetLoader(this));
   }
 
   /**
@@ -407,6 +409,45 @@ class AtlasLoader extends AssetLoader<Atlas> {
     if (this.loadedAssets[id]) {
       this.manager.unloadAsset(Image, `jume_atlas_${id}`);
       this.manager.unloadAsset(String, `jume_atlas_${id}`);
+
+      return super.unload(id);
+    }
+
+    return false;
+  }
+}
+
+export type TilesetLoaderProps = {
+  tileWidth: number;
+  tileHeight: number;
+  spacing: number;
+  margin: number;
+};
+
+class TilesetLoader extends AssetLoader<Tileset> {
+  constructor(manager: AssetManager) {
+    super(Tileset, manager);
+  }
+
+  async load(id: string, path: string, props?: TilesetLoaderProps, keep?: boolean): Promise<Tileset> {
+    if (!props || !props.tileWidth || !props.tileHeight || !props.spacing || !props.margin) {
+      throw new Error('missing properties to load the tilemap');
+    }
+
+    const { tileWidth, tileHeight, spacing, margin } = props;
+
+    const image = await this.manager.loadAsset(Image, `jume_tileset_${id}`, path, undefined, keep);
+    const tileset = new Tileset(image, tileWidth, tileHeight, spacing, margin);
+    if (keep) {
+      this.loadedAssets[id] = tileset;
+    }
+
+    return tileset;
+  }
+
+  override unload(id: string): boolean {
+    if (this.loadedAssets[id]) {
+      this.manager.unloadAsset(Image, `jume_tileset_${id}`);
 
       return super.unload(id);
     }

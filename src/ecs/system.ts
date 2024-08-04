@@ -10,8 +10,8 @@ export type SystemType<T extends System> = new (...args: any[]) => T;
 export type SystemConstructible<Params extends readonly any[] = any[], T = System> = new (...params: Params) => T;
 
 export interface BaseSystemProps {
-  systems?: Map<SystemType<System>, System>;
-  order?: number;
+  _systems?: Map<SystemType<System>, System>;
+  _order?: number;
 }
 
 type EntityList = {
@@ -35,8 +35,8 @@ export class System {
   private readonly systems: Map<SystemType<System>, System>;
 
   constructor(props: BaseSystemProps) {
-    this.systems = props.systems!;
-    this.order = props.order!;
+    this.systems = props._systems!;
+    this.order = props._order!;
   }
 
   update(_dt: number): void {}

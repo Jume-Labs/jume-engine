@@ -24,6 +24,7 @@ export * from './ecs/components/cCircleShape.js';
 export * from './ecs/components/cPolygonShape.js';
 export * from './ecs/components/cSprite.js';
 export * from './ecs/components/cText.js';
+export * from './ecs/components/cTilemap.js';
 export * from './ecs/components/cTransform.js';
 
 // Included systems.
@@ -71,6 +72,10 @@ export * from './math/vec3.js';
 
 // Scenes.
 export * from './scenes/scenes.js';
+
+// Tilemaps
+export * from './tilemap/tilemapColliders.js';
+export * from './tilemap/tileset.js';
 
 // Tweening.
 export * from './tweens/easing.js';

@@ -318,7 +318,7 @@ export class Jume {
   private loop = (_time: number): void => {
     requestAnimationFrame(this.loop);
 
-    const now = Date.now();
+    const now = performance.now();
     const passed = now - this.prevTime;
     if (this.view.targetFps !== -1) {
       const interval = 1.0 / this.view.targetFps;

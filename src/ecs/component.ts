@@ -6,8 +6,8 @@ export type ComponentClass<T extends Component> = new (...args: any[]) => T;
 export type ComponentType<Params extends readonly any[] = any[], T = Component> = new (...params: Params) => T;
 
 export interface BaseComponentProps {
-  entityId?: number;
-  components?: Map<ComponentClass<Component>, Component>;
+  _entityId?: number;
+  _components?: Map<ComponentClass<Component>, Component>;
 }
 
 export interface Renderable {
@@ -39,8 +39,8 @@ export class Component {
   private readonly components: Map<ComponentClass<Component>, Component>;
 
   constructor(props: BaseComponentProps) {
-    this._entityId = props.entityId!;
-    this.components = props.components!;
+    this._entityId = props._entityId!;
+    this.components = props._components!;
   }
 
   destroy(): void {}
