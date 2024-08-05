@@ -1,15 +1,16 @@
-import { AssetManager } from './assets/assetsManager.js';
-import { AudioManager } from './audio/audioManager.js';
+import { Assets } from './assets/assets.js';
+import { Audio } from './audio/audio.js';
 import { addService } from './di/services.js';
 import { ApplicationEvent } from './events/applicationEvent.js';
-import { EventManager } from './events/eventManager.js';
+import { Events } from './events/events.js';
 import { Context } from './graphics/context.js';
 import { Graphics } from './graphics/graphics.js';
 import { RenderTarget } from './graphics/renderTarget.js';
 import { Input } from './input/input.js';
 import { Mat4 } from './math/mat4.js';
+import { clamp } from './math/mathUtils.js';
 import { Random } from './math/random.js';
-import { SceneManager, SceneType } from './scenes/scenes.js';
+import { Scenes, SceneType } from './scenes/scenes.js';
 import { isMobile } from './utils/browserInfo.js';
 import { TimeStep } from './utils/timeStep.js';
 import { View } from './view/view.js';
@@ -132,7 +133,7 @@ export class Jume {
   /**
    * The game event manager.
    */
-  private eventManager: EventManager;
+  private events: Events;
 
   /**
    * The main graphics reference.
@@ -147,7 +148,7 @@ export class Jume {
   /**
    * The game scene manager use to switch scenes.
    */
-  private sceneManager: SceneManager;
+  private scenes: Scenes;
 
   /**
    * The time step controls time in the game.
@@ -217,14 +218,14 @@ export class Jume {
     this.timeStep = new TimeStep();
     addService('timeStep', this.timeStep);
 
-    addService('audioManager', new AudioManager());
+    addService('audio', new Audio());
 
-    const assetManager = new AssetManager();
-    addService('assetManager', assetManager);
-    assetManager.registerBuiltinLoaders();
+    const assets = new Assets();
+    addService('assets', assets);
+    assets.registerBuiltinLoaders();
 
-    this.eventManager = new EventManager();
-    addService('eventManager', this.eventManager);
+    this.events = new Events();
+    addService('events', this.events);
     addService('random', new Random());
 
     this.graphics = new Graphics(this.context, this.view);
@@ -233,8 +234,8 @@ export class Jume {
     this.input = new Input(canvas);
     addService('input', this.input);
 
-    this.sceneManager = new SceneManager();
-    addService('sceneManager', this.sceneManager);
+    this.scenes = new Scenes();
+    addService('scenes', this.scenes);
 
     this.target = new RenderTarget(
       this.view.viewWidth,
@@ -254,7 +255,7 @@ export class Jume {
    * @param sceneType The scene type to start with.
    */
   launch(sceneType: SceneType): void {
-    this.sceneManager.changeScene({ type: 'push', sceneType });
+    this.scenes.changeScene({ type: 'push', sceneType });
 
     requestAnimationFrame((_time) => {
       this.prevTime = Date.now();
@@ -268,9 +269,9 @@ export class Jume {
   toBackground(): void {
     this.inBackground = true;
     const event = ApplicationEvent.get('background');
-    this.eventManager.send(event);
-    if (this.sceneManager.current) {
-      this.sceneManager.current.toBackground();
+    this.events.send(event);
+    if (this.scenes.current) {
+      this.scenes.current.toBackground();
     }
   }
 
@@ -280,9 +281,9 @@ export class Jume {
   toForeground(): void {
     this.inBackground = false;
     const event = ApplicationEvent.get('foreground');
-    this.eventManager.send(event);
-    if (this.sceneManager.current) {
-      this.sceneManager.current.toForeground();
+    this.events.send(event);
+    if (this.scenes.current) {
+      this.scenes.current.toForeground();
     }
   }
 
@@ -305,9 +306,9 @@ export class Jume {
     }
 
     const event = ApplicationEvent.get('resize', width * ratio, height * ratio);
-    this.eventManager.send(event);
-    if (this.sceneManager.current) {
-      this.sceneManager.current.resize(width * ratio, height * ratio);
+    this.events.send(event);
+    if (this.scenes.current) {
+      this.scenes.current.resize(width * ratio, height * ratio);
     }
   }
 
@@ -342,13 +343,11 @@ export class Jume {
   private update(dt: number): void {
     if (!this.inBackground || !this.pauseInBackground) {
       // Make sure time doesn't skip too much.
-      if (dt > MAX_DT) {
-        dt = MAX_DT;
-      }
+      dt = clamp(dt, 0, MAX_DT);
       this.timeStep.update(dt);
 
       // Use time step dt here because the time step can slow down or speed up the game.
-      this.sceneManager.update(this.timeStep.dt);
+      this.scenes.update(this.timeStep.dt);
 
       this.render();
     }
@@ -365,7 +364,7 @@ export class Jume {
     this.graphics.pushTarget(this.target);
 
     // Render the scene to the render target.
-    this.sceneManager.render(this.graphics);
+    this.scenes.render(this.graphics);
 
     // Pop the target from the stack.
     this.graphics.popTarget();

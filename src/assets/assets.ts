@@ -1,4 +1,4 @@
-import { AudioManager } from '../audio/audioManager.js';
+import { Audio } from '../audio/audio.js';
 import { Sound } from '../audio/sound.js';
 import { inject } from '../di/inject.js';
 import { Atlas } from '../graphics/atlas.js';
@@ -28,7 +28,7 @@ export abstract class AssetLoader<T> {
   /**
    * Internal asset manager instance.
    */
-  protected manager: AssetManager;
+  protected assets: Assets;
 
   /**
    * The map of loaded assets for this loader.
@@ -38,11 +38,11 @@ export abstract class AssetLoader<T> {
   /**
    * Create a new loader instance.
    * @param assetType The type of asset to manage.
-   * @param manager The asset manager instance.
+   * @param assets The asset manager instance.
    */
-  constructor(assetType: new (...args: any[]) => T, manager: AssetManager) {
+  constructor(assetType: new (...args: any[]) => T, assets: Assets) {
     this.assetType = assetType;
-    this.manager = manager;
+    this.assets = assets;
   }
 
   /**
@@ -92,7 +92,7 @@ export abstract class AssetLoader<T> {
 /**
  * Class to load and manage assets.
  */
-export class AssetManager {
+export class Assets {
   /**
    * The registered loaders.
    */
@@ -128,13 +128,7 @@ export class AssetManager {
    * @param keep Should this asset be stored.
    * @returns The loaded asset.
    */
-  async loadAsset<T>(
-    type: new (...args: any[]) => T,
-    id: string,
-    path: string,
-    props?: unknown,
-    keep = true
-  ): Promise<T> {
+  async load<T>(type: new (...args: any[]) => T, id: string, path: string, props?: unknown, keep = true): Promise<T> {
     return new Promise((resolve, reject) => {
       if (this.loaders.has(type)) {
         this.loaders
@@ -162,7 +156,7 @@ export class AssetManager {
       let loaded = 0;
 
       for (const { type, id, path, props } of assets) {
-        this.loadAsset(type, id, path, props)
+        this.load(type, id, path, props)
           .then(() => {
             loaded++;
             if (loaded === count) {
@@ -182,7 +176,7 @@ export class AssetManager {
    * @param id The id used to reference the asset.
    * @param instance The asset to add.
    */
-  addAsset<T>(type: new (...args: any[]) => T, id: string, instance: T): void {
+  add<T>(type: new (...args: any[]) => T, id: string, instance: T): void {
     if (this.loaders.has(type)) {
       this.loaders.get(type)!.add(id, instance);
     } else {
@@ -196,7 +190,7 @@ export class AssetManager {
    * @param id The id of the asset.
    * @returns The loaded asset. Will throw if the asset is not loaded.
    */
-  getAsset<T>(type: new (...args: any[]) => T, id: string): T {
+  get<T>(type: new (...args: any[]) => T, id: string): T {
     if (this.loaders.has(type)) {
       return this.loaders.get(type)!.get(id) as T;
     }
@@ -210,7 +204,7 @@ export class AssetManager {
    * @param id The id of the asset.
    * @returns True if the unload was successful.
    */
-  unloadAsset<T>(type: new (...args: any[]) => T, id: string): boolean {
+  unload<T>(type: new (...args: any[]) => T, id: string): boolean {
     if (this.loaders.has(type)) {
       return this.loaders.get(type)!.unload(id);
     } else {
@@ -220,8 +214,8 @@ export class AssetManager {
 }
 
 class ImageLoader extends AssetLoader<Image> {
-  constructor(manager: AssetManager) {
-    super(Image, manager);
+  constructor(assets: Assets) {
+    super(Image, assets);
   }
 
   async load(id: string, path: string, _props?: unknown, keep = true): Promise<Image> {
@@ -269,8 +263,8 @@ class ImageLoader extends AssetLoader<Image> {
 }
 
 class TextLoader extends AssetLoader<String> {
-  constructor(manager: AssetManager) {
-    super(String, manager);
+  constructor(assets: Assets) {
+    super(String, assets);
   }
 
   async load(id: string, path: string, _props?: unknown, keep = true): Promise<String> {
@@ -289,13 +283,13 @@ class TextLoader extends AssetLoader<String> {
 }
 
 class BitmapFontLoader extends AssetLoader<BitmapFont> {
-  constructor(manager: AssetManager) {
-    super(BitmapFont, manager);
+  constructor(assets: Assets) {
+    super(BitmapFont, assets);
   }
 
   async load(id: string, path: string, _props?: unknown, keep = true): Promise<BitmapFont> {
-    const image = await this.manager.loadAsset(Image, `jume_bitmap_font_${id}`, `${path}.png`, undefined, keep);
-    const data = await this.manager.loadAsset(String, `jume_bitmap_font_${id}`, `${path}.fnt`, undefined, keep);
+    const image = await this.assets.load(Image, `jume_bitmap_font_${id}`, `${path}.png`, undefined, keep);
+    const data = await this.assets.load(String, `jume_bitmap_font_${id}`, `${path}.fnt`, undefined, keep);
 
     const font = new BitmapFont(image, data.valueOf());
     if (keep) {
@@ -307,8 +301,8 @@ class BitmapFontLoader extends AssetLoader<BitmapFont> {
 
   override unload(id: string): boolean {
     if (this.loadedAssets[id]) {
-      this.manager.unloadAsset(Image, `jume_bitmap_fot_${id}`);
-      this.manager.unloadAsset(String, `jume_bitmap_font_${id}`);
+      this.assets.unload(Image, `jume_bitmap_fot_${id}`);
+      this.assets.unload(String, `jume_bitmap_font_${id}`);
     }
 
     return super.unload(id);
@@ -319,8 +313,8 @@ class ShaderLoader extends AssetLoader<Shader> {
   @inject
   private context!: Context;
 
-  constructor(manager: AssetManager) {
-    super(Shader, manager);
+  constructor(assets: Assets) {
+    super(Shader, assets);
   }
 
   async load(id: string, path: string, _props?: unknown, keep = true): Promise<Shader> {
@@ -338,7 +332,7 @@ class ShaderLoader extends AssetLoader<Shader> {
 
     const shaderType: ShaderType = extension === '.vert' ? 'vertex' : 'fragment';
 
-    const source = await this.manager.loadAsset(String, `jume_shader_${id}`, path, undefined, false);
+    const source = await this.assets.load(String, `jume_shader_${id}`, path, undefined, false);
     const shader = new Shader(source.valueOf(), shaderType);
 
     if (keep) {
@@ -361,17 +355,17 @@ class ShaderLoader extends AssetLoader<Shader> {
 
 class SoundLoader extends AssetLoader<Sound> {
   @inject
-  audioManager!: AudioManager;
+  audio!: Audio;
 
-  constructor(manager: AssetManager) {
-    super(Sound, manager);
+  constructor(assets: Assets) {
+    super(Sound, assets);
   }
 
   async load(id: string, path: string, _props?: unknown, keep?: boolean): Promise<Sound> {
     const response = await fetch(path);
     if (response.status < 400) {
       const buffer = await response.arrayBuffer();
-      const sound = await this.audioManager.decodeSound(id, buffer);
+      const sound = await this.audio.decodeSound(id, buffer);
 
       if (sound) {
         if (keep) {
@@ -389,13 +383,13 @@ class SoundLoader extends AssetLoader<Sound> {
 }
 
 class AtlasLoader extends AssetLoader<Atlas> {
-  constructor(manager: AssetManager) {
-    super(Atlas, manager);
+  constructor(assets: Assets) {
+    super(Atlas, assets);
   }
 
   async load(id: string, path: string, _props?: unknown, keep?: boolean): Promise<Atlas> {
-    const image = await this.manager.loadAsset(Image, `jume_atlas_${id}`, `${path}.png`, undefined, keep);
-    const data = await this.manager.loadAsset(String, `jume_atlas_${id}`, `${path}.json`, undefined, keep);
+    const image = await this.assets.load(Image, `jume_atlas_${id}`, `${path}.png`, undefined, keep);
+    const data = await this.assets.load(String, `jume_atlas_${id}`, `${path}.json`, undefined, keep);
 
     const atlas = new Atlas(image, data.valueOf());
     if (keep) {
@@ -407,8 +401,8 @@ class AtlasLoader extends AssetLoader<Atlas> {
 
   override unload(id: string): boolean {
     if (this.loadedAssets[id]) {
-      this.manager.unloadAsset(Image, `jume_atlas_${id}`);
-      this.manager.unloadAsset(String, `jume_atlas_${id}`);
+      this.assets.unload(Image, `jume_atlas_${id}`);
+      this.assets.unload(String, `jume_atlas_${id}`);
 
       return super.unload(id);
     }
@@ -425,8 +419,8 @@ export type TilesetLoaderProps = {
 };
 
 class TilesetLoader extends AssetLoader<Tileset> {
-  constructor(manager: AssetManager) {
-    super(Tileset, manager);
+  constructor(assets: Assets) {
+    super(Tileset, assets);
   }
 
   async load(id: string, path: string, props?: TilesetLoaderProps, keep?: boolean): Promise<Tileset> {
@@ -436,7 +430,7 @@ class TilesetLoader extends AssetLoader<Tileset> {
 
     const { tileWidth, tileHeight, spacing, margin } = props;
 
-    const image = await this.manager.loadAsset(Image, `jume_tileset_${id}`, path, undefined, keep);
+    const image = await this.assets.load(Image, `jume_tileset_${id}`, path, undefined, keep);
     const tileset = new Tileset(image, tileWidth, tileHeight, spacing, margin);
     if (keep) {
       this.loadedAssets[id] = tileset;
@@ -447,7 +441,7 @@ class TilesetLoader extends AssetLoader<Tileset> {
 
   override unload(id: string): boolean {
     if (this.loadedAssets[id]) {
-      this.manager.unloadAsset(Image, `jume_tileset_${id}`);
+      this.assets.unload(Image, `jume_tileset_${id}`);
 
       return super.unload(id);
     }

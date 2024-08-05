@@ -1,9 +1,9 @@
 /* eslint-disable simple-import-sort/exports */
-export * from './assets/assetsManager.js';
+export * from './assets/assets.js';
 
 // Audio.
 export * from './audio/audioChannel.js';
-export * from './audio/audioManager.js';
+export * from './audio/audio.js';
 export * from './audio/sound.js';
 
 // Dependency injection.
@@ -13,9 +13,9 @@ export * from './di/services.js';
 // ECS (kinda).
 export * from './ecs/component.js';
 export * from './ecs/entity.js';
-export * from './ecs/entityManager.js';
+export * from './ecs/entities.js';
 export * from './ecs/system.js';
-export * from './ecs/systemManager.js';
+export * from './ecs/systems.js';
 
 // Included components.
 export * from './ecs/components/cAnimation.js';
@@ -34,7 +34,7 @@ export * from './ecs/systems/sUpdate.js';
 // Event manager.
 export * from './events/applicationEvent.js';
 export * from './events/event.js';
-export * from './events/eventManager.js';
+export * from './events/events.js';
 
 // Input events.
 export * from './events/input/actionEvent.js';
@@ -80,7 +80,7 @@ export * from './tilemap/tileset.js';
 // Tweening.
 export * from './tweens/easing.js';
 export * from './tweens/tween.js';
-export * from './tweens/tweenManager.js';
+export * from './tweens/tweens.js';
 export * from './tweens/tweenSequence.js';
 
 // Misc utils.

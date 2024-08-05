@@ -15,7 +15,7 @@ export class EventListener {
   ) {}
 }
 
-export class EventManager {
+export class Events {
   private readonly listeners: Record<string, EventListener[]>;
 
   constructor() {

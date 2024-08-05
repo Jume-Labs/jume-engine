@@ -32,10 +32,10 @@ export class System {
 
   private readonly lists: EntityList[] = [];
 
-  private readonly systems: Map<SystemType<System>, System>;
+  private readonly _systems: Map<SystemType<System>, System>;
 
   constructor(props: BaseSystemProps) {
-    this.systems = props._systems!;
+    this._systems = props._systems!;
     this.order = props._order!;
   }
 
@@ -75,11 +75,11 @@ export class System {
   destroy(): void {}
 
   protected getSystem<T extends System>(systemType: SystemType<T>): T {
-    return this.systems.get(systemType) as T;
+    return this._systems.get(systemType) as T;
   }
 
   protected hasSystem(systemType: SystemType<System>): boolean {
-    return this.systems.has(systemType);
+    return this._systems.has(systemType);
   }
 
   protected registerList({

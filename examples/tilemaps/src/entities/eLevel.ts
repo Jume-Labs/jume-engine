@@ -1,13 +1,13 @@
-import { AssetManager, CTilemap, CTransform, Entity, inject, Tileset } from '@jume-labs/jume-engine';
+import { Assets, CTilemap, CTransform, Entity, inject, Tileset } from '@jume-labs/jume-engine';
 
 export class ELevel extends Entity {
   @inject
-  private assetManager!: AssetManager;
+  private assets!: Assets;
 
   constructor() {
     super();
 
-    const tileset = this.assetManager.getAsset(Tileset, 'tiles');
+    const tileset = this.assets.get(Tileset, 'tiles');
 
     this.addComponent(CTransform, { x: 20, y: 20 });
     this.addComponent(CTilemap, { grid: this.getLevel(), tileset });

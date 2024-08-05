@@ -1,12 +1,10 @@
-import { inject } from '../di/inject.js';
+import { Entities, EntityType } from '../ecs/entities.js';
 import { Entity } from '../ecs/entity.js';
-import { EntityManager, EntityType } from '../ecs/entityManager.js';
 import { System, SystemConstructible } from '../ecs/system.js';
-import { SystemManager } from '../ecs/systemManager.js';
+import { Systems } from '../ecs/systems.js';
 import { Graphics } from '../graphics/graphics.js';
-import { TweenManager } from '../tweens/tweenManager.js';
+import { Tweens } from '../tweens/tweens.js';
 import { Camera } from '../view/camera.js';
-import { View } from '../view/view.js';
 
 export type SceneType = new () => Scene;
 
@@ -25,38 +23,35 @@ export class Scene {
 
   pauseInOverlay = true;
 
-  @inject
-  protected view!: View;
-
   protected readonly cameras: Camera[];
 
-  protected readonly entityManager: EntityManager;
+  protected readonly entities: Entities;
 
-  protected readonly systemManager: SystemManager;
+  protected readonly systems: Systems;
 
-  protected readonly tweenManager: TweenManager;
+  protected readonly tweens: Tweens;
 
   constructor() {
     this.cameras = [new Camera()];
-    this.systemManager = new SystemManager(this.view, this.cameras);
-    this.entityManager = new EntityManager(this.systemManager);
-    this.tweenManager = new TweenManager();
+    this.systems = new Systems(this.cameras);
+    this.entities = new Entities(this.systems);
+    this.tweens = new Tweens();
   }
 
   addEntity<T extends EntityType>(entityType: T, ...params: ConstructorParameters<T>): InstanceType<T> {
-    return this.entityManager.add(entityType, ...params);
+    return this.entities.add(entityType, ...params);
   }
 
   removeEntity(entity: Entity): boolean {
-    return this.entityManager.remove(entity);
+    return this.entities.remove(entity);
   }
 
   removeEntityId(id: number): boolean {
-    return this.entityManager.removeById(id);
+    return this.entities.removeById(id);
   }
 
   getEntityById(id: number): Entity | undefined {
-    return this.entityManager.getById(id);
+    return this.entities.getById(id);
   }
 
   addSystem<T extends SystemConstructible>(
@@ -64,21 +59,21 @@ export class Scene {
     order: number,
     ...params: ConstructorParameters<T>
   ): InstanceType<T> {
-    return this.systemManager.addSystem(systemType, order, ...params);
+    return this.systems.add(systemType, order, ...params);
   }
 
   removeSystem(systemType: typeof System): boolean {
-    return this.systemManager.removeSystem(systemType);
+    return this.systems.remove(systemType);
   }
 
   update(dt: number): void {
-    this.tweenManager.update(dt);
-    this.entityManager.update();
-    this.systemManager.update(dt);
+    this.tweens.update(dt);
+    this.entities.update();
+    this.systems.update(dt);
   }
 
   render(graphics: Graphics): void {
-    this.systemManager.render(graphics);
+    this.systems.render(graphics);
   }
 
   resize(_width: number, _height: number): void {
@@ -96,12 +91,12 @@ export class Scene {
   resume(): void {}
 
   destroy(): void {
-    this.entityManager.destroy();
-    this.systemManager.destroy();
+    this.entities.destroy();
+    this.systems.destroy();
   }
 }
 
-export class SceneManager {
+export class Scenes {
   get current(): Scene {
     return this.stack[this.stack.length - 1];
   }

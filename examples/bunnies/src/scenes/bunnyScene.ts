@@ -1,14 +1,15 @@
 import {
-  AssetManager,
+  Assets,
   BitmapFont,
   EventListener,
-  EventManager,
+  Events,
   inject,
   MouseEvent,
   Scene,
   SRender,
   SUpdate,
   TimeStep,
+  View,
 } from '@jume-labs/jume-engine';
 
 import { EBunny } from '../entities/eBunny';
@@ -24,13 +25,16 @@ export class BunnyScene extends Scene {
   private bunnyCount = 0;
 
   @inject
-  private assetManager!: AssetManager;
+  private assets!: Assets;
 
   @inject
-  private eventManager!: EventManager;
+  private events!: Events;
 
   @inject
   private timeStep!: TimeStep;
+
+  @inject
+  private view!: View;
 
   private mouseDownListener: EventListener;
 
@@ -43,7 +47,7 @@ export class BunnyScene extends Scene {
     this.addSystem(SUpdate, 0, {});
     this.addSystem(SRender, 0, {});
 
-    const font = this.assetManager.getAsset(BitmapFont, 'font');
+    const font = this.assets.get(BitmapFont, 'font');
 
     this.fps = this.addEntity(EText, { layer: 1, x: 16, y: 16, font, text: 'FPS: 0', anchor: { x: 0, y: 0.5 } });
     this.bunnyText = this.addEntity(EText, {
@@ -55,8 +59,8 @@ export class BunnyScene extends Scene {
       anchor: { x: 0, y: 0.5 },
     });
 
-    this.mouseDownListener = this.eventManager.add(MouseEvent.MOUSE_DOWN, this.mouseDown);
-    this.mouseUpListener = this.eventManager.add(MouseEvent.MOUSE_UP, this.mouseUp);
+    this.mouseDownListener = this.events.add(MouseEvent.MOUSE_DOWN, this.mouseDown);
+    this.mouseUpListener = this.events.add(MouseEvent.MOUSE_UP, this.mouseUp);
 
     this.createBunny();
   }
@@ -74,8 +78,8 @@ export class BunnyScene extends Scene {
   }
 
   override destroy(): void {
-    this.eventManager.remove(this.mouseDownListener);
-    this.eventManager.remove(this.mouseUpListener);
+    this.events.remove(this.mouseDownListener);
+    this.events.remove(this.mouseUpListener);
   }
 
   private createBunny(): void {

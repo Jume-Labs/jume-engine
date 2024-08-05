@@ -1,4 +1,4 @@
-import { AssetManager, Atlas, CSprite, CTransform, Entity, inject } from '@jume-labs/jume-engine';
+import { Assets, Atlas, CSprite, CTransform, Entity, inject } from '@jume-labs/jume-engine';
 
 import { CSelector } from '../components/cSelector';
 
@@ -9,14 +9,14 @@ export interface ESelectorProps {
 
 export class ESelector extends Entity {
   @inject
-  private assetManager!: AssetManager;
+  private assets!: Assets;
 
   constructor(props: ESelectorProps) {
     super();
     this.layer = 3;
 
     const { x, y } = props;
-    const atlas = this.assetManager.getAsset(Atlas, 'sprites');
+    const atlas = this.assets.get(Atlas, 'sprites');
 
     this.addComponent(CTransform, { x, y });
     this.addComponent(CSprite, { atlas, frameName: 'selector' });

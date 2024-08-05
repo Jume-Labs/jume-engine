@@ -1,6 +1,6 @@
-import { AudioManager } from '../audio/audioManager.js';
+import { Audio } from '../audio/audio.js';
 import { inject } from '../di/inject.js';
-import { EventManager } from '../events/eventManager.js';
+import { Events } from '../events/events.js';
 import { ActionEvent } from '../events/input/actionEvent.js';
 import { GamepadEvent as JumeGamepadEvent } from '../events/input/gamepadEvent.js';
 import { KeyboardEvent as JumeKeyboardEvent } from '../events/input/keyboardEvent.js';
@@ -87,10 +87,10 @@ function createActionBinding(name: string): InputActionBinding {
 
 export class Input {
   @inject
-  private audioManager!: AudioManager;
+  private audio!: Audio;
 
   @inject
-  private eventManager!: EventManager;
+  private events!: Events;
 
   private readonly bindings: Record<string, InputActionBinding> = {};
 
@@ -138,7 +138,7 @@ export class Input {
           this.sendAction(action);
 
           const ev = JumeGamepadEvent.get('axis', gamepad.index, i, undefined, axis);
-          this.eventManager.send(ev);
+          this.events.send(ev);
         }
       }
 
@@ -151,7 +151,7 @@ export class Input {
           this.sendAction(action);
 
           const ev = JumeGamepadEvent.get('button', gamepad.index, i, button);
-          this.eventManager.send(ev);
+          this.events.send(ev);
         }
       }
     }
@@ -164,7 +164,7 @@ export class Input {
   private sendAction(action: ActionEvent): void {
     if (this.isFirstAction && action.pressed) {
       this.isFirstAction = false;
-      this.audioManager.context.resume().catch((reason) => {
+      this.audio.context.resume().catch((reason) => {
         console.log('Unable to resume the audio');
         console.log(reason);
       });
@@ -177,79 +177,79 @@ export class Input {
       switch (action.actionType) {
         case 'keyboard key':
           if (action.keyCode !== KeyCode.Unknown && binding.keyboard.keys.includes(action.keyCode)) {
-            this.eventManager.send(action);
+            this.events.send(action);
           }
           break;
 
         case 'keyboard text':
           if (binding.keyboard.text) {
-            this.eventManager.send(action);
+            this.events.send(action);
           }
           break;
 
         case 'mouse button':
           if (action.id !== -1 && binding.mouse.mouseButton.includes(action.id)) {
-            this.eventManager.send(action);
+            this.events.send(action);
           }
           break;
 
         case 'mouse move':
           if (binding.mouse.mouseMove) {
-            this.eventManager.send(action);
+            this.events.send(action);
           }
           break;
 
         case 'mouse wheel':
           if (binding.mouse.mouseWheel) {
-            this.eventManager.send(action);
+            this.events.send(action);
           }
           break;
 
         case 'mouse enter':
           if (binding.mouse.mouseEnter) {
-            this.eventManager.send(action);
+            this.events.send(action);
           }
           break;
 
         case 'mouse leave':
           if (binding.mouse.mouseLeave) {
-            this.eventManager.send(action);
+            this.events.send(action);
           }
           break;
 
         case 'touch':
           if (binding.touch.touch) {
-            this.eventManager.send(action);
+            this.events.send(action);
           }
           break;
 
         case 'touch move':
           if (binding.touch.touchMove) {
-            this.eventManager.send(action);
+            this.events.send(action);
           }
           break;
 
         case 'gamepad connected':
           if (binding.gamepad.connected) {
-            this.eventManager.send(action);
+            this.events.send(action);
           }
           break;
 
         case 'gamepad disconnected':
           if (binding.gamepad.disconnected) {
-            this.eventManager.send(action);
+            this.events.send(action);
           }
           break;
 
         case 'gamepad axis':
           if (action.id !== -1 && binding.gamepad.gamepadAxis.includes(action.id)) {
-            this.eventManager.send(action);
+            this.events.send(action);
           }
           break;
 
         case 'gamepad button':
           if (action.id !== -1 && binding.gamepad.gamepadButton.includes(action.id)) {
-            this.eventManager.send(action);
+            this.events.send(action);
           }
           break;
       }
@@ -311,7 +311,7 @@ export class Input {
     this.sendAction(action);
 
     const ev = JumeKeyboardEvent.get('down', keyCode, event.code, event.key);
-    this.eventManager.send(ev);
+    this.events.send(ev);
   };
 
   private onKeyUp = (event: KeyboardEvent): void => {
@@ -323,7 +323,7 @@ export class Input {
     this.sendAction(action);
 
     const ev = JumeKeyboardEvent.get('up', keyCode, event.code, event.key);
-    this.eventManager.send(ev);
+    this.events.send(ev);
   };
 
   private onKeyPress = (event: KeyboardEvent): void => {
@@ -335,7 +335,7 @@ export class Input {
     this.sendAction(action);
 
     const ev = JumeKeyboardEvent.get('press', keyCode, event.code, event.key, event.key);
-    this.eventManager.send(ev);
+    this.events.send(ev);
   };
 
   private onMouseDown = (event: MouseEvent): void => {
@@ -347,7 +347,7 @@ export class Input {
     this.sendAction(action);
 
     const ev = JumeMouseEvent.get('down', event.button, x, y);
-    this.eventManager.send(ev);
+    this.events.send(ev);
   };
 
   private onMouseUp = (event: MouseEvent): void => {
@@ -368,7 +368,7 @@ export class Input {
     this.sendAction(action);
 
     const ev = JumeMouseEvent.get('up', event.button, x, y);
-    this.eventManager.send(ev);
+    this.events.send(ev);
   };
 
   private onMouseMove = (event: MouseEvent): void => {
@@ -380,7 +380,7 @@ export class Input {
     this.sendAction(action);
 
     const ev = JumeMouseEvent.get('move', undefined, x, y, event.movementX, event.movementY);
-    this.eventManager.send(ev);
+    this.events.send(ev);
   };
 
   private onMouseWheel = (event: WheelEvent): void => {
@@ -395,7 +395,7 @@ export class Input {
     this.sendAction(action);
 
     const ev = JumeMouseEvent.get('wheel', undefined, undefined, undefined, event.deltaX, event.deltaY);
-    this.eventManager.send(ev);
+    this.events.send(ev);
   };
 
   private onMouseEnter = (): void => {
@@ -403,7 +403,7 @@ export class Input {
     this.sendAction(action);
 
     const ev = JumeMouseEvent.get('enter');
-    this.eventManager.send(ev);
+    this.events.send(ev);
   };
 
   private onMouseLeave = (): void => {
@@ -411,7 +411,7 @@ export class Input {
     this.sendAction(action);
 
     const ev = JumeMouseEvent.get('leave');
-    this.eventManager.send(ev);
+    this.events.send(ev);
   };
 
   private onMouseContext = (event: MouseEvent): void => {
@@ -444,7 +444,7 @@ export class Input {
         this.sendAction(action);
 
         const ev = JumeTouchEvent.get('start', touch.identifier, touch.clientX, touch.clientY, event.touches.length);
-        this.eventManager.send(ev);
+        this.events.send(ev);
       }
     }
 
@@ -452,7 +452,7 @@ export class Input {
     this.sendAction(action);
 
     const ev = JumeMouseEvent.get('down', 0, evX, evY);
-    this.eventManager.send(ev);
+    this.events.send(ev);
   };
 
   private onTouchUp = (event: TouchEvent): void => {
@@ -481,7 +481,7 @@ export class Input {
         this.sendAction(action);
 
         const ev = JumeTouchEvent.get('end', touch.identifier, touch.clientX, touch.clientY, event.touches.length);
-        this.eventManager.send(ev);
+        this.events.send(ev);
       }
     }
 
@@ -489,7 +489,7 @@ export class Input {
     this.sendAction(action);
 
     const ev = JumeMouseEvent.get('up', 0, evX, evY);
-    this.eventManager.send(ev);
+    this.events.send(ev);
   };
 
   private onTouchMove = (event: TouchEvent): void => {
@@ -516,7 +516,7 @@ export class Input {
         this.sendAction(action);
 
         const ev = JumeTouchEvent.get('move', touch.identifier, touch.clientX, touch.clientY, event.touches.length);
-        this.eventManager.send(ev);
+        this.events.send(ev);
       }
     }
 
@@ -524,7 +524,7 @@ export class Input {
     this.sendAction(action);
 
     const ev = JumeMouseEvent.get('move', undefined, evX, evY);
-    this.eventManager.send(ev);
+    this.events.send(ev);
   };
 
   private onTouchCancel = (event: TouchEvent): void => {
@@ -553,7 +553,7 @@ export class Input {
         this.sendAction(action);
 
         const ev = JumeTouchEvent.get('end', touch.identifier, touch.clientX, touch.clientY, event.touches.length);
-        this.eventManager.send(ev);
+        this.events.send(ev);
       }
     }
 
@@ -561,7 +561,7 @@ export class Input {
     this.sendAction(action);
 
     const ev = JumeMouseEvent.get('up', 0, evX, evY);
-    this.eventManager.send(ev);
+    this.events.send(ev);
   };
 
   private onGamepadConnected = (event: GamepadEvent): void => {
@@ -574,7 +574,7 @@ export class Input {
     this.sendAction(action);
 
     const ev = JumeGamepadEvent.get('connected', event.gamepad.index);
-    this.eventManager.send(ev);
+    this.events.send(ev);
   };
 
   private onGamepadDisconnected = (event: GamepadEvent): void => {
@@ -584,6 +584,6 @@ export class Input {
     this.sendAction(action);
 
     const ev = JumeGamepadEvent.get('disconnected', event.gamepad.index);
-    this.eventManager.send(ev);
+    this.events.send(ev);
   };
 }

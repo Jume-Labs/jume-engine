@@ -36,21 +36,21 @@ export class Component {
 
   private _entityId: number;
 
-  private readonly components: Map<ComponentClass<Component>, Component>;
+  private readonly _components: Map<ComponentClass<Component>, Component>;
 
   constructor(props: BaseComponentProps) {
     this._entityId = props._entityId!;
-    this.components = props._components!;
+    this._components = props._components!;
   }
 
   destroy(): void {}
 
   protected getComponent<T extends Component>(componentType: ComponentClass<T>): T {
-    return this.components.get(componentType) as T;
+    return this._components.get(componentType) as T;
   }
 
   protected hasComponent(componentType: typeof Component): boolean {
-    return this.components.has(componentType);
+    return this._components.has(componentType);
   }
 
   protected hasComponents(componentTypes: (typeof Component)[]): boolean {

@@ -53,9 +53,9 @@ export class Entity {
 
   addComponent<T extends ComponentType>(componentType: T, ...params: ConstructorParameters<T>): InstanceType<T> {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    params[0].entityId = this.id;
+    params[0]._entityId = this.id;
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    params[0].components = this.components;
+    params[0]._components = this.components;
 
     const component = new componentType(...params);
     this.components.set(componentType, component);

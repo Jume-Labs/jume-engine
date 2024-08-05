@@ -1,10 +1,10 @@
-import { AssetManager, Atlas, CSprite, CTransform, Entity, inject, Random } from '@jume-labs/jume-engine';
+import { Assets, Atlas, CSprite, CTransform, Entity, inject, Random } from '@jume-labs/jume-engine';
 
 import { CBunnyMove } from '../components/cBunnyMove';
 
 export class EBunny extends Entity {
   @inject
-  private readonly assetManager!: AssetManager;
+  private readonly assets!: Assets;
 
   @inject
   private readonly random!: Random;
@@ -14,7 +14,7 @@ export class EBunny extends Entity {
 
     this.addComponent(CTransform, {});
 
-    const atlas = this.assetManager.getAsset(Atlas, 'sprites');
+    const atlas = this.assets.get(Atlas, 'sprites');
     const tint = this.random.color(0.3);
 
     this.addComponent(CSprite, { atlas, frameName: 'bunny', tint });

@@ -5,7 +5,7 @@ import {
   CTransform,
   Entity,
   EventListener,
-  EventManager,
+  Events,
   inject,
   MouseEvent,
   Rectangle,
@@ -55,7 +55,7 @@ export class SLevelEdit extends System {
   private tileIndex = 0;
 
   @inject
-  private eventManager!: EventManager;
+  private events!: Events;
 
   constructor(props: SLevelEditProps) {
     super(props);
@@ -66,15 +66,15 @@ export class SLevelEdit extends System {
     this.registerList({ entities: this.buttonEntities, components: [CButton] });
     this.registerList({ entities: this.selectorEntities, components: [CSelector, CTransform] });
 
-    this.mouseDownListener = this.eventManager.add(MouseEvent.MOUSE_DOWN, this.mouseDown);
-    this.mouseMoveListener = this.eventManager.add(MouseEvent.MOUSE_MOVE, this.mouseMove);
-    this.mouseUpListener = this.eventManager.add(MouseEvent.MOUSE_UP, this.mouseUp);
+    this.mouseDownListener = this.events.add(MouseEvent.MOUSE_DOWN, this.mouseDown);
+    this.mouseMoveListener = this.events.add(MouseEvent.MOUSE_MOVE, this.mouseMove);
+    this.mouseUpListener = this.events.add(MouseEvent.MOUSE_UP, this.mouseUp);
   }
 
   override destroy(): void {
-    this.eventManager.remove(this.mouseDownListener);
-    this.eventManager.remove(this.mouseMoveListener);
-    this.eventManager.remove(this.mouseUpListener);
+    this.events.remove(this.mouseDownListener);
+    this.events.remove(this.mouseMoveListener);
+    this.events.remove(this.mouseUpListener);
   }
 
   private mouseDown = (event: MouseEvent): void => {

@@ -1,4 +1,4 @@
-import { AssetManager, CTransform, Entity, inject, Tileset } from '@jume-labs/jume-engine';
+import { Assets, CTransform, Entity, inject, Tileset } from '@jume-labs/jume-engine';
 
 import { CButton } from '../components/cButton';
 
@@ -10,13 +10,13 @@ export interface EButtonProps {
 
 export class EButton extends Entity {
   @inject
-  private assetManager!: AssetManager;
+  private assets!: Assets;
 
   constructor(props: EButtonProps) {
     super();
 
     const { x, y, index } = props;
-    const tileset = this.assetManager.getAsset(Tileset, 'tiles');
+    const tileset = this.assets.get(Tileset, 'tiles');
 
     this.addComponent(CTransform, { x, y });
     this.addComponent(CButton, { tileset, index });

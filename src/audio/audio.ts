@@ -4,7 +4,7 @@ import { Sound } from './sound.js';
 /**
  * The game audio manager.
  */
-export class AudioManager {
+export class Audio {
   /**
    * The web audio context.
    */

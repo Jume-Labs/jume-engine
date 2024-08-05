@@ -1,4 +1,4 @@
-import { Scene, SRender } from '@jume-labs/jume-engine';
+import { inject, Scene, SRender, View } from '@jume-labs/jume-engine';
 
 import { EBorder } from '../entities/eBorder';
 import { EButton } from '../entities/eButton';
@@ -8,6 +8,9 @@ import { ESelector } from '../entities/eSelector';
 import { SLevelEdit } from '../systems/sLevelEdit';
 
 export class GameScene extends Scene {
+  @inject
+  private view!: View;
+
   constructor() {
     super();
 

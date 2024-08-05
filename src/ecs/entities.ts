@@ -1,25 +1,25 @@
 import { removeByValue } from '../utils/arrayUtils.js';
 import { Entity } from './entity.js';
-import { SystemManager } from './systemManager.js';
+import { Systems } from './systems.js';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type EntityType<Params extends readonly unknown[] = any[], T = Entity> = new (...params: Params) => T;
 
-export class EntityManager {
+export class Entities {
   private readonly entities: Entity[] = [];
 
   private readonly entitiesToRemove: Entity[] = [];
 
-  private readonly systemManager: SystemManager;
+  private readonly systems: Systems;
 
-  constructor(systemManager: SystemManager) {
-    this.systemManager = systemManager;
+  constructor(systems: Systems) {
+    this.systems = systems;
   }
 
   update(): void {
     while (this.entitiesToRemove.length > 0) {
       const entity = this.entitiesToRemove.pop()!;
-      this.systemManager.updateSystemEntities(entity, true);
+      this.systems.updateSystemEntities(entity, true);
 
       entity.destroy();
       removeByValue(this.entities, entity);
@@ -27,7 +27,7 @@ export class EntityManager {
 
     for (const entity of this.entities) {
       if (entity.componentsUpdated) {
-        this.systemManager.updateSystemEntities(entity);
+        this.systems.updateSystemEntities(entity);
         entity.componentsUpdated = false;
       }
     }
@@ -36,7 +36,7 @@ export class EntityManager {
   add<T extends EntityType>(entityType: T, ...params: ConstructorParameters<T>): InstanceType<T> {
     const entity = new entityType(...params);
     this.entities.push(entity);
-    this.systemManager.updateSystemEntities(entity);
+    this.systems.updateSystemEntities(entity);
 
     return entity as InstanceType<T>;
   }

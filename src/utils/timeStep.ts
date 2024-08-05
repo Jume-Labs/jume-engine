@@ -42,6 +42,6 @@ export class TimeStep {
     this.deltas.push(dt);
 
     const average = this.deltas.reduce((a, b) => a + b) / this.deltas.length;
-    this._fps = Math.floor(1 / average);
+    this._fps = Math.round(1 / average);
   }
 }

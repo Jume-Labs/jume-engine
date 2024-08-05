@@ -1,20 +1,20 @@
-import { AssetManager, Atlas, inject, Scene, SceneManager, Tileset } from '@jume-labs/jume-engine';
+import { Assets, Atlas, inject, Scene, Scenes, Tileset } from '@jume-labs/jume-engine';
 
 import { GameScene } from './gameScene';
 
 export class LoadScene extends Scene {
   @inject
-  private assetManager!: AssetManager;
+  private assets!: Assets;
 
   @inject
-  private sceneManager!: SceneManager;
+  private scenes!: Scenes;
 
   constructor() {
     super();
 
     this.loadAssets()
       .then(() => {
-        this.sceneManager.changeScene({ type: 'push', sceneType: GameScene, removeCurrent: true });
+        this.scenes.changeScene({ type: 'push', sceneType: GameScene, removeCurrent: true });
       })
       .catch((reason) => {
         throw reason;
@@ -22,7 +22,7 @@ export class LoadScene extends Scene {
   }
 
   private async loadAssets(): Promise<void> {
-    await this.assetManager.loadAll([
+    await this.assets.loadAll([
       {
         type: Atlas,
         id: 'sprites',

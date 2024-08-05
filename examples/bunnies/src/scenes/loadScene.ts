@@ -1,20 +1,20 @@
-import { AssetItem, AssetManager, Atlas, BitmapFont, Image, inject, Scene, SceneManager } from '@jume-labs/jume-engine';
+import { AssetItem, Assets, Atlas, BitmapFont, Image, inject, Scene, Scenes } from '@jume-labs/jume-engine';
 
 import { BunnyScene } from './bunnyScene';
 
 export class LoadScene extends Scene {
   @inject
-  private assetManager!: AssetManager;
+  private assets!: Assets;
 
   @inject
-  private sceneManager!: SceneManager;
+  private scenes!: Scenes;
 
   constructor() {
     super();
 
     this.loadAssets()
       .then(() => {
-        this.sceneManager.changeScene({ type: 'push', sceneType: BunnyScene, removeCurrent: true });
+        this.scenes.changeScene({ type: 'push', sceneType: BunnyScene, removeCurrent: true });
       })
       .catch((reason) => {
         throw reason;
@@ -39,6 +39,6 @@ export class LoadScene extends Scene {
         path: 'assets/pixelFont',
       },
     ];
-    await this.assetManager.loadAll(assets);
+    await this.assets.loadAll(assets);
   }
 }

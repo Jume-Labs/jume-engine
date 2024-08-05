@@ -2,7 +2,7 @@ import { removeByValue } from '../utils/arrayUtils.js';
 import { Tween } from './tween.js';
 import { TweenSequence } from './tweenSequence.js';
 
-export class TweenManager {
+export class Tweens {
   private readonly current: Tween[] = [];
 
   private readonly sequences: TweenSequence[] = [];

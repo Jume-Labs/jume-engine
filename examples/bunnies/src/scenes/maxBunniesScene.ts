@@ -1,8 +1,8 @@
 import {
-  AssetManager,
+  Assets,
   BitmapFont,
   Color,
-  EventManager,
+  Events,
   Graphics,
   Image,
   inject,
@@ -11,6 +11,7 @@ import {
   Rectangle,
   Scene,
   TimeStep,
+  View,
 } from '@jume-labs/jume-engine';
 
 interface Bunny {
@@ -37,10 +38,10 @@ export class MaxBunniesScene extends Scene {
   private addingBunnies = false;
 
   @inject
-  private eventManager!: EventManager;
+  private assets!: Assets;
 
   @inject
-  private assetManager!: AssetManager;
+  private events!: Events;
 
   @inject
   private random!: Random;
@@ -48,16 +49,19 @@ export class MaxBunniesScene extends Scene {
   @inject
   private timeStep!: TimeStep;
 
+  @inject
+  private view!: View;
+
   constructor() {
     super();
 
-    this.font = this.assetManager.getAsset(BitmapFont, 'font');
-    this.bunnyImage = this.assetManager.getAsset(Image, 'bunny');
+    this.font = this.assets.get(BitmapFont, 'font');
+    this.bunnyImage = this.assets.get(Image, 'bunny');
 
     this.bounds = new Rectangle(0, 0, this.view.viewWidth, this.view.viewHeight);
 
-    this.eventManager.add(MouseEvent.MOUSE_DOWN, this.mouseDown);
-    this.eventManager.add(MouseEvent.MOUSE_UP, this.mouseUp);
+    this.events.add(MouseEvent.MOUSE_DOWN, this.mouseDown);
+    this.events.add(MouseEvent.MOUSE_UP, this.mouseUp);
 
     this.createBunny();
   }

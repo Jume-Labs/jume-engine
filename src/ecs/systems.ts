@@ -1,3 +1,4 @@
+import { inject } from '../di/inject.js';
 import { Graphics } from '../graphics/graphics.js';
 import { removeByValue } from '../utils/arrayUtils.js';
 import { Camera } from '../view/camera.js';
@@ -5,29 +6,29 @@ import { View } from '../view/view.js';
 import { Entity } from './entity.js';
 import { System, SystemConstructible, SystemType } from './system.js';
 
-export class SystemManager {
+export class Systems {
   private systems = new Map<SystemType<System>, System>();
 
   private systemList: System[] = [];
 
   private cameras: Camera[];
 
-  private view: View;
+  @inject
+  private view!: View;
 
-  constructor(view: View, cameras: Camera[]) {
-    this.view = view;
+  constructor(cameras: Camera[]) {
     this.cameras = cameras;
   }
 
-  addSystem<T extends SystemConstructible>(
+  add<T extends SystemConstructible>(
     systemType: T,
     order: number,
     ...params: ConstructorParameters<T>
   ): InstanceType<T> {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    params[0].systems = this.systems;
+    params[0]._systems = this.systems;
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    params[0].order = order;
+    params[0]._order = order;
 
     const system = new systemType(...params);
     this.systems.set(systemType, system);
@@ -46,7 +47,7 @@ export class SystemManager {
     return system as InstanceType<T>;
   }
 
-  removeSystem(systemType: typeof System): boolean {
+  remove(systemType: typeof System): boolean {
     let removed = false;
     if (this.systems.has(systemType)) {
       const system = this.systems.get(systemType)!;
@@ -61,7 +62,7 @@ export class SystemManager {
     return removed;
   }
 
-  getSystem<T extends System>(systemType: SystemType<T>): T {
+  get<T extends System>(systemType: SystemType<T>): T {
     return this.systems.get(systemType) as T;
   }
 
