@@ -25,19 +25,19 @@ const SHAPE_VERT_GL1 = [
   'attribute vec3 vertexPosition;',
   'attribute vec4 vertexColor;',
   'uniform mat4 projectionMatrix;',
-  'varying vec4 fragColor;',
+  'varying vec4 fragmentColor;',
   'void main() {',
   ' gl_Position = projectionMatrix * vec4(vertexPosition, 1.0);',
-  ' fragColor = vertexColor;',
+  ' fragmentColor = vertexColor;',
   '}',
 ].join('\n');
 
 const SHAPE_FRAG_GL1 = [
   '#version 100',
   'precision mediump float;',
-  'varying vec4 fragColor;',
+  'varying vec4 fragmentColor;',
   'void main() {',
-  ' gl_FragColor = fragColor;',
+  ' gl_FragColor = fragmentColor;',
   '}',
 ].join('\n');
 
@@ -64,9 +64,9 @@ const IMAGE_FRAG = [
   'in vec4 fragColor;',
   'out vec4 FragColor;',
   'void main() {',
-  ' vec4 texcolor = texture(tex, fragUV) * fragColor;',
-  ' texcolor.rgb *= fragColor.a;',
-  ' FragColor = texcolor;',
+  ' vec4 texColor = texture(tex, fragUV) * fragColor;',
+  ' texColor.rgb *= fragColor.a;',
+  ' FragColor = texColor;',
   '}',
 ].join('\n');
 
@@ -76,20 +76,21 @@ const IMAGE_VERT_GL1 = [
   'attribute vec4 vertexColor;',
   'attribute vec2 vertexUV;',
   'uniform mat4 projectionMatrix;',
-  'varying vec4 fragColor;',
   'varying vec2 fragUV;',
+  'varying vec4 fragColor;',
   'void main() {',
   ' gl_Position = projectionMatrix * vec4(vertexPosition, 1.0);',
-  ' fragColor = vertexColor;',
   ' fragUV = vertexUV;',
+  ' fragColor = vertexColor;',
   '}',
 ].join('\n');
 
 const IMAGE_FRAG_GL1 = [
   '#version 100',
+  'precision mediump float;',
   'uniform sampler2D tex;',
-  'varying vec4 fragColor;',
   'varying vec2 fragUV;',
+  'varying vec4 fragColor;',
   'void main() {',
   ' vec4 texColor = texture2D(tex, fragUV) * fragColor;',
   ' texColor.rgb *= fragColor.a;',
