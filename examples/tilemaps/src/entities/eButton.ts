@@ -2,11 +2,11 @@ import { Assets, CTransform, Entity, inject, Tileset } from '@jume-labs/jume-eng
 
 import { CButton } from '../components/cButton';
 
-export type EButtonProps {
+export type EButtonProps = {
   x: number;
   y: number;
   index: number;
-}
+};
 
 export class EButton extends Entity {
   @inject
