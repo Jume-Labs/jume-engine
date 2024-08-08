@@ -25,9 +25,9 @@ const GRID_HEIGHT = 26;
 
 const TILE_SIZE = 20;
 
-export interface SLevelEditProps extends BaseSystemProps {
+export type SLevelEditProps = BaseSystemProps & {
   camera: Camera;
-}
+};
 
 export class SLevelEdit extends System {
   private cursorEntities: Entity[] = [];

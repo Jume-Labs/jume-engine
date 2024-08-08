@@ -1,9 +1,9 @@
 import { BaseComponentProps, Color, Component, Graphics, Renderable, Tileset } from '@jume-labs/jume-engine';
 
-export interface CButtonProps extends BaseComponentProps {
+export type CButtonProps = BaseComponentProps & {
   index: number;
   tileset: Tileset;
-}
+};
 
 export class CButton extends Component implements Renderable {
   get width(): number {

@@ -5,10 +5,10 @@ export type ComponentClass<T extends Component> = new (...args: any[]) => T;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type ComponentType<Params extends readonly any[] = any[], T = Component> = new (...params: Params) => T;
 
-export interface BaseComponentProps {
+export type BaseComponentProps = {
   _entityId?: number;
   _components?: Map<ComponentClass<Component>, Component>;
-}
+};
 
 export interface Renderable {
   cRender(graphics: Graphics): void;

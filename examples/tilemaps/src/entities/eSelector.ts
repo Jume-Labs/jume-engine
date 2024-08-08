@@ -2,7 +2,7 @@ import { Assets, Atlas, CSprite, CTransform, Entity, inject } from '@jume-labs/j
 
 import { CSelector } from '../components/cSelector';
 
-export interface ESelectorProps {
+export type ESelectorProps {
   x: number;
   y: number;
 }

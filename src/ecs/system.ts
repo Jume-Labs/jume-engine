@@ -9,10 +9,10 @@ export type SystemType<T extends System> = new (...args: any[]) => T;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type SystemConstructible<Params extends readonly any[] = any[], T = System> = new (...params: Params) => T;
 
-export interface BaseSystemProps {
+export type BaseSystemProps = {
   _systems?: Map<SystemType<System>, System>;
   _order?: number;
-}
+};
 
 type EntityList = {
   entities: Entity[];

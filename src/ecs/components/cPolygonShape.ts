@@ -3,14 +3,14 @@ import { Graphics } from '../../graphics/graphics.js';
 import { Vec2 } from '../../math/vec2.js';
 import { BaseComponentProps, Component, Renderable } from '../component.js';
 
-export interface CPolygonShapeProps extends BaseComponentProps {
+export type CPolygonShapeProps = BaseComponentProps & {
   vertices: Vec2[];
   filled?: boolean;
   stroke?: boolean;
   fillColor?: Color;
   strokeColor?: Color;
   strokeWidth?: number;
-}
+};
 
 export class CPolygonShape extends Component implements Renderable {
   strokeColor = new Color(1, 1, 1, 1);

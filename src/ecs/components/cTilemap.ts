@@ -3,11 +3,11 @@ import { Graphics } from '../../graphics/graphics.js';
 import { Tileset } from '../../tilemap/tileset.js';
 import { BaseComponentProps, Component, Renderable } from '../component.js';
 
-export interface CTilemapProps extends BaseComponentProps {
+export type CTilemapProps = BaseComponentProps & {
   grid: number[][];
   tileset: Tileset;
   tint?: Color;
-}
+};
 
 export class CTilemap extends Component implements Renderable {
   grid: number[][];

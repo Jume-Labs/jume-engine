@@ -3,14 +3,14 @@ import { toRad } from '../../math/mathUtils.js';
 import { Vec2 } from '../../math/vec2.js';
 import { BaseComponentProps, Component } from '../component.js';
 
-export interface CTransformProps extends BaseComponentProps {
+export type CTransformProps = BaseComponentProps & {
   x?: number;
   y?: number;
   rotation?: number;
   scaleX?: number;
   scaleXY?: number;
   parent?: CTransform;
-}
+};
 
 export class CTransform extends Component {
   parent?: CTransform;

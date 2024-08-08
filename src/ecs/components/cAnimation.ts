@@ -3,9 +3,9 @@ import { Atlas } from '../../graphics/atlas.js';
 import { BaseComponentProps, Component, Updatable } from '../component.js';
 import { CSprite } from './cSprite.js';
 
-export interface CAnimationProps extends BaseComponentProps {
+export type CAnimationProps = BaseComponentProps & {
   animations?: Animation[];
-}
+};
 
 export class CAnimation extends Component implements Updatable {
   get isPlaying(): boolean {

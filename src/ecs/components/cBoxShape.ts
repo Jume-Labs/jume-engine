@@ -3,7 +3,7 @@ import { Graphics } from '../../graphics/graphics.js';
 import { Vec2 } from '../../math/vec2.js';
 import { BaseComponentProps, Component, Renderable } from '../component.js';
 
-export interface CBoxShapeProps extends BaseComponentProps {
+export type CBoxShapeProps = BaseComponentProps & {
   width: number;
   height: number;
   filled?: boolean;
@@ -12,7 +12,7 @@ export interface CBoxShapeProps extends BaseComponentProps {
   strokeColor?: Color;
   strokeWidth?: number;
   anchor?: { x: number; y: number };
-}
+};
 
 export class CBoxShape extends Component implements Renderable {
   strokeColor = new Color(1, 1, 1, 1);
